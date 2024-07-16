@@ -54,7 +54,7 @@ export default function Accueil() {
 									>
 										Nos formations
 									</Link>
-									<Link href="/a-propos" className="text-sm font-semibold leading-6 text-gray-900">
+									<Link href="/a-propos" className="text-sm font-semibold leading-6 text-gray-900 hover:underline hover:underline-offset-4">
 										En savoir plus <span aria-hidden="true">→</span>
 									</Link>
 								</div>
@@ -99,6 +99,12 @@ export default function Accueil() {
 						{featuredLogos.map((logo) => (
 							<FeaturedCompanyLogo key={logo.name} title={logo.name} alt={logo.alt} src={logo.image} />
 						))}
+					</div>
+
+					<div className="mt-16 flex items-center justify-center gap-x-6">
+						<Link href="/formations" className="text-sm font-semibold leading-6 text-gray-900 hover:underline hover:underline-offset-4">
+							Voir nos formations <span aria-hidden="true">→</span>
+						</Link>
 					</div>
 				</div>
 
