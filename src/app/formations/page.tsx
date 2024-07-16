@@ -3,7 +3,8 @@ import FormationCard from "@/components/formations/FormationCard";
 
 const formations = [
 	{
-		title: "Les bases de la réflexologie",
+		id: 1,
+		title: "Introduction à la réflexologie",
 		href: "/formations",
 		description:
 			"Cette formation vous permettra de découvrir les bases de la réflexologie et de vous initier à cette pratique. Vous apprendrez à soulager les maux du quotidien et à accompagner vos patients dans leur bien-être.",
