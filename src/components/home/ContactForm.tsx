@@ -1,3 +1,6 @@
+import React from "react";
+import Image from "next/image";
+
 export default function ContactForm() {
 	return (
 		<div className="relative isolate bg-white px-6 lg:px-8">
@@ -98,7 +101,7 @@ export default function ContactForm() {
 						</div>
 					</form>
 					<div className="lg:mt-6 lg:w-80 lg:flex-none">
-						<img alt="" src="https://tailwindui.com/img/logos/workcation-logo-indigo-600.svg" className="h-12 w-auto" />
+						<Image alt="" src="https://tailwindui.com/img/logos/workcation-logo-indigo-600.svg" width={48} height={48} className="h-12 w-auto" />
 						<figure className="mt-10">
 							<blockquote className="text-lg font-semibold leading-8 text-gray-900">
 								<p>
@@ -107,8 +110,10 @@ export default function ContactForm() {
 								</p>
 							</blockquote>
 							<figcaption className="mt-10 flex gap-x-6">
-								<img
+								<Image
 									alt=""
+									width={48}
+									height={48}
 									src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=96&h=96&q=80"
 									className="h-12 w-12 flex-none rounded-full bg-gray-50"
 								/>
