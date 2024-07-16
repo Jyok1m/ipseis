@@ -1,7 +1,46 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import Image from "next/image";
 
 export default function ContactForm() {
+	const [firstName, setFirstName] = useState("");
+	const [lastName, setLastName] = useState("");
+	const [budget, setBudget] = useState("");
+	const [website, setWebsite] = useState("");
+	const [message, setMessage] = useState("");
+
+	const [success, setSuccess] = useState("");
+
+	const handleSubmit = async () => {
+		const payload = { firstName, lastName, budget, website, message };
+
+		try {
+			const res = await fetch("/api/message", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ ...payload }),
+			});
+
+			const data = await res.json();
+
+			if (res.ok) {
+				setSuccess(data.message);
+				setFirstName("");
+				setLastName("");
+				setBudget("");
+				setWebsite("");
+				setMessage("");
+			} else {
+				window.alert(data.error);
+			}
+		} catch (error: any) {
+			window.alert(error.message);
+		}
+	};
+
 	return (
 		<div className="relative isolate bg-white px-6 lg:px-8">
 			<svg
@@ -20,7 +59,7 @@ export default function ContactForm() {
 			</svg>
 			<div className="mx-auto max-w-xl lg:max-w-4xl">
 				<div className="mt-16 flex flex-col gap-16 sm:gap-y-20 lg:flex-row">
-					<form action="#" method="POST" className="lg:flex-auto">
+					<div className="lg:flex-auto">
 						<div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
 							<div>
 								<label htmlFor="first-name" className="block text-sm font-semibold leading-6 text-gray-900">
@@ -28,6 +67,8 @@ export default function ContactForm() {
 								</label>
 								<div className="mt-2.5">
 									<input
+										onChange={(e) => setFirstName(e.target.value)}
+										value={firstName}
 										id="first-name"
 										name="first-name"
 										type="text"
@@ -42,6 +83,8 @@ export default function ContactForm() {
 								</label>
 								<div className="mt-2.5">
 									<input
+										onChange={(e) => setLastName(e.target.value)}
+										value={lastName}
 										id="last-name"
 										name="last-name"
 										type="text"
@@ -56,6 +99,8 @@ export default function ContactForm() {
 								</label>
 								<div className="mt-2.5">
 									<input
+										onChange={(e) => setBudget(e.target.value)}
+										value={budget}
 										id="budget"
 										name="budget"
 										type="text"
@@ -69,6 +114,8 @@ export default function ContactForm() {
 								</label>
 								<div className="mt-2.5">
 									<input
+										onChange={(e) => setWebsite(e.target.value)}
+										value={website}
 										id="website"
 										name="website"
 										type="url"
@@ -82,24 +129,25 @@ export default function ContactForm() {
 								</label>
 								<div className="mt-2.5">
 									<textarea
+										onChange={(e) => setMessage(e.target.value)}
+										value={message}
 										id="message"
 										name="message"
 										rows={4}
 										className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-										defaultValue={""}
 									/>
 								</div>
 							</div>
 						</div>
 						<div className="mt-10">
 							<button
-								type="submit"
+								onClick={handleSubmit}
 								className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
 							>
 								Envoyer
 							</button>
 						</div>
-					</form>
+					</div>
 					<div className="lg:mt-6 lg:w-80 lg:flex-none">
 						<Image alt="" src="https://tailwindui.com/img/logos/workcation-logo-indigo-600.svg" width={48} height={48} className="h-12 w-auto" />
 						<figure className="mt-10">
