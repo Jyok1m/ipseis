@@ -59,14 +59,14 @@ export async function POST(request: Request) {
 		const res = await sendMessage({ firstName, lastName, budget, email, message });
 
 		if (!res.success) {
-			return new Response(JSON.stringify({ error: "Failed to send message" }), {
+			return new Response(JSON.stringify({ error: "L'envoi de votre message a échoué... Merci de réessayer ultérieurement." }), {
 				status: 500,
 				headers: {
 					"Content-Type": "application/json",
 				},
 			});
 		} else {
-			return new Response(JSON.stringify({ message: "Message envoyé !" }), {
+			return new Response(JSON.stringify({ message: "Votre message a été envoyé avec succès. Nous vous répondrons dans les plus brefs délais." }), {
 				status: 200,
 				headers: {
 					"Content-Type": "application/json",

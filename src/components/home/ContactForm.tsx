@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Notification from "@/components/utils/Notification";
 import Image from "next/image";
 
 export default function ContactForm() {
@@ -10,10 +11,16 @@ export default function ContactForm() {
 	const [email, setEmail] = useState("");
 	const [message, setMessage] = useState("");
 
+	const [error, setError] = useState("");
 	const [success, setSuccess] = useState("");
 
 	const handleSubmit = async () => {
 		const payload = { firstName, lastName, budget, email, message };
+
+		if (Object.values(payload).some((value) => value.length === 0)) {
+			setError("Veuillez remplir tous les champs.");
+			return;
+		}
 
 		try {
 			const res = await fetch("/api/message", {
@@ -34,7 +41,7 @@ export default function ContactForm() {
 				setEmail("");
 				setMessage("");
 			} else {
-				window.alert(data.error);
+				setError(data.error);
 			}
 		} catch (error: any) {
 			window.alert(error.message);
@@ -43,6 +50,8 @@ export default function ContactForm() {
 
 	return (
 		<div className="relative isolate bg-white px-6 lg:px-8">
+			<Notification type="success" title="Merci !" message={success} isVisible={success.length > 0} onClose={() => setSuccess("")} />
+			<Notification type="error" title="Oh non..." message={error} isVisible={error.length > 0} onClose={() => setError("")} />
 			<svg
 				aria-hidden="true"
 				className="absolute inset-0 -z-10 h-full w-full stroke-gray-200 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
@@ -103,7 +112,7 @@ export default function ContactForm() {
 										value={budget}
 										id="budget"
 										name="budget"
-										type="text"
+										type="number"
 										className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 									/>
 								</div>

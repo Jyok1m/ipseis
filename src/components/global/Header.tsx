@@ -12,7 +12,7 @@ const navigation = [
 
 const Header = () => {
 	return (
-		<header className="absolut inset-x-0 top-0 z-50">
+		<header className="inset-x-0 top-0 z-50">
 			<nav aria-label="Global" className="flex flex-col items-center justify-center py-2 lg:p-6 gap-y-2 lg:gap-0">
 				<div className="block lg:absolute lg:left-6">
 					<Link href="/">
