@@ -31,22 +31,20 @@ export async function POST(request: Request) {
 										<style>
 												body { font-family: Arial, sans-serif; margin: 40px; background-color: #f9f9f9; color: #333; } h1 { font-size: 24px; margin-bottom: 20px; color:
 												#2c3e50; border-bottom: 2px solid black; } h2 { font-size: 20px; margin-top: 30px; margin-bottom: 10px; color: #34495e; } ul { list-style-type:
-												none; padding-left: 0; } li { padding: 8px 0; } p { background-color: #fff; padding: 20px; border: 1px solid #ddd; border-radius: 5px; } #container { height: 100vh }
+												none; padding-left: 0; } li { padding: 8px 0; } p { background-color: #fff; padding: 20px; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 100px; }
 										</style>
 								</head>
 								<body>
-										<div id="container">
-											<h1>Demande de prise de contact - ${firstName} ${lastName.toUpperCase()}</h1>
-											<h2>Informations</h2>
-											<ul>
-													<li><strong>Nom : </strong>${lastName.toUpperCase()}</li>
-													<li><strong>Prénom : </strong>${firstName}</li>
-													<li><strong>Email : </strong>${email}</li>
-													<li><strong>Budget : </strong>${budget}</li>
-											</ul>
-											<h2>Message</h2>
-											<p>${message}</p>
-										<div>
+									<h1>Demande de prise de contact - ${firstName} ${lastName.toUpperCase()}</h1>
+									<h2>Informations</h2>
+									<ul>
+											<li><strong>Nom : </strong>${lastName.toUpperCase()}</li>
+											<li><strong>Prénom : </strong>${firstName}</li>
+											<li><strong>Email : </strong>${email}</li>
+											<li><strong>Budget : </strong>${budget}</li>
+									</ul>
+									<h2>Message</h2>
+									<p>${message}</p>
 								</body>
 						</html>
 						`,
