@@ -111,10 +111,10 @@ export default function Accueil() {
 								</div>
 							</div>
 							<div className="mt-16 flow-root sm:mt-24">
-								<div className="-m-2 rounded-xl bg-gray-900/5 p-2 ring-1 ring-inset ring-gray-900/10 lg:-m-4 lg:rounded-2xl lg:p-4">
-									<img
-										alt="App screenshot"
-										src="https://tailwindui.com/img/component-images/project-app-screenshot.png"
+								<div className="-m-2 rounded-xl bg-gray-900/5 lg:rounded-2xl">
+									<Image
+										src="/images/home-hero-image.jpg"
+										alt="Image de main avec une en train de verser de l'huile de massage dans l'autre"
 										width={2432}
 										height={1442}
 										className="rounded-md shadow-2xl ring-1 ring-gray-900/10"
@@ -139,6 +139,15 @@ export default function Accueil() {
 
 				{/* Logo cloud */}
 				<div className="mx-auto max-w-7xl px-6 lg:px-8">
+					<div className="mx-auto max-w-2xl text-center mb-16">
+						<h2 className="text-base font-semibold leading-7 text-indigo-600">Une formation humaine</h2>
+						<p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Ils sont satisfaits</p>
+						<p className="mt-6 text-lg leading-8 text-gray-600">
+							Quis tellus eget adipiscing convallis sit sit eget aliquet quis. Suspendisse eget egestas a elementum pulvinar et feugiat blandit at. In
+							mi viverra elit nunc.
+						</p>
+					</div>
+
 					<div className="mx-auto grid max-w-lg grid-cols-4 items-center gap-x-8 gap-y-12 sm:max-w-xl sm:grid-cols-6 sm:gap-x-10 sm:gap-y-14 lg:mx-0 lg:max-w-none lg:grid-cols-5">
 						<img
 							alt="Transistor"
@@ -175,14 +184,6 @@ export default function Accueil() {
 							height={48}
 							className="col-span-2 col-start-2 max-h-12 w-full object-contain sm:col-start-auto lg:col-span-1"
 						/>
-					</div>
-					<div className="mt-16 flex justify-center">
-						<p className="relative rounded-full px-4 py-1.5 text-sm leading-6 text-gray-600 ring-1 ring-inset ring-gray-900/10 hover:ring-gray-900/20">
-							<span className="hidden md:inline">Transistor saves up to $40,000 per year, per employee by working with us.</span>
-							<a href="#" className="font-semibold text-indigo-600">
-								<span aria-hidden="true" className="absolute inset-0" /> Read our case study <span aria-hidden="true">&rarr;</span>
-							</a>
-						</p>
 					</div>
 				</div>
 
