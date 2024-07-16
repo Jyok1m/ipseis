@@ -39,13 +39,13 @@ export default function Accueil() {
 							className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
 						/>
 					</div>
-					<div className="py-20">
+					<div className="py-8">
 						<div className="mx-auto max-w-7xl px-6 lg:px-8">
 							<div className="mx-auto max-w-2xl text-center">
-								<h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">Des formations adaptées à vos besoins</h1>
+								<h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">Ipseis, le bien être à portée de mains</h1>
 								<p className="mt-6 text-lg leading-8 text-gray-600">
-									Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat
-									fugiat aliqua.
+									Ipseis est un organisme de formation spécialisé dans l&apos;accompagnement des professionnels de la santé dans le domaine de la
+									réflexologie et de l&apos;accompagnement des personnes agées.
 								</p>
 								<div className="mt-10 flex items-center justify-center gap-x-6">
 									<Link
