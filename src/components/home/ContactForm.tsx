@@ -1,8 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import Notification from "@/components/utils/Notification";
 import Image from "next/image";
+
+import { LoadingOutlined } from "@ant-design/icons";
+import { Spin } from "antd";
+
+import Notification from "@/components/utils/Notification";
 
 export default function ContactForm() {
 	const [firstName, setFirstName] = useState("");
@@ -11,14 +15,18 @@ export default function ContactForm() {
 	const [email, setEmail] = useState("");
 	const [message, setMessage] = useState("");
 
+	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState("");
 	const [success, setSuccess] = useState("");
 
 	const handleSubmit = async () => {
+		setIsLoading(true);
+
 		const payload = { firstName, lastName, budget, email, message };
 
 		if (Object.values(payload).some((value) => value.length === 0)) {
 			setError("Veuillez remplir tous les champs.");
+			setIsLoading(false);
 			return;
 		}
 
@@ -45,6 +53,9 @@ export default function ContactForm() {
 			}
 		} catch (error: any) {
 			window.alert(error.message);
+			setIsLoading(false);
+		} finally {
+			setIsLoading(false);
 		}
 	};
 
@@ -112,7 +123,7 @@ export default function ContactForm() {
 										value={budget}
 										id="budget"
 										name="budget"
-										type="text"
+										type="number"
 										className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 									/>
 								</div>
@@ -151,9 +162,12 @@ export default function ContactForm() {
 						<div className="mt-10">
 							<button
 								onClick={handleSubmit}
-								className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+								disabled={isLoading}
+								className={`${
+									isLoading ? "cursor-not-allowed" : ""
+								} block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
 							>
-								Envoyer
+								{!isLoading ? <p>Envoyer</p> : <Spin indicator={<LoadingOutlined spin className="text-white" />} />}
 							</button>
 						</div>
 					</div>
