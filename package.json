@@ -14,6 +14,7 @@
 		"@tailwindcss/forms": "^0.5.7",
 		"antd": "^5.19.2",
 		"next": "14.2.5",
+		"nodemailer": "^6.9.14",
 		"react": "^18",
 		"react-dom": "^18"
 	},

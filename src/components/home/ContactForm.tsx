@@ -7,13 +7,13 @@ export default function ContactForm() {
 	const [firstName, setFirstName] = useState("");
 	const [lastName, setLastName] = useState("");
 	const [budget, setBudget] = useState("");
-	const [website, setWebsite] = useState("");
+	const [email, setEmail] = useState("");
 	const [message, setMessage] = useState("");
 
 	const [success, setSuccess] = useState("");
 
 	const handleSubmit = async () => {
-		const payload = { firstName, lastName, budget, website, message };
+		const payload = { firstName, lastName, budget, email, message };
 
 		try {
 			const res = await fetch("/api/message", {
@@ -31,7 +31,7 @@ export default function ContactForm() {
 				setFirstName("");
 				setLastName("");
 				setBudget("");
-				setWebsite("");
+				setEmail("");
 				setMessage("");
 			} else {
 				window.alert(data.error);
@@ -109,16 +109,16 @@ export default function ContactForm() {
 								</div>
 							</div>
 							<div>
-								<label htmlFor="website" className="block text-sm font-semibold leading-6 text-gray-900">
-									Site web
+								<label htmlFor="email" className="block text-sm font-semibold leading-6 text-gray-900">
+									Email
 								</label>
 								<div className="mt-2.5">
 									<input
-										onChange={(e) => setWebsite(e.target.value)}
-										value={website}
-										id="website"
-										name="website"
-										type="url"
+										onChange={(e) => setEmail(e.target.value)}
+										value={email}
+										id="email"
+										name="email"
+										type="email"
 										className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 									/>
 								</div>

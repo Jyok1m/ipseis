@@ -14,6 +14,10 @@ const nextConfig = {
 			},
 		],
 	},
+	env: {
+		NODEMAILER_EMAIL: process.env.NODEMAILER_EMAIL,
+		NODEMAILER_PASSWORD: process.env.NODEMAILER_PASSWORD,
+	},
 };
 
 export default nextConfig;
