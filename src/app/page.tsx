@@ -2,7 +2,27 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+import SectionTitle from "@/components/global/SectionTitle";
+import FeaturedCompanyLogo from "@/components/utils/FeaturedCompanyLogo";
 import ContactForm from "@/components/home/ContactForm";
+
+const featuredLogos = [
+	{
+		name: "Transistor",
+		alt: "Transistor",
+		image: "https://tailwindui.com/img/logos/158x48/transistor-logo-gray-900.svg",
+	},
+	{
+		name: "Reform",
+		alt: "Reform",
+		image: "https://tailwindui.com/img/logos/158x48/reform-logo-gray-900.svg",
+	},
+	{
+		name: "Tuple",
+		alt: "Tuple",
+		image: "https://tailwindui.com/img/logos/158x48/tuple-logo-gray-900.svg",
+	},
+];
 
 export default function Accueil() {
 	return (
@@ -68,50 +88,28 @@ export default function Accueil() {
 
 				{/* Logo cloud */}
 				<div className="mx-auto max-w-7xl px-6 lg:px-8 pb-20 mt-24">
-					<div className="mx-auto max-w-2xl text-center mb-16">
-						<h2 className="text-base font-semibold leading-7 text-indigo-600">Une formation humaine</h2>
-						<p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Ils sont satisfaits</p>
-						<p className="mt-6 text-lg leading-8 text-gray-600">
-							Quis tellus eget adipiscing convallis sit sit eget aliquet quis. Suspendisse eget egestas a elementum pulvinar et feugiat blandit at. In
-							mi viverra elit nunc.
-						</p>
-					</div>
+					<SectionTitle
+						tag="Une formation humaine"
+						title="Ils sont satisfaits"
+						description="Quis tellus eget adipiscing convallis sit sit eget aliquet quis. Suspendisse eget egestas a elementum pulvinar et feugiat blandit at. In
+							mi viverra elit nunc."
+					/>
 
 					<div className="mx-auto grid max-w-lg grid-cols-1 items-center gap-x-8 gap-y-12 sm:max-w-xl sm:grid-cols-6 sm:gap-x-10 sm:gap-y-14 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-						<img
-							alt="Transistor"
-							src="https://tailwindui.com/img/logos/158x48/transistor-logo-gray-900.svg"
-							width={158}
-							height={48}
-							className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
-						/>
-						<img
-							alt="Reform"
-							src="https://tailwindui.com/img/logos/158x48/reform-logo-gray-900.svg"
-							width={158}
-							height={48}
-							className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
-						/>
-						<img
-							alt="Tuple"
-							src="https://tailwindui.com/img/logos/158x48/tuple-logo-gray-900.svg"
-							width={158}
-							height={48}
-							className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
-						/>
+						{featuredLogos.map((logo) => (
+							<FeaturedCompanyLogo key={logo.name} title={logo.name} alt={logo.alt} src={logo.image} />
+						))}
 					</div>
 				</div>
 
 				{/* Contact form */}
 				<div className="mx-auto max-w-7xl px-6 lg:px-8 mt-24">
-					<div className="mx-auto max-w-2xl text-center mb-16">
-						<h2 className="text-base font-semibold leading-7 text-indigo-600">100% personnalisé</h2>
-						<p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Parlons de vos besoins</p>
-						<p className="mt-6 text-lg leading-8 text-gray-600">
-							Quis tellus eget adipiscing convallis sit sit eget aliquet quis. Suspendisse eget egestas a elementum pulvinar et feugiat blandit at. In
-							mi viverra elit nunc.
-						</p>
-					</div>
+					<SectionTitle
+						tag="100% personnalisé"
+						title="Parlons de vos besoins"
+						description="Quis tellus eget adipiscing convallis sit sit eget aliquet quis. Suspendisse eget egestas a elementum pulvinar et feugiat blandit at. In
+							mi viverra elit nunc."
+					/>
 					<ContactForm />
 				</div>
 			</main>
