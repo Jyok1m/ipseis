@@ -20,12 +20,12 @@
 	@font-face {
 		font-family: "Halibut";
 		display: "swap";
-		src: url("./_fonts/CLT_Halibut/web/HalibutVF.woff2") format("woff2");
+		src: url("../_fonts/CLT_Halibut/web/HalibutVF.woff2") format("woff2");
 	}
 	@font-face {
 		font-family: "DM_Sans";
 		display: "swap";
-		src: url("./_fonts/DM_Sans/DMSans-VariableFont_opsz\,wght.ttf") format("truetype");
+		src: url("../_fonts/DM_Sans/DMSans-VariableFont_opsz\,wght.ttf") format("truetype");
 	}
 }
 

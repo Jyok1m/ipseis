@@ -12,24 +12,17 @@ const navigation = [
 
 const Header = () => {
 	return (
-		<header className="inset-x-0 top-0 z-50">
+		<header className="inset-x-0 top-0 z-50 bg-univers">
 			<nav aria-label="Global" className="flex flex-col items-center justify-center py-2 lg:p-6 gap-y-2 lg:gap-0">
 				<div className="block lg:absolute lg:left-6">
 					<Link href="/">
 						<span className="sr-only">Ipseis</span>
-						<Image
-							src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-							alt="Logo Ipseis"
-							title="Logo Ipseis"
-							className="aspect-square"
-							width={32}
-							height={32}
-						/>
+						<Image src={require("/src/_images/logo/logo_beige.svg")} alt="Logo Ipseis" title="Logo Ipseis" height={45} />
 					</Link>
 				</div>
 				<div className="flex gap-x-12">
 					{navigation.map((item) => (
-						<Link key={item.name} href={item.href} className="text-sm font-semibold leading-6 text-gray-900">
+						<Link key={item.name} href={item.href} className="text-md font-normal leading-6 text-support">
 							{item.name}
 						</Link>
 					))}

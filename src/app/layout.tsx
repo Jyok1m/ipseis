@@ -16,8 +16,8 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="fr" className="font-serif">
-			<body className="flex flex-col justify-between min-h-screen">
+		<html lang="fr" className="font-serif ">
+			<body className="flex flex-col justify-between min-h-screen bg-support">
 				<Header />
 				{children}
 				<Footer />
