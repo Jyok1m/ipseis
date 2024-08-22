@@ -16,16 +16,22 @@
 	}
 }
 
+@layer base {
+	@font-face {
+		font-family: "Halibut";
+		display: "swap";
+		src: url("./_fonts/CLT_Halibut/web/HalibutVF.woff2") format("woff2");
+	}
+	@font-face {
+		font-family: "DM_Sans";
+		display: "swap";
+		src: url("./_fonts/DM_Sans/DMSans-VariableFont_opsz\,wght.ttf") format("truetype");
+	}
+}
+
 body {
 	color: black;
 	background-color: white;
-	/* color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb)); */
 }
 
 @layer utilities {
