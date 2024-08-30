@@ -27,7 +27,15 @@ const featuredLogos = [
 export default function Accueil() {
 	return (
 		<div>
-			<main className="isolate">
+			<main
+				className="isolate"
+				style={{
+					WebkitUserSelect: "none",
+					MozUserSelect: "none",
+					msUserSelect: "none",
+					userSelect: "none",
+				}}
+			>
 				{/* Hero section */}
 				<div className="relative pt-14 bg-univers rounded-b-3xl">
 					<div className="py-8">
@@ -35,15 +43,16 @@ export default function Accueil() {
 							<div className="mx-auto max-w-2xl">
 								<h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl text-cohesion">Vous êtes unique, nos formations aussi.</h1>
 								<div className="border border-cohesion my-2 w-12"></div>
+								<h1 className="mt-10 text-4xl font-medium italic tracking-tight text-gray-900 text-support">Site en construction...</h1>
 
-								<p className="mt-6 text-lg leading-8 text-support">
+								<p className="mt-6 text-lg leading-8 text-support blur-md">
 									À l&apos;époque, l&apos;étoile polaire permettait de se diriger dans un milieu hostile, tel que pouvait être la nature. Aujourd'hui,
 									dans un monde professionnel concurrentiel, le coach est un guide qui accompagne son élève à s'élever et à atteindre son objectif. De
 									ces constatations, le logo a émergé : une étoile fine et puissante, associée au nom IPSEIS avec des terminaisons courbes et
 									distinctives.
 								</p>
-								<div className="mt-10 flex items-center justify-center gap-x-6">
-									<Link
+								<div className="mt-10 flex items-center justify-center gap-x-6 blur-md">
+									{/* <Link
 										href="/formations"
 										className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
 									>
@@ -51,17 +60,24 @@ export default function Accueil() {
 									</Link>
 									<Link href="/a-propos" className="text-sm font-semibold leading-6 text-gray-900 hover:underline hover:underline-offset-4">
 										En savoir plus <span aria-hidden="true">→</span>
-									</Link>
+									</Link> */}
+
+									<span className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+										Nos formations
+									</span>
+									<span className="text-sm font-semibold leading-6 text-gray-900 hover:underline hover:underline-offset-4">
+										En savoir plus <span aria-hidden="true">→</span>
+									</span>
 								</div>
 							</div>
-							<div className="mt-16 flow-root sm:mt-24">
+							<div className="mt-16 flow-root sm:mt-24 blur-md">
 								<div className="-m-2 rounded-xl bg-gray-900/5 lg:rounded-2xl">
 									<Image
 										src="/images/home-hero-image.jpg"
 										alt="Image de main avec une en train de verser de l'huile de massage dans l'autre"
 										width={2432}
 										height={1442}
-										className="rounded-md shadow-2xl ring-1 ring-gray-900/10"
+										className="rounded-md shadow-2xl ring-1 ring-cohesion"
 									/>
 								</div>
 							</div>

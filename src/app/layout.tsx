@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="fr" className="font-serif ">
-			<body className="flex flex-col justify-between min-h-screen bg-support">
+			<body className="flex flex-col justify-between h-screen bg-support overflow-hidden">
 				<Header />
 				{children}
 				<Footer />

@@ -1,3 +1,7 @@
+"use client";
+
+import React, { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import SectionTitle from "@/components/global/SectionTitle";
 import FormationCard from "@/components/formations/FormationCard";
 
@@ -13,6 +17,12 @@ const formations = [
 ];
 
 export default function Formations() {
+	const router = useRouter();
+
+	useEffect(() => {
+		router.push("/");
+	}, []);
+
 	return (
 		<div className="bg-white py-8">
 			<div className="mx-auto max-w-7xl px-6 lg:px-8">

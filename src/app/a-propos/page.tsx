@@ -1,14 +1,23 @@
-import React from "react";
+"use client";
+
+import React, { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 
-import { type Metadata } from "next";
+// import { type Metadata } from "next";
 
-export const metadata: Metadata = {
-	title: "About",
-	description: "I’m Spencer Sharp. I live in New York City, where I design the future.",
-};
+// export const metadata: Metadata = {
+// 	title: "About",
+// 	description: "I’m Spencer Sharp. I live in New York City, where I design the future.",
+// };
 
 export default function APropos() {
+	const router = useRouter();
+
+	useEffect(() => {
+		router.push("/");
+	}, []);
+
 	return (
 		<div className="bg-white py-8">
 			<div className="mx-auto max-w-7xl px-6 lg:px-8">
