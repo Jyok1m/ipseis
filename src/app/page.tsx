@@ -29,14 +29,18 @@ export default function Accueil() {
 		<div>
 			<main className="isolate">
 				{/* Hero section */}
-				<div className="relative pt-14">
+				<div className="relative pt-14 bg-univers rounded-b-3xl">
 					<div className="py-8">
 						<div className="mx-auto max-w-7xl px-6 lg:px-8">
-							<div className="mx-auto max-w-2xl text-center">
-								<h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">Ipseis, le bien être à portée de mains</h1>
-								<p className="mt-6 text-lg leading-8 text-gray-600">
-									Ipseis est un organisme de formation spécialisé dans l&apos;accompagnement des professionnels de la santé dans le domaine de la
-									réflexologie et de l&apos;accompagnement des personnes agées.
+							<div className="mx-auto max-w-2xl">
+								<h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl text-cohesion">Vous êtes unique, nos formations aussi.</h1>
+								<div className="border border-cohesion my-2 w-12"></div>
+
+								<p className="mt-6 text-lg leading-8 text-support">
+									À l&apos;époque, l&apos;étoile polaire permettait de se diriger dans un milieu hostile, tel que pouvait être la nature. Aujourd'hui,
+									dans un monde professionnel concurrentiel, le coach est un guide qui accompagne son élève à s'élever et à atteindre son objectif. De
+									ces constatations, le logo a émergé : une étoile fine et puissante, associée au nom IPSEIS avec des terminaisons courbes et
+									distinctives.
 								</p>
 								<div className="mt-10 flex items-center justify-center gap-x-6">
 									<Link
