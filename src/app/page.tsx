@@ -46,10 +46,10 @@ export default function Accueil() {
 								<h1 className="mt-10 text-4xl font-medium italic tracking-tight text-gray-900 text-support">Site en construction...</h1>
 
 								<p className="mt-6 text-lg leading-8 text-support blur-md">
-									À l&apos;époque, l&apos;étoile polaire permettait de se diriger dans un milieu hostile, tel que pouvait être la nature. Aujourd'hui,
-									dans un monde professionnel concurrentiel, le coach est un guide qui accompagne son élève à s'élever et à atteindre son objectif. De
-									ces constatations, le logo a émergé : une étoile fine et puissante, associée au nom IPSEIS avec des terminaisons courbes et
-									distinctives.
+									À l&apos;époque, l&apos;étoile polaire permettait de se diriger dans un milieu hostile, tel que pouvait être la nature.
+									Aujourd&apos;hui, dans un monde professionnel concurrentiel, le coach est un guide qui accompagne son élève à s&apos;élever et à
+									atteindre son objectif. De ces constatations, le logo a émergé : une étoile fine et puissante, associée au nom IPSEIS avec des
+									terminaisons courbes et distinctives.
 								</p>
 								<div className="mt-10 flex items-center justify-center gap-x-6 blur-md">
 									{/* <Link
