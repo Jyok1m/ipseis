@@ -6,8 +6,8 @@ import Link from "next/link";
 
 const navigation = [
 	{ name: "Accueil", href: "/" },
-	{ name: "Formations", href: "/" },
-	{ name: "À propos", href: "/" },
+	{ name: "Formations", href: "/formations" },
+	{ name: "À propos", href: "/a-propos" },
 ];
 
 const Header = () => {

@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import React from "react";
 import Image from "next/image";
 
 // import { type Metadata } from "next";
@@ -12,12 +11,6 @@ import Image from "next/image";
 // };
 
 export default function APropos() {
-	const router = useRouter();
-
-	useEffect(() => {
-		router.push("/");
-	}, []);
-
 	return (
 		<div className="bg-white py-8">
 			<div className="mx-auto max-w-7xl px-6 lg:px-8">
