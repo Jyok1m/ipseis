@@ -34,13 +34,12 @@ export default function Accueil() {
 						<div className="mx-auto max-w-2xl">
 							<h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl text-cohesion">Vous êtes unique, nos formations aussi.</h1>
 							<div className="border border-cohesion my-2 w-12"></div>
-							<h1 className="mt-10 text-4xl font-medium italic tracking-tight text-gray-900 text-support">Site en construction...</h1>
-
 							<p className="mt-6 text-lg leading-8 text-support">
-								À l&apos;époque, l&apos;étoile polaire permettait de se diriger dans un milieu hostile, tel que pouvait être la nature.
-								Aujourd&apos;hui, dans un monde professionnel concurrentiel, le coach est un guide qui accompagne son élève à s&apos;élever et à
-								atteindre son objectif. De ces constatations, le logo a émergé : une étoile fine et puissante, associée au nom IPSEIS avec des
-								terminaisons courbes et distinctives.
+								Ipseis propose une série de formations axées sur l&apos;accompagnement dans le secteur des soins. Nos formations mettent l&apos;accent
+								sur l&apos;importance de la communication empathique et humaine, offrant des outils pour soutenir les aidants et améliorer leur
+								relation avec les personnes en besoin. Nos modules couvrent des sujets comme l&apos;accompagnement des personnes âgées en Ehpad, la
+								gestion des troubles du comportement, les relations avec les familles, ainsi que les spécificités liées aux personnes en situation de
+								handicap, avec une attention particulière portée à leur vie intime, la gestion de l&apos;agressivité et la résolution des conflits.
 							</p>
 							<div className="mt-10 flex items-center justify-center gap-x-6">
 								<Link
