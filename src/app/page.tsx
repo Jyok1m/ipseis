@@ -1,6 +1,9 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import SectionTitle from "@/components/global/SectionTitle";
 import FeaturedCompanyLogo from "@/components/utils/FeaturedCompanyLogo";
@@ -25,6 +28,7 @@ const featuredLogos = [
 ];
 
 export default function Accueil() {
+	const router = useRouter();
 	return (
 		<div>
 			{/* Hero section */}
@@ -39,7 +43,7 @@ export default function Accueil() {
 				<div className="pt-8">
 					<div className="mx-auto max-w-7xl px-6 lg:px-8">
 						<div className="mx-auto max-w-2xl">
-							<h1 className="text-4xl font-serif-expanded font-semibold tracking-normal text-gray-900 sm:text-5xl sm:leading-tight text-cohesion">
+							<h1 className="text-4xl font-serif-expanded font-semibold tracking-tighter text-gray-900 sm:text-5xl sm:leading-tight text-cohesion">
 								Vous êtes unique, nos formations aussi.
 							</h1>
 							<div className="border border-cohesion w-12 my-8"></div>
@@ -57,16 +61,7 @@ export default function Accueil() {
 						</div> */}
 					</div>
 
-					<div className="max-w-7xl bg-maitrise flex flex-col items-end pb-5 rounded-tr-3xl">
-						<div className="h-6 w-full rounded-tr-3xl">
-							<Image
-								src="/images/banner_separator_home.png"
-								alt="Section separator"
-								height={20}
-								width={100}
-								className="h-full w-full rounded-tr-3xl"
-							/>
-						</div>
+					<div className="max-w-7xl bg-maitrise flex flex-col items-end pb-10 rounded-tr-3xl">
 						<div className="p-10 flex justify-end">
 							<p className="text-md sm:text-lg leading-6 text-support max-w-2xl">
 								Ipseis propose une série de formations axées sur l&apos;accompagnement dans le secteur des soins. Nos formations mettent l&apos;accent
@@ -77,13 +72,19 @@ export default function Accueil() {
 							</p>
 						</div>
 						<div className="max-w-2xl flex justify-end items-center gap-x-10 pr-10">
-							<Link
-								href="/formations"
-								className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+							<button
+								onClick={() => router.push("/formations")}
+								className="bg-univers text-support py-3 px-4 rounded-xl hover:opacity-80 shadow-2xl elev"
 							>
 								Nos formations
-							</Link>
-							<Link href="/a-propos" className="text-sm font-semibold leading-6 text-gray-900 hover:underline hover:underline-offset-4">
+							</button>
+							{/* <Link
+								href="/formations"
+								className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-md text-support shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+							>
+								Nos formations <span aria-hidden="true">→</span>
+							</Link> */}
+							<Link href="/a-propos" className="text-md text-support leading-6 hover:underline hover:underline-offset-4">
 								En savoir plus <span aria-hidden="true">→</span>
 							</Link>
 						</div>
