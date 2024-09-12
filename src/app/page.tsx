@@ -28,34 +28,23 @@ export default function Accueil() {
 	return (
 		<div>
 			{/* Hero section */}
+			<Image
+				src={require("/src/_images/logo/star_beige.svg")}
+				alt="Logo Ipseis"
+				title="Logo Ipseis"
+				height={1000}
+				className="fixed -top-20 -left-60 opacity-10 sm:opacity-30 z-10"
+			/>
 			<div className="relative pt-14 bg-univers rounded-b-3xl">
-				<div className="py-8">
+				<div className="pt-8">
 					<div className="mx-auto max-w-7xl px-6 lg:px-8">
 						<div className="mx-auto max-w-2xl">
 							<h1 className="text-4xl font-serif-expanded font-semibold tracking-normal text-gray-900 sm:text-5xl sm:leading-tight text-cohesion">
 								Vous êtes unique, nos formations aussi.
 							</h1>
 							<div className="border border-cohesion w-12 my-8"></div>
-							<p className="text-md sm:text-lg leading-6 text-support">
-								Ipseis propose une série de formations axées sur l&apos;accompagnement dans le secteur des soins. Nos formations mettent l&apos;accent
-								sur l&apos;importance de la communication empathique et humaine, offrant des outils pour soutenir les aidants et améliorer leur
-								relation avec les personnes en besoin. Nos modules couvrent des sujets comme l&apos;accompagnement des personnes âgées en Ehpad, la
-								gestion des troubles du comportement, les relations avec les familles, ainsi que les spécificités liées aux personnes en situation de
-								handicap, avec une attention particulière portée à leur vie intime, la gestion de l&apos;agressivité et la résolution des conflits.
-							</p>
-							<div className="mt-10 flex items-center justify-center gap-x-6">
-								<Link
-									href="/formations"
-									className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-								>
-									Nos formations
-								</Link>
-								<Link href="/a-propos" className="text-sm font-semibold leading-6 text-gray-900 hover:underline hover:underline-offset-4">
-									En savoir plus <span aria-hidden="true">→</span>
-								</Link>
-							</div>
 						</div>
-						<div className="mt-16 flow-root sm:mt-24">
+						{/* <div className="mt-16 flow-root sm:mt-24">
 							<div className="-m-2 rounded-xl bg-gray-900/5 lg:rounded-2xl">
 								<Image
 									src="/images/home-hero-image.jpg"
@@ -65,6 +54,38 @@ export default function Accueil() {
 									className="rounded-md shadow-2xl ring-1 ring-cohesion"
 								/>
 							</div>
+						</div> */}
+					</div>
+
+					<div className="max-w-7xl bg-maitrise flex flex-col items-end pb-5 rounded-tr-3xl">
+						<div className="h-6 w-full rounded-tr-3xl">
+							<Image
+								src="/images/banner_separator_home.png"
+								alt="Section separator"
+								height={20}
+								width={100}
+								className="h-full w-full rounded-tr-3xl"
+							/>
+						</div>
+						<div className="p-10 flex justify-end">
+							<p className="text-md sm:text-lg leading-6 text-support max-w-2xl">
+								Ipseis propose une série de formations axées sur l&apos;accompagnement dans le secteur des soins. Nos formations mettent l&apos;accent
+								sur l&apos;importance de la communication empathique et humaine, offrant des outils pour soutenir les aidants et améliorer leur
+								relation avec les personnes en besoin. Nos modules couvrent des sujets comme l&apos;accompagnement des personnes âgées en Ehpad, la
+								gestion des troubles du comportement, les relations avec les familles, ainsi que les spécificités liées aux personnes en situation de
+								handicap, avec une attention particulière portée à leur vie intime, la gestion de l&apos;agressivité et la résolution des conflits.
+							</p>
+						</div>
+						<div className="max-w-2xl flex justify-end items-center gap-x-10 pr-10">
+							<Link
+								href="/formations"
+								className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+							>
+								Nos formations
+							</Link>
+							<Link href="/a-propos" className="text-sm font-semibold leading-6 text-gray-900 hover:underline hover:underline-offset-4">
+								En savoir plus <span aria-hidden="true">→</span>
+							</Link>
 						</div>
 					</div>
 				</div>
