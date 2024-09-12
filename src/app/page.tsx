@@ -32,9 +32,11 @@ export default function Accueil() {
 				<div className="py-8">
 					<div className="mx-auto max-w-7xl px-6 lg:px-8">
 						<div className="mx-auto max-w-2xl">
-							<h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl text-cohesion">Vous êtes unique, nos formations aussi.</h1>
-							<div className="border border-cohesion my-2 w-12"></div>
-							<p className="mt-6 text-lg leading-8 text-support">
+							<h1 className="text-4xl font-serif-expanded font-semibold tracking-normal text-gray-900 sm:text-5xl sm:leading-tight text-cohesion">
+								Vous êtes unique, nos formations aussi.
+							</h1>
+							<div className="border border-cohesion w-12 my-8"></div>
+							<p className="text-md sm:text-lg leading-6 text-support">
 								Ipseis propose une série de formations axées sur l&apos;accompagnement dans le secteur des soins. Nos formations mettent l&apos;accent
 								sur l&apos;importance de la communication empathique et humaine, offrant des outils pour soutenir les aidants et améliorer leur
 								relation avec les personnes en besoin. Nos modules couvrent des sujets comme l&apos;accompagnement des personnes âgées en Ehpad, la

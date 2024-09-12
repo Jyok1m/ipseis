@@ -18,9 +18,14 @@
 
 @layer base {
 	@font-face {
+		font-family: "Halibut_Expanded";
+		display: "swap";
+		src: url("../_fonts/CLT_Halibut/web/Halibut-ExpandedThin.woff2") format("woff2");
+	}
+	@font-face {
 		font-family: "Halibut";
 		display: "swap";
-		src: url("../_fonts/CLT_Halibut/web/HalibutVF.woff2") format("woff2");
+		src: url("../_fonts/CLT_Halibut/web/Halibut-Thin.woff") format("woff2");
 	}
 	@font-face {
 		font-family: "DM_Sans";
