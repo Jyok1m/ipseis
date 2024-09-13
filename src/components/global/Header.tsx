@@ -20,7 +20,7 @@ const Header = () => {
 						<Image src={require("/src/_images/logo/logo_beige.svg")} alt="Logo Ipseis" title="Logo Ipseis" height={45} />
 					</Link>
 				</div>
-				<div className="flex gap-x-12">
+				<div className="flex gap-x-12 mb-5 lg:mb-0">
 					{navigation.map((item) => (
 						<Link key={item.name} href={item.href} className="text-md font-normal leading-6 text-support">
 							{item.name}

@@ -60,7 +60,7 @@ export default function ContactForm() {
 	};
 
 	return (
-		<div className="relative isolate bg-white px-6 lg:px-8">
+		<div className="relative isolate bg-maitrise px-6 lg:px-8 py-10 w-full">
 			<Notification type="success" title="Merci !" message={success} isVisible={success.length > 0} onClose={() => setSuccess("")} />
 			<Notification type="error" title="Oh non..." message={error} isVisible={error.length > 0} onClose={() => setError("")} />
 			<svg

@@ -31,69 +31,44 @@ export default function Accueil() {
 	const router = useRouter();
 	return (
 		<div>
-			{/* Hero section */}
-			<Image
+			{/* <Image
 				src={require("/src/_images/logo/star_beige.svg")}
 				alt="Logo Ipseis"
 				title="Logo Ipseis"
 				height={1000}
-				className="fixed -top-20 -left-60 opacity-10 sm:opacity-30 z-10"
-			/>
-			<div className="relative pt-14 bg-univers rounded-b-3xl">
-				<div className="pt-8">
-					<div className="mx-auto max-w-7xl px-6 lg:px-8">
-						<div className="mx-auto max-w-2xl">
-							<h1 className="text-4xl font-serif-expanded font-semibold tracking-tighter text-gray-900 sm:text-5xl sm:leading-tight text-cohesion">
-								Vous êtes unique, nos formations aussi.
-							</h1>
-							<div className="border border-cohesion w-12 my-8"></div>
-						</div>
-						{/* <div className="mt-16 flow-root sm:mt-24">
-							<div className="-m-2 rounded-xl bg-gray-900/5 lg:rounded-2xl">
-								<Image
-									src="/images/home-hero-image.jpg"
-									alt="Image de main avec une en train de verser de l'huile de massage dans l'autre"
-									width={2432}
-									height={1442}
-									className="rounded-md shadow-2xl ring-1 ring-cohesion"
-								/>
-							</div>
-						</div> */}
-					</div>
+				className="fixed -top-20 -right-60 opacity-10 sm:opacity-30"
+			/> */}
 
-					<div className="max-w-7xl bg-maitrise flex flex-col items-end pb-10 rounded-tr-3xl">
-						<div className="p-10 flex justify-end">
-							<p className="text-md sm:text-lg leading-6 text-support max-w-2xl">
-								Ipseis propose une série de formations axées sur l&apos;accompagnement dans le secteur des soins. Nos formations mettent l&apos;accent
-								sur l&apos;importance de la communication empathique et humaine, offrant des outils pour soutenir les aidants et améliorer leur
-								relation avec les personnes en besoin. Nos modules couvrent des sujets comme l&apos;accompagnement des personnes âgées en Ehpad, la
-								gestion des troubles du comportement, les relations avec les familles, ainsi que les spécificités liées aux personnes en situation de
-								handicap, avec une attention particulière portée à leur vie intime, la gestion de l&apos;agressivité et la résolution des conflits.
-							</p>
-						</div>
-						<div className="max-w-2xl flex justify-end items-center gap-x-10 pr-10">
+			{/* Hero section */}
+			<div className="lg:h-[535px] flex flex-col-reverse lg:flex-row lg:justify-between lg:items-center">
+				<div className="bg-maitrise w-full lg:w-1/2 lg:h-full">
+					<div className="text-4xl font-bold tracking-wider text-support bg-univers p-10 pb-5">
+						<h1>
+							Vous êtes <span className="text-cohesion">unique</span>, <br />
+							nos <span className="text-cohesion">formations</span> aussi.
+						</h1>
+						<div className="border border-cohesion w-12 my-8"></div>
+					</div>
+					<div className="p-10">
+						<p className="text-xl text-gray-600 text-support">
+							Ipseis est un organisme de formation dédiée aux professionnels de santé. Les formations que nous proposons s&apos;axent sur
+							l&apos;accompagnement dans le secteur des soins pour les professionnels de santé et les particuliers.
+						</p>
+						<div className="mt-10">
 							<button
 								onClick={() => router.push("/formations")}
-								className="bg-univers text-support py-3 px-4 rounded-xl hover:opacity-80 shadow-2xl elev"
+								className="bg-univers text-support py-3 px-2 rounded-xl hover:opacity-80 shadow-2xl text-lg"
 							>
 								Nos formations
 							</button>
-							{/* <Link
-								href="/formations"
-								className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-md text-support shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-							>
-								Nos formations <span aria-hidden="true">→</span>
-							</Link> */}
-							<Link href="/a-propos" className="text-md text-support leading-6 hover:underline hover:underline-offset-4">
-								En savoir plus <span aria-hidden="true">→</span>
-							</Link>
 						</div>
 					</div>
 				</div>
+				<div className="bg-[url('/images/banner-home2.png')] bg-no-repeat bg-right-top lg:bg-right-bottom w-full h-[250px] lg:w-1/2 lg:h-full"></div>
 			</div>
 
 			{/* Logo cloud */}
-			<div className="mx-auto max-w-7xl px-6 lg:px-8 pb-20 mt-24">
+			<div className="mx-auto max-w-7xl px-6 lg:px-8 pb-20 mt-24 text-univers">
 				<SectionTitle
 					tag="Une formation humaine"
 					title="Ils sont satisfaits"
@@ -108,14 +83,14 @@ export default function Accueil() {
 				</div>
 
 				<div className="mt-16 flex items-center justify-center gap-x-6">
-					<Link href="/formations" className="text-sm font-semibold leading-6 text-gray-900 hover:underline hover:underline-offset-4">
+					<Link href="/formations" className="text-md font-semibold leading-6 hover:underline hover:underline-offset-4">
 						Voir nos formations <span aria-hidden="true">→</span>
 					</Link>
 				</div>
 			</div>
 
 			{/* Contact form */}
-			<div className="mx-auto max-w-7xl px-6 lg:px-8 mt-24">
+			<div className="mx-auto rounded-3xl py-10 px-6 lg:pl-40 lg:pr-0 mt-12 bg-univers">
 				<SectionTitle
 					tag="100% personnalisé"
 					title="Parlons de vos besoins"
