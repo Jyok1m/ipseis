@@ -175,7 +175,7 @@ export default function Accueil() {
 			</div> */}
 
 			{/* Contact form */}
-			<div className="mx-auto rounded-3xl py-10 px-6 lg:pr-0 mt-12">
+			<div className="rounded-3xl py-10 px-6 mt-12 flex flex-col items-center">
 				<SectionTitle
 					tag="100% personnalisé"
 					title="Parlons de vos besoins"

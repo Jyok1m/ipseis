@@ -60,25 +60,12 @@ export default function ContactForm() {
 	};
 
 	return (
-		<div className="relative isolate bg-maitrise px-6 lg:px-8 py-10 w-full">
+		<div className="relative isolate bg-maitrise px-6 lg:px-8 py-10 w-xl max-w-7xl rounded-3xl">
 			<Notification type="success" title="Merci !" message={success} isVisible={success.length > 0} onClose={() => setSuccess("")} />
 			<Notification type="error" title="Oh non..." message={error} isVisible={error.length > 0} onClose={() => setError("")} />
-			<svg
-				aria-hidden="true"
-				className="absolute inset-0 -z-10 h-full w-full stroke-gray-200 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
-			>
-				<defs>
-					<pattern x="50%" y={-64} id="83fd4e5a-9d52-42fc-97b6-718e5d7ee527" width={200} height={200} patternUnits="userSpaceOnUse">
-						<path d="M100 200V.5M.5 .5H200" fill="none" />
-					</pattern>
-				</defs>
-				<svg x="50%" y={-64} className="overflow-visible fill-gray-50">
-					<path d="M-100.5 0h201v201h-201Z M699.5 0h201v201h-201Z M499.5 400h201v201h-201Z M299.5 800h201v201h-201Z" strokeWidth={0} />
-				</svg>
-				<rect fill="url(#83fd4e5a-9d52-42fc-97b6-718e5d7ee527)" width="100%" height="100%" strokeWidth={0} />
-			</svg>
-			<div className="mx-auto max-w-xl lg:max-w-4xl">
-				<div className="mt-16 flex flex-col gap-16 sm:gap-y-20 lg:flex-row">
+
+			<div className="mx-auto max-w-xl">
+				<div className="flex flex-col gap-16 sm:gap-y-20 lg:flex-row">
 					<div className="lg:flex-auto">
 						<div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
 							<div>
@@ -176,30 +163,6 @@ export default function ContactForm() {
 								{!isLoading ? <p>Envoyer</p> : <Spin indicator={<LoadingOutlined spin className="text-white" />} />}
 							</button>
 						</div>
-					</div>
-					<div className="lg:mt-6 lg:w-80 lg:flex-none">
-						<Image alt="" src="https://tailwindui.com/img/logos/workcation-logo-indigo-600.svg" width={48} height={48} className="h-12 w-auto" />
-						<figure className="mt-10">
-							<blockquote className="text-lg font-semibold leading-8 text-gray-900">
-								<p>
-									“Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo expedita voluptas culpa sapiente alias molestiae. Numquam corrupti in
-									laborum sed rerum et corporis.”
-								</p>
-							</blockquote>
-							<figcaption className="mt-10 flex gap-x-6">
-								<Image
-									alt=""
-									width={48}
-									height={48}
-									src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=96&h=96&q=80"
-									className="h-12 w-12 flex-none rounded-full bg-gray-50"
-								/>
-								<div>
-									<div className="text-base font-semibold text-gray-900">Brenna Goyette</div>
-									<div className="text-sm leading-6 text-gray-600">CEO of Workcation</div>
-								</div>
-							</figcaption>
-						</figure>
 					</div>
 				</div>
 			</div>
