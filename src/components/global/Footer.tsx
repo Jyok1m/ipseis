@@ -11,7 +11,7 @@ const Footer = () => {
 				<div className="flex items-center justify-center gap-x-1">
 					<p className="text-sm">Créé avec </p>
 					<HeartIcon className="h-[14px]" />
-					<p className="text-sm"> par Joachim Jasmin pour Ipseis</p>
+					<p className="text-sm"> par Joachim Jasmin et Titouan Gignouard pour Ipseis</p>
 				</div>
 			</footer>
 		</div>
