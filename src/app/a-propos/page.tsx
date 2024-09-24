@@ -28,10 +28,14 @@ export default function APropos() {
 						</div>
 					</div>
 					<div className="lg:order-first lg:row-span-2">
-						<h1 className="text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl">
-							Ipseis a été fondée dans le but de former les professionnels de la réflexologie de demain.
-						</h1>
-						<div className="mt-6 space-y-7 text-base text-zinc-600">
+						<div className="text-5xl font-bold tracking-wider text-univers py-5">
+							<h1>
+								<span className="text-cohesion">Ipseis</span> a été fondé dans le but de <span className="text-cohesion">former</span> les aidants de{" "}
+								<span className="text-cohesion">demain</span>.
+							</h1>
+							<div className="border border-cohesion w-12 my-8"></div>
+						</div>
+						<div className="mt-6 space-y-7 text-xl text-zinc-600">
 							<p>
 								I’ve loved making things for as long as I can remember, and wrote my first program when I was 6 years old, just two weeks after my mom
 								brought home the brand new Macintosh LC 550 that I taught myself to type on.
