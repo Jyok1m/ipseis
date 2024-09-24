@@ -105,7 +105,7 @@ export default function Accueil() {
 						<div className="mt-10">
 							<button
 								onClick={() => router.push("/formations")}
-								className="bg-univers text-support py-3 px-2 rounded-xl hover:opacity-80 shadow-2xl text-xl"
+								className="bg-univers text-support py-3 px-5 rounded-xl hover:opacity-80 shadow-2xl text-xl"
 							>
 								Parcourir nos formations
 							</button>
