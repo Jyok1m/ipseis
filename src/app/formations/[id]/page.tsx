@@ -42,6 +42,15 @@ export default function FormationPage({ params }: { params: { id: string } }) {
 					Contactez-nous
 				</Link>
 			</div>
+
+			<div className="mx-auto max-w-2xl text-center my-16 text-univers">
+				<h1 className="mt-2 text-4xl font-bold tracking-wider sm:text-4xl text-center">Découvrez nos autres formations </h1>
+				<p className="mt-6 text-xl leading-6">
+					Quis tellus eget adipiscing convallis sit sit eget aliquet quis. Suspendisse eget egestas a elementum pulvinar et feugiat blandit at. In mi
+					viverra elit nunc.
+				</p>
+			</div>
+
 			<div className="mx-auto mt-16 grid max-w-2xl auto-rows-fr grid-cols-1 gap-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
 				{formations
 					.filter((e) => e.id !== formation?.id)
