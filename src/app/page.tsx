@@ -93,7 +93,7 @@ export default function Accueil() {
 			{/* Hero section */}
 			<div className="lg:h-[535px] flex flex-col-reverse lg:flex-row lg:justify-between lg:items-center">
 				<div className="bg-maitrise w-full lg:w-1/2 lg:h-full">
-					<div className="text-4xl font-bold tracking-wider text-support bg-univers p-10 pb-5">
+					<div className="text-5xl font-bold tracking-wider text-support bg-univers p-10 pb-5">
 						<h1>
 							Vous êtes <span className="text-cohesion">unique</span>, <br />
 							nos <span className="text-cohesion">formations</span> aussi.
@@ -108,7 +108,7 @@ export default function Accueil() {
 						<div className="mt-10">
 							<button
 								onClick={() => router.push("/formations")}
-								className="bg-univers text-support py-3 px-2 rounded-xl hover:opacity-80 shadow-2xl text-lg"
+								className="bg-univers text-support py-3 px-2 rounded-xl hover:opacity-80 shadow-2xl text-xl"
 							>
 								Parcourir nos formations
 							</button>
