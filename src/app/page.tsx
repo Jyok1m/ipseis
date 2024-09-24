@@ -31,11 +31,10 @@ const posts = [
 	{
 		id: 1,
 		title: "Accueil, communication",
-		href: "#",
+		href: "/formations",
 		description:
 			"Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel. Iusto corrupti dicta.",
-		imageUrl:
-			"https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80",
+		imageUrl: "/images/formations/1.jpg",
 		date: "Mar 16, 2020",
 		datetime: "2020-03-16",
 		author: {
@@ -47,11 +46,10 @@ const posts = [
 	{
 		id: 2,
 		title: "Gérontologie, gériatrie, personnes âgées",
-		href: "#",
+		href: "/formations",
 		description:
 			"Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel. Iusto corrupti dicta.",
-		imageUrl:
-			"https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80",
+		imageUrl: "/images/formations/2.jpg",
 		date: "Mar 16, 2020",
 		datetime: "2020-03-16",
 		author: {
@@ -63,11 +61,10 @@ const posts = [
 	{
 		id: 3,
 		title: "Personnes en situation de Handicap",
-		href: "#",
+		href: "/formations",
 		description:
 			"Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel. Iusto corrupti dicta.",
-		imageUrl:
-			"https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80",
+		imageUrl: "/images/formations/3.jpg",
 		date: "Mar 16, 2020",
 		datetime: "2020-03-16",
 		author: {
@@ -137,15 +134,15 @@ export default function Accueil() {
 							key={post.id}
 							className="relative isolate flex flex-col justify-end overflow-hidden rounded-2xl bg-maitrise px-8 pb-8 pt-80 sm:pt-48 lg:pt-80 hover:opacity-80"
 						>
-							<img alt="" src={post.imageUrl} className="absolute inset-0 -z-10 h-full w-full object-cover" />
+							<Image alt={post.title} src={post.imageUrl} width={256} height={256} className="absolute inset-0 -z-10 h-full w-full object-cover" />
 							<div className="absolute inset-0 -z-10 bg-gradient-to-t from-univers via-univers/40" />
 							<div className="absolute inset-0 -z-10 rounded-2xl ring-1 ring-inset ring-univers/10" />
 
 							<h3 className="text-2xl font-semibolde tracking-wider text-support">
-								<a href={post.href}>
+								<Link href={`${post.href}/${post.id}`}>
 									<span className="absolute inset-0" />
 									{post.title}
-								</a>
+								</Link>
 							</h3>
 						</article>
 					))}
@@ -176,7 +173,6 @@ export default function Accueil() {
 
 			{/* Contact form */}
 			<div className="rounded-3xl py-10 px-6 mt-12 flex flex-col items-center">
-				
 				<div className="mx-auto max-w-2xl text-center mb-16 text-univers">
 					<h2 className="text-lg font-semibold leading-6 text-cohesion">100% personnalisé</h2>
 					<h1 className="mt-2 text-4xl font-bold tracking-wider sm:text-4xl text-center">
