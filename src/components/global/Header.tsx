@@ -22,7 +22,7 @@ const Header = () => {
 				</div>
 				<div className="flex gap-x-12 mb-5 lg:mb-0">
 					{navigation.map((item) => (
-						<Link key={item.name} href={item.href} className="text-md font-normal leading-6 text-support">
+						<Link key={item.name} href={item.href} className="text-xl font-normal leading-6 text-support">
 							{item.name}
 						</Link>
 					))}
