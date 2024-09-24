@@ -62,7 +62,7 @@ const formations = [
 
 export default function Formations() {
 	return (
-		<div className="bg-white py-8">
+		<div className="bg-support py-8">
 			<div className="mx-auto max-w-7xl px-6 lg:px-8">
 				<SectionTitle title="Catalogue de Formations" description="Accompagner et prendre soin" />
 				<div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">

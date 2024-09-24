@@ -12,7 +12,7 @@ import Image from "next/image";
 
 export default function APropos() {
 	return (
-		<div className="bg-white py-8">
+		<div className="bg-support py-8">
 			<div className="mx-auto max-w-7xl px-6 lg:px-8">
 				<div className="grid grid-cols-1 gap-y-16 lg:grid-cols-2 lg:grid-rows-[auto_1fr] lg:gap-y-12">
 					<div className="lg:pl-20">

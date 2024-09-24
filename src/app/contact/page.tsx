@@ -7,7 +7,7 @@ import ContactForm from "@/components/home/ContactForm";
 
 export default function Contact() {
 	return (
-		<div className="bg-white py-8">
+		<div className="bg-support py-8">
 			<div className="mx-auto max-w-7xl px-6 lg:px-8">
 				<SectionTitle
 					tag="100% personnalisé"
