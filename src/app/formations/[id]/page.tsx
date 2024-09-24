@@ -39,10 +39,10 @@ export default function FormationPage({ params }: { params: { id: string } }) {
 			</div>
 			<div className="mt-10 flex items-center justify-center gap-x-6">
 				<Link href="/contact" className="bg-maitrise text-support py-3 px-5 rounded-xl hover:opacity-80 shadow-2xl text-xl">
-					Parcourir nos formations
+					Contactez-nous
 				</Link>
 			</div>
-			<div className="mx-auto mt-16 grid max-w-2xl auto-rows-fr grid-cols-1 gap-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+			<div className="mx-auto mt-16 grid max-w-2xl auto-rows-fr grid-cols-1 gap-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
 				{formations
 					.filter((e) => e.id !== formation?.id)
 					.map((formation) => (
