@@ -21,17 +21,17 @@ const FormationCard = (props: FormationCardProps) => {
 					height={256}
 					className="aspect-[16/9] w-full rounded-2xl bg-gray-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2]"
 				/>
-				<div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
+				<div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-univers/10" />
 			</div>
 			<div className="max-w-xl">
 				<div className="group relative">
-					<h3 className="mt-6 text-lg font-semibold leading-6 text-gray-900 group-hover:text-univers">
+					<h3 className="mt-6 text-xl font-semibold leading-6 text-univers group-hover:text-univers">
 						<Link href={`/formations/${props.id}`}>
 							<span className="absolute inset-0" />
 							{props.title}
 						</Link>
 					</h3>
-					<p className="mt-5 text-sm leading-6 text-univers line-clamp-4">{props.description}</p>
+					<p className="mt-5 text-sm leading-6 text-univers line-clamp-5">{props.description}</p>
 				</div>
 			</div>
 		</article>
