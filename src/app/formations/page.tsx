@@ -9,10 +9,7 @@ export default function Formations() {
 		<div className="bg-support py-8">
 			<div className="mx-auto max-w-7xl px-6 lg:px-8">
 				<div className="mx-auto max-w-2xl text-center mb-16 text-univers">
-					<h2 className="text-lg font-semibold leading-6 text-cohesion">Accompagner et prendre soin</h2>
-					<h1 className="mt-2 text-4xl font-bold tracking-wider sm:text-4xl text-center">
-						Catalogue de <span className="text-cohesion">formations</span>
-					</h1>
+					<h1 className="mt-2 text-4xl font-bold tracking-wider sm:text-4xl text-center uppercase">Catalogue de formations</h1>
 					<p className="mt-6 text-xl leading-6">
 						Quis tellus eget adipiscing convallis sit sit eget aliquet quis. Suspendisse eget egestas a elementum pulvinar et feugiat blandit at. In
 						mi viverra elit nunc.
