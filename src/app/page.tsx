@@ -79,23 +79,15 @@ export default function Accueil() {
 	const router = useRouter();
 	return (
 		<div>
-			{/* <Image
-				src={require("/src/_images/logo/star_beige.svg")}
-				alt="Logo Ipseis"
-				title="Logo Ipseis"
-				height={1000}
-				className="fixed -top-20 -right-60 opacity-10 sm:opacity-30"
-			/> */}
-
 			{/* Hero section */}
 			<div className="lg:h-[535px] flex flex-col-reverse lg:flex-row lg:justify-between lg:items-center">
 				<div className="bg-maitrise w-full lg:w-1/2 lg:h-full">
 					<div className="text-5xl font-bold tracking-wider text-support bg-univers p-10 pb-5">
-						<h1>
-							Vous êtes <span className="text-cohesion">unique</span>, <br />
-							nos <span className="text-cohesion">formations</span> aussi.
+						<h1 className="text-support uppercase leading-snug">
+							Vous êtes unique, <br />
+							nos formations aussi.
 						</h1>
-						<div className="border border-cohesion w-12 my-8"></div>
+						<div className="border border-support w-12 my-8"></div>
 					</div>
 					<div className="p-10">
 						<p className="text-xl text-support">
