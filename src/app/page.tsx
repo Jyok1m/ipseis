@@ -110,10 +110,7 @@ export default function Accueil() {
 			{/* Formations */}
 			<div className="mx-auto max-w-7xl px-6 lg:px-8 pb-20 mt-24 text-univers">
 				<div className="mx-auto max-w-2xl text-center mb-16 text-univers">
-					<h2 className="text-lg font-semibold leading-6 text-cohesion">Des formations innovantes</h2>
-					<h1 className="mt-2 text-4xl font-bold tracking-wider sm:text-4xl text-center">
-						Nos dernières <span className="text-cohesion">formations</span>
-					</h1>
+					<h1 className="mt-2 text-4xl font-bold tracking-wider sm:text-4xl text-center uppercase">Nos dernières formations</h1>
 					<p className="mt-6 text-xl leading-6">
 						Quis tellus eget adipiscing convallis sit sit eget aliquet quis. Suspendisse eget egestas a elementum pulvinar et feugiat blandit at. In
 						mi viverra elit nunc.
@@ -166,10 +163,7 @@ export default function Accueil() {
 			{/* Contact form */}
 			<div className="rounded-3xl py-10 px-6 mt-12 flex flex-col items-center">
 				<div className="mx-auto max-w-2xl text-center mb-16 text-univers">
-					<h2 className="text-lg font-semibold leading-6 text-cohesion">100% personnalisé</h2>
-					<h1 className="mt-2 text-4xl font-bold tracking-wider sm:text-4xl text-center">
-						Parlons de vos <span className="text-cohesion">besoins</span>
-					</h1>
+					<h1 className="mt-2 text-4xl font-bold tracking-wider sm:text-4xl text-center uppercase">Parlons de vos besoins</h1>
 					<p className="mt-6 text-xl leading-6">
 						Quis tellus eget adipiscing convallis sit sit eget aliquet quis. Suspendisse eget egestas a elementum pulvinar et feugiat blandit at. In
 						mi viverra elit nunc.
