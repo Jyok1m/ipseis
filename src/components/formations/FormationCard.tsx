@@ -25,13 +25,13 @@ const FormationCard = (props: FormationCardProps) => {
 			</div>
 			<div className="max-w-xl">
 				<div className="group relative">
-					<h3 className="mt-6 text-xl font-semibold leading-6 text-cohesion group-hover:text-univers">
+					<h3 className="mt-6 text-xl font-semibold leading-7 text-univers group-hover:text-cohesion uppercase h-16">
 						<Link href={`/formations/${props.id}`}>
 							<span className="absolute inset-0" />
 							{props.title}
 						</Link>
 					</h3>
-					<p className="mt-5 text-lg leading-6 text-univers line-clamp-5">{props.description}</p>
+					<p className="mt-2 text-lg leading-6 text-univers line-clamp-5">{props.description}</p>
 				</div>
 			</div>
 		</article>
