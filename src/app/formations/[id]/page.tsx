@@ -17,8 +17,16 @@ export default function FormationPage({ params }: { params: { id: string } }) {
 					<ul role="list" className="mt-8 max-w-xl space-y-8 text-gray-600 text-lg">
 						{formation?.keypoints.map((keypoint, index) => (
 							<li key={index} className="flex gap-x-3">
-								<CheckCircleIcon aria-hidden="true" className="mt-1 h-5 w-5 flex-none text-maitrise" />
-								<span>{keypoint}</span>
+								<Image
+									aria-hidden="true"
+									src={require("/src/_images/logo/star_orange.svg")}
+									alt="Logo Ipseis"
+									title="Logo Ipseis"
+									width={40}
+									height={40}
+									className="h-10 w-10 flex-none"
+								/>
+								<span className="flex items-center">{keypoint}</span>
 							</li>
 						))}
 					</ul>
