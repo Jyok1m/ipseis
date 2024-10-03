@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { CheckCircleIcon, InformationCircleIcon } from "@heroicons/react/20/solid";
+import { InformationCircleIcon } from "@heroicons/react/20/solid";
 import { formations } from "@/app/static/catalogue";
 
 export default function FormationPage({ params }: { params: { id: string } }) {
@@ -11,7 +11,7 @@ export default function FormationPage({ params }: { params: { id: string } }) {
 	return (
 		<div className="bg-support px-6 py-8">
 			<div className="mx-auto max-w-3xl text-base leading-7 text-gray-700">
-				<h1 className="mt-2 text-3xl font-bold tracking-tight text-cohesion sm:text-4xl">{formation?.title}</h1>
+				<h1 className="my-2 text-3xl font-bold tracking-tight text-univers sm:text-4xl">{formation?.title?.toUpperCase()}</h1>
 				<p className="mt-6 text-xl leading-8">{formation?.description}</p>
 				<div className="mt-10 max-w-2xl">
 					<ul role="list" className="mt-8 max-w-xl space-y-8 text-gray-600 text-lg">
