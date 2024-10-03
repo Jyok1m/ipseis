@@ -80,9 +80,9 @@ export default function Accueil() {
 	return (
 		<div>
 			{/* Hero section */}
-			<div className="lg:h-[535px] flex flex-col-reverse lg:flex-row lg:justify-between lg:items-center">
+			<div className="lg:h-[750px] flex flex-col-reverse lg:flex-row lg:justify-between lg:items-center">
 				<div className="bg-univers w-full lg:w-1/2 lg:h-full">
-					<div className="text-4xl font-bold tracking-widest text-support bg-univers p-10 pb-5">
+					<div className="text-4xl font-bold tracking-widest text-support bg-univers p-10 pb-5 lg:pt-24">
 						<h1 className="text-cohesion uppercase leading-snug">
 							Vous êtes unique, <br />
 							nos formations aussi.
