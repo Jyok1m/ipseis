@@ -51,8 +51,8 @@ export default function FormationPage({ params }: { params: { id: string } }) {
 				</Link>
 			</div>
 
-			<div className="mx-auto max-w-2xl text-center my-16 text-univers">
-				<h1 className="mt-2 text-4xl font-bold tracking-wider sm:text-4xl text-center">Découvrez nos autres formations </h1>
+			<div className="mx-auto max-w-3xl text-center my-16 text-univers">
+				<h1 className="mt-2 text-4xl font-bold tracking-wider sm:text-4xl text-center uppercase">Découvrez nos autres formations </h1>
 				<p className="mt-6 text-xl leading-6">
 					Quis tellus eget adipiscing convallis sit sit eget aliquet quis. Suspendisse eget egestas a elementum pulvinar et feugiat blandit at. In mi
 					viverra elit nunc.
