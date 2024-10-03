@@ -82,12 +82,12 @@ export default function Accueil() {
 			{/* Hero section */}
 			<div className="lg:h-[535px] flex flex-col-reverse lg:flex-row lg:justify-between lg:items-center">
 				<div className="bg-maitrise w-full lg:w-1/2 lg:h-full">
-					<div className="text-5xl font-bold tracking-wider text-support bg-univers p-10 pb-5">
-						<h1 className="text-support uppercase leading-snug">
+					<div className="text-4xl font-bold tracking-widest text-support bg-univers p-10 pb-5">
+						<h1 className="text-cohesion uppercase leading-snug">
 							Vous êtes unique, <br />
 							nos formations aussi.
 						</h1>
-						<div className="border border-support w-12 my-8"></div>
+						<div className="border border-cohesion w-12 my-8"></div>
 					</div>
 					<div className="p-10">
 						<p className="text-xl text-support">
