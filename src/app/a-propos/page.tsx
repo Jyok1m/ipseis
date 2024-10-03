@@ -29,11 +29,10 @@ export default function APropos() {
 					</div>
 					<div className="lg:order-first lg:row-span-2">
 						<div className="text-4xl font-bold tracking-wider text-univers py-5">
-							<h1>
-								<span className="text-cohesion">Ipseis</span> a été fondé dans le but de <span className="text-cohesion">former</span> les aidants de{" "}
-								<span className="text-cohesion">demain</span>.
+							<h1 className="mt-2 text-4xl font-bold tracking-wider sm:text-4xl uppercase">
+								Ipseis a été fondé dans le but de former les aidants de demain.
 							</h1>
-							<div className="border border-cohesion w-12 my-8"></div>
+							<div className="border border-univers w-12 my-8"></div>
 						</div>
 						<div className="mt-6 space-y-7 text-xl text-zinc-600">
 							<p>
