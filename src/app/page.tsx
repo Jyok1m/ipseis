@@ -80,7 +80,7 @@ export default function Accueil() {
 	return (
 		<div>
 			{/* Hero section */}
-			<div className="lg:h-[750px] flex flex-col-reverse lg:flex-row lg:justify-between lg:items-center">
+			<div className="lg:h-[750px] flex flex-col-reverse lg:flex-row lg:justify-between lg:items-center bg-univers">
 				<div className="bg-univers w-full lg:w-1/2 lg:h-full">
 					<div className="text-4xl font-bold tracking-widest text-support bg-univers p-10 pb-5 lg:pt-24">
 						<h1 className="text-cohesion uppercase leading-snug">
@@ -104,7 +104,7 @@ export default function Accueil() {
 						</div>
 					</div>
 				</div>
-				<div className="bg-[url('/images/banner-home2.png')] bg-no-repeat bg-right-top lg:bg-right-bottom w-full h-[250px] lg:w-1/2 lg:h-full"></div>
+				<div className="rounded bg-[url('/images/banner-home2.png')] bg-no-repeat bg-right-top lg:bg-center lg:top-10 w-full h-[300px] lg:w-1/2 lg:h-full"></div>
 			</div>
 
 			{/* Formations */}
