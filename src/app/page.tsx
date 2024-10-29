@@ -133,7 +133,7 @@ export default function Accueil() {
 							key={post.id}
 							className="relative isolate flex flex-col justify-end overflow-hidden rounded-2xl bg-maitrise px-8 pb-8 pt-80 sm:pt-48 lg:pt-80 hover:opacity-80"
 						>
-							<Image alt={post.title} src={post.imageUrl} width={256} height={256} className="absolute inset-0 -z-10 h-full w-full object-cover" />
+							<Image alt={post.title} src={post.imageUrl} fill className="absolute inset-0 -z-10 h-full w-full object-cover" />
 							<div className="absolute inset-0 -z-10 bg-gradient-to-t from-univers via-univers/40" />
 							<div className="absolute inset-0 -z-10 rounded-2xl ring-1 ring-inset ring-univers/10" />
 

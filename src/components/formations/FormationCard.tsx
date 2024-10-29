@@ -12,18 +12,18 @@ import Image from "next/image";
 
 const FormationCard = (props: FormationCardProps) => {
 	return (
-		<article className="flex flex-col items-start">
+		<article className="flex flex-col items-start justify-center">
 			<div className="relative w-full">
 				<Image
 					alt={props.title}
 					src={props.uri}
-					width={256}
-					height={256}
-					className="aspect-[16/9] w-full rounded-2xl bg-gray-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2]"
+					height={873}
+					width={1310}
+					className="aspect-[16/9] h-96 rounded-2xl bg-gray-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2]"
 				/>
 				<div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-univers/10" />
 			</div>
-			<div className="max-w-xl">
+			<div className="">
 				<div className="group relative">
 					<h3 className="mt-6 text-xl font-semibold leading-7 text-univers group-hover:text-cohesion uppercase h-16">
 						<Link href={`/formations/${props.id}`}>

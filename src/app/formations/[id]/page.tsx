@@ -51,41 +51,45 @@ export default function FormationPage({ params }: { params: { id: string } }) {
 				</Link>
 			</div>
 
-			<div className="mx-auto max-w-3xl text-center my-16 text-univers">
-				<h1 className="mt-2 text-4xl font-bold tracking-wider sm:text-4xl text-center uppercase">Découvrez nos autres formations </h1>
-				<p className="mt-6 text-xl leading-6">
-					Quis tellus eget adipiscing convallis sit sit eget aliquet quis. Suspendisse eget egestas a elementum pulvinar et feugiat blandit at. In mi
-					viverra elit nunc.
-				</p>
-			</div>
+			{formations.length > 1 && (
+				<>
+					<div className="mx-auto max-w-3xl text-center my-16 text-univers">
+						<h1 className="mt-2 text-4xl font-bold tracking-wider sm:text-4xl text-center uppercase">Découvrez nos autres formations </h1>
+						<p className="mt-6 text-xl leading-6">
+							Quis tellus eget adipiscing convallis sit sit eget aliquet quis. Suspendisse eget egestas a elementum pulvinar et feugiat blandit at. In
+							mi viverra elit nunc.
+						</p>
+					</div>
 
-			<div className="mx-auto mt-16 grid max-w-2xl auto-rows-fr grid-cols-1 gap-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
-				{formations
-					.filter((e) => e.id !== formation?.id)
-					.map((formation) => (
-						<article
-							key={formation?.id}
-							className="relative isolate flex flex-col justify-end overflow-hidden rounded-2xl bg-maitrise px-8 pb-8 pt-80 sm:pt-48 lg:pt-80 hover:opacity-80"
-						>
-							<Image
-								alt={formation?.title}
-								src={formation?.uri}
-								width={256}
-								height={256}
-								className="absolute inset-0 -z-10 h-full w-full object-cover"
-							/>
-							<div className="absolute inset-0 -z-10 bg-gradient-to-t from-univers via-univers/40" />
-							<div className="absolute inset-0 -z-10 rounded-2xl ring-1 ring-inset ring-univers/10" />
+					<div className="mx-auto mt-16 grid max-w-2xl auto-rows-fr grid-cols-1 gap-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
+						{formations
+							.filter((e) => e.id !== formation?.id)
+							.map((formation) => (
+								<article
+									key={formation?.id}
+									className="relative isolate flex flex-col justify-end overflow-hidden rounded-2xl bg-maitrise px-8 pb-8 pt-80 sm:pt-48 lg:pt-80 hover:opacity-80"
+								>
+									<Image
+										alt={formation?.title}
+										src={formation?.uri}
+										width={256}
+										height={256}
+										className="absolute inset-0 -z-10 h-full w-full object-cover"
+									/>
+									<div className="absolute inset-0 -z-10 bg-gradient-to-t from-univers via-univers/40" />
+									<div className="absolute inset-0 -z-10 rounded-2xl ring-1 ring-inset ring-univers/10" />
 
-							<h3 className="text-2xl font-semibolde tracking-wider text-support">
-								<Link href={`${formation.href}/${formation.id}`}>
-									<span className="absolute inset-0" />
-									{formation.title}
-								</Link>
-							</h3>
-						</article>
-					))}
-			</div>
+									<h3 className="text-2xl font-semibolde tracking-wider text-support">
+										<Link href={`${formation.href}/${formation.id}`}>
+											<span className="absolute inset-0" />
+											{formation.title}
+										</Link>
+									</h3>
+								</article>
+							))}
+					</div>
+				</>
+			)}
 		</div>
 	);
 }
