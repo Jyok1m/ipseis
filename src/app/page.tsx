@@ -96,7 +96,7 @@ export default function Accueil() {
 								Ipseis est un organisme de formation dédiée aux professionnels de santé. Les formations que nous proposons s&apos;axent sur
 								l&apos;accompagnement dans le secteur des soins pour les professionnels de santé et les particuliers.
 							</p>
-							<div className="mt-10">
+							<div className="mt-10 w-full flex sm:justify-start justify-center">
 								<button
 									onClick={() => router.push("/formations")}
 									className="bg-maitrise text-support py-3 px-5 rounded-xl hover:opacity-80 shadow-2xl text-xl"
