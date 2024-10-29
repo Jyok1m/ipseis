@@ -43,36 +43,36 @@ const posts = [
 				"https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
 		},
 	},
-	{
-		id: 2,
-		title: "Gérontologie, gériatrie, personnes âgées",
-		href: "/formations",
-		description:
-			"Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel. Iusto corrupti dicta.",
-		imageUrl: "/images/formations/2.jpg",
-		date: "Mar 16, 2020",
-		datetime: "2020-03-16",
-		author: {
-			name: "Michael Foster",
-			imageUrl:
-				"https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-		},
-	},
-	{
-		id: 3,
-		title: "Personnes en situation de Handicap",
-		href: "/formations",
-		description:
-			"Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel. Iusto corrupti dicta.",
-		imageUrl: "/images/formations/3.jpg",
-		date: "Mar 16, 2020",
-		datetime: "2020-03-16",
-		author: {
-			name: "Michael Foster",
-			imageUrl:
-				"https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-		},
-	},
+	// {
+	// 	id: 2,
+	// 	title: "Gérontologie, gériatrie, personnes âgées",
+	// 	href: "/formations",
+	// 	description:
+	// 		"Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel. Iusto corrupti dicta.",
+	// 	imageUrl: "/images/formations/2.jpg",
+	// 	date: "Mar 16, 2020",
+	// 	datetime: "2020-03-16",
+	// 	author: {
+	// 		name: "Michael Foster",
+	// 		imageUrl:
+	// 			"https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+	// 	},
+	// },
+	// {
+	// 	id: 3,
+	// 	title: "Personnes en situation de Handicap",
+	// 	href: "/formations",
+	// 	description:
+	// 		"Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel. Iusto corrupti dicta.",
+	// 	imageUrl: "/images/formations/3.jpg",
+	// 	date: "Mar 16, 2020",
+	// 	datetime: "2020-03-16",
+	// 	author: {
+	// 		name: "Michael Foster",
+	// 		imageUrl:
+	// 			"https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+	// 	},
+	// },
 ];
 
 export default function Accueil() {
@@ -80,34 +80,40 @@ export default function Accueil() {
 	return (
 		<div>
 			{/* Hero section */}
-			<div className="lg:h-[750px] flex flex-col-reverse lg:flex-row lg:justify-between lg:items-center bg-univers">
-				<div className="bg-univers w-full lg:w-1/2 lg:h-full">
-					<div className="text-4xl font-bold tracking-widest text-support bg-univers p-10 pb-5 lg:pt-24">
-						<h1 className="text-cohesion leading-snug mb-5">
-							Vous êtes unique, <br />
-							nos formations aussi.
-						</h1>
+			<div className="flex flex-col-reverse lg:flex-row lg:justify-between lg:items-center bg-univers">
+				<div className="bg-univers flex justify-evenly py-10">
+					<div className="lg:w-1/2">
+						<div className="text-4xl font-bold tracking-widest text-support bg-univers p-10 pb-5">
+							<h1 className="text-cohesion leading-snug mb-5">
+								Vous êtes unique, <br />
+								nos formations aussi.
+							</h1>
 
-						<Image src={require("../_images/tiret-home.png")} alt="tiret" height={50} width={75} />
-
-						{/* <div className="border border-cohesion w-12 my-8"></div> */}
-					</div>
-					<div className="p-10">
-						<p className="text-xl text-support">
-							Ipseis est un organisme de formation dédiée aux professionnels de santé. Les formations que nous proposons s&apos;axent sur
-							l&apos;accompagnement dans le secteur des soins pour les professionnels de santé et les particuliers.
-						</p>
-						<div className="mt-10">
-							<button
-								onClick={() => router.push("/formations")}
-								className="bg-maitrise text-support py-3 px-5 rounded-xl hover:opacity-80 shadow-2xl text-xl"
-							>
-								Parcourir nos formations
-							</button>
+							<Image src={require("../_images/tiret-home.png")} alt="tiret" height={50} width={75} />
+						</div>
+						<div className="p-10">
+							<p className="text-xl text-support">
+								Ipseis est un organisme de formation dédiée aux professionnels de santé. Les formations que nous proposons s&apos;axent sur
+								l&apos;accompagnement dans le secteur des soins pour les professionnels de santé et les particuliers.
+							</p>
+							<div className="mt-10">
+								<button
+									onClick={() => router.push("/formations")}
+									className="bg-maitrise text-support py-3 px-5 rounded-xl hover:opacity-80 shadow-2xl text-xl"
+								>
+									Parcourir nos formations
+								</button>
+							</div>
 						</div>
 					</div>
+					<Image
+						src="/images/star_beige.svg"
+						alt="Étoile Ipseis"
+						width={500}
+						height={500}
+						className="absolute z-10 opacity-20 md:opacity-80 -top-0 lg:-top-10 -right-20 md:right-10 aspect-square"
+					/>
 				</div>
-				<div className="rounded bg-[url('/images/banner-home2.png')] bg-no-repeat bg-right-top lg:bg-center lg:top-10 w-full h-[300px] lg:w-1/2 lg:h-full"></div>
 			</div>
 
 			{/* Formations */}
@@ -121,7 +127,7 @@ export default function Accueil() {
 					</p>
 				</div>
 
-				<div className="mx-auto mt-16 grid max-w-2xl auto-rows-fr grid-cols-1 gap-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+				<div className="mx-auto mt-16 grid max-w-2xl auto-rows-fr grid-cols-1 gap-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-1">
 					{posts.map((post) => (
 						<article
 							key={post.id}
@@ -131,7 +137,7 @@ export default function Accueil() {
 							<div className="absolute inset-0 -z-10 bg-gradient-to-t from-univers via-univers/40" />
 							<div className="absolute inset-0 -z-10 rounded-2xl ring-1 ring-inset ring-univers/10" />
 
-							<h3 className="text-2xl font-semibolde tracking-wider text-support">
+							<h3 className="text-2xl font-semibold tracking-wider text-support">
 								<Link href={`${post.href}/${post.id}`}>
 									<span className="absolute inset-0" />
 									{post.title}
