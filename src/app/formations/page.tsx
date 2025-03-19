@@ -63,7 +63,7 @@ export default function Formations() {
 									} flex justify-center items-center aspect-1 ring-2 ring-cohesion/30 hover:ring-cohesion cursor-pointer rounded-full shadow-2xl p-2 hover:transform hover:scale-105 duration-500`
 								)}
 							>
-								<h2 className="text-univers text-xs sm:text-xl font-bold text-center">{theme.title}</h2>
+								<h2 className="text-univers text-sm sm:text-lg font-bold text-center">{theme.title}</h2>
 							</div>
 						);
 					})}
