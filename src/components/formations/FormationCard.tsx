@@ -1,3 +1,5 @@
+"use client"
+
 type FormationCardProps = {
 	id: number;
 	title: string;
