@@ -33,7 +33,7 @@ export default function Formations() {
 				<div className="grid grid-cols-3 grid-rows-3 gap-2 items-center justify-center max-w-xl">
 					{/* Image au centre */}
 					<div className="col-start-2 row-start-2 flex justify-center items-center w-full">
-						<Image src={require("/src/_images/logo/star_orange.svg")} alt="Logo Ipseis" title="Logo Ipseis" height={150} width={150} />
+						<Image src={require("/src/_images/logo/star_orange.svg")} alt="Logo Ipseis" title="Logo Ipseis" height={200} width={200} />
 					</div>
 
 					{/* Titres des thèmes */}
