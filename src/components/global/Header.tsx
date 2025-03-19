@@ -84,6 +84,7 @@ const Header = () => {
 									<Link
 										key={item.name}
 										href={item.href}
+										onClick={() => setMobileMenuOpen(false)}
 										className="-mx-3 block rounded-lg px-3 py-2 text-md font-semibold text-univers hover:bg-support"
 									>
 										{item.name}
