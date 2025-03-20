@@ -1,13 +1,51 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Modal, ConfigProvider } from "antd";
+import React, { useState, useEffect, useCallback, memo } from "react";
+import { LoadingOutlined } from "@ant-design/icons";
+import { Modal, ConfigProvider, Spin } from "antd";
 import clsx from "clsx";
 import Image from "next/image";
 import axios from "axios";
 
+const ThemeBubble = memo(({ theme, index, onClick }: any) => {
+	const positions = [
+		"col-start-2 row-start-1", // Haut
+		"col-start-3 row-start-2", // Droite
+		"col-start-2 row-start-3", // Bas
+		"col-start-1 row-start-2", // Gauche
+	];
+
+	return (
+		<div
+			key={theme._id}
+			onClick={onClick}
+			className={clsx(
+				index === 0
+					? "hover:-translate-y-5"
+					: index === 1
+					? "hover:translate-x-5"
+					: index === 2
+					? "hover:translate-y-5"
+					: index === 3
+					? "hover:-translate-x-5"
+					: "",
+				`${
+					positions[index % positions.length]
+				} flex justify-center items-center aspect-1 ring-2 ring-cohesion/30 hover:ring-cohesion cursor-pointer rounded-full shadow-2xl p-2 hover:transform hover:scale-105 duration-500`
+			)}
+		>
+			<h2 className="text-univers text-[10px] sm:text-xs md:text-sm lg:text-md font-bold text-center">{theme.title}</h2>
+		</div>
+	);
+});
+
+const BubbleContainer = ({ children }: { children: React.ReactNode }) => (
+	<div className="grid grid-cols-3 grid-rows-3 gap-2 items-center justify-center max-w-2xl">{children}</div>
+);
+
 export default function Formations() {
 	// Thématiques de formations
+	const [themesLoading, setThemesLoading] = useState(true);
 	const [themes, setThemes] = useState([]);
 
 	// Catalogue
@@ -30,27 +68,44 @@ export default function Formations() {
 		};
 	}, []);
 
+	useEffect(() => {
+		if (themes.length > 0) {
+			setThemesLoading(false);
+		}
+	}, [themes]);
+
+	useEffect(() => {
+		if (catalogue.length > 0 && selectedTheme !== "") {
+			setCatalogueModalOpen(true);
+		}
+	}, [catalogue, selectedTheme]);
+
 	/* ---------------------------------------------------------------- */
 	/*                             Functions                            */
 	/* ---------------------------------------------------------------- */
 
-	const fetchThemes = async () => {
-		const response = await axios.get(`${process.env.BACKEND_URL}/themes/list`);
-		if (response.status === 200) {
-			setThemes(response.data);
+	const fetchThemes = useCallback(async () => {
+		try {
+			const response = await axios.get(`${process.env.BACKEND_URL}/themes/list`);
+			if (response.status === 200) {
+				setThemes(response.data);
+			}
+		} catch (error) {
+			console.error("Erreur lors de la récupération des thématiques :", error);
 		}
-	};
+	}, []);
 
-	const fetchCatalogue = async (themeId: string, themeTitle: string) => {
-		const response = await axios.get(`${process.env.BACKEND_URL}/trainings/by-theme/${themeId}`);
-		if (response.status === 200) {
-			setCatalogue(response.data);
-			setSelectedTheme(themeTitle);
-			setTimeout(() => {
-				setCatalogueModalOpen(true);
-			}, 200);
+	const fetchCatalogue = useCallback(async (themeId: string, themeTitle: string) => {
+		try {
+			const response = await axios.get(`${process.env.BACKEND_URL}/trainings/by-theme/${themeId}`);
+			if (response.status === 200) {
+				setCatalogue(response.data);
+				setSelectedTheme(themeTitle);
+			}
+		} catch (error) {
+			console.error("Erreur lors de la récupération du catalogue :", error);
 		}
-	};
+	}, []);
 
 	const handleModalClose = () => {
 		setCatalogueModalOpen(false);
@@ -63,7 +118,7 @@ export default function Formations() {
 	/* ---------------------------------------------------------------- */
 
 	return (
-		<div className="bg-support py-8">
+		<div className="bg-support py-8 h-full">
 			<div className="mx-auto max-w-7xl px-6 lg:px-8 flex flex-col items-center">
 				<div className="mx-auto max-w-2xl text-center text-univers mb-16">
 					<h1 className="mt-2 text-2xl font-bold tracking-wider sm:text-4xl text-center uppercase">Nos formations</h1>
@@ -72,52 +127,31 @@ export default function Formations() {
 						professionnels.
 					</p>
 				</div>
-				<div className="grid grid-cols-3 grid-rows-3 gap-2 items-center justify-center max-w-2xl">
-					{/* Image au centre */}
-					<div className="col-start-2 row-start-2 flex justify-center items-center w-full">
-						<Image
-							src={require("/src/_images/logo/star_orange.svg")}
-							alt="Logo Ipseis"
-							title="Logo Ipseis"
-							height={200}
-							width={200}
-							className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 xl:w-56 xl:h-56"
-						/>
-					</div>
-
-					{/* Titres des thèmes */}
-					{themes.map((theme: any, index: number) => {
-						const positions = [
-							"col-start-2 row-start-1", // Haut
-							"col-start-3 row-start-2", // Droite
-							"col-start-2 row-start-3", // Bas
-							"col-start-1 row-start-2", // Gauche
-						];
-
-						return (
-							<div
-								key={theme._id}
-								onClick={() => fetchCatalogue(theme._id, theme.title)}
-								className={clsx(
-									index === 0
-										? "hover:-translate-y-5"
-										: index === 1
-										? "hover:translate-x-5"
-										: index === 2
-										? "hover:translate-y-5"
-										: index === 3
-										? "hover:-translate-x-5"
-										: "",
-									`${
-										positions[index % positions.length]
-									} flex justify-center items-center aspect-1 ring-2 ring-cohesion/30 hover:ring-cohesion cursor-pointer rounded-full shadow-2xl p-2 hover:transform hover:scale-105 duration-500`
-								)}
-							>
-								<h2 className="text-univers text-[10px] sm:text-xs md:text-sm lg:text-md font-bold text-center">{theme.title}</h2>
-							</div>
-						);
-					})}
-				</div>
+				{!themesLoading ? (
+					<BubbleContainer>
+						{/* Image au centre */}
+						<div className="col-start-2 row-start-2 flex justify-center items-center w-full">
+							<Image
+								src={require("/src/_images/logo/star_orange.svg")}
+								alt="Logo Ipseis"
+								title="Logo Ipseis"
+								height={200}
+								width={200}
+								className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 xl:w-56 xl:h-56"
+							/>
+						</div>
+						{/* Titres des thèmes */}
+						{themes.map((theme: any, index: number) => (
+							<ThemeBubble key={theme._id} theme={theme} index={index} onClick={() => fetchCatalogue(theme._id, theme.title)} />
+						))}
+					</BubbleContainer>
+				) : (
+					<BubbleContainer>
+						<div className="col-start-2 row-start-2 flex justify-center items-center w-full">
+							<Spin indicator={<LoadingOutlined spin />} size="large" className="text-cohesion" />
+						</div>
+					</BubbleContainer>
+				)}
 			</div>
 			<ConfigProvider
 				theme={{

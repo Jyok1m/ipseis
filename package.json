@@ -9,6 +9,7 @@
 		"lint": "next lint"
 	},
 	"dependencies": {
+		"@ant-design/icons": "^5.6.1",
 		"@headlessui/react": "^2.1.2",
 		"@heroicons/react": "^2.1.5",
 		"@tailwindcss/aspect-ratio": "^0.4.2",
