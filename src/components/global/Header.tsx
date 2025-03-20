@@ -34,10 +34,10 @@ const Header = () => {
 				<div className="flex flex-1 items-center justify-end gap-x-6">
 					<Link
 						href="/contact"
-						className="rounded-md bg-maitrise px-3 py-1 text-lg text-support font-normal shadow-sm hover:bg-maitrise/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maitrise"
+						className="rounded-md bg-maitrise px-3 py-1 text-md md:text-lg text-support font-normal shadow-sm hover:bg-maitrise/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maitrise"
 					>
 						<span className="flex items-center gap-x-2">
-							<EnvelopeIcon aria-hidden="true" className="size-6" />
+							<EnvelopeIcon aria-hidden="true" className="size-3 md:size-6" />
 							Contact
 						</span>
 					</Link>
@@ -65,10 +65,10 @@ const Header = () => {
 
 						<Link
 							href="/contact"
-							className="ml-auto rounded-md bg-univers px-3 py-1 text-lg font-normal text-support shadow-sm hover:bg-univers/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+							className="ml-auto rounded-md bg-univers px-3 py-1 text-md md:text-lg font-normal text-support shadow-sm hover:bg-univers/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
 						>
 							<span className="flex items-center gap-x-2">
-								<EnvelopeIcon aria-hidden="true" className="size-6" />
+								<EnvelopeIcon aria-hidden="true" className="size-3 md:size-6" />
 								Contact
 							</span>
 						</Link>

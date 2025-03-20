@@ -8,10 +8,13 @@ const Footer = () => {
 				<h2 id="footer-heading" className="sr-only">
 					Footer
 				</h2>
-				<div className="flex items-center justify-center gap-x-1">
-					<p className="text-sm">Créé avec </p>
-					<HeartIcon className="h-[14px]" />
-					<p className="text-sm"> par Joachim Jasmin et Titouan Gignouard pour Ipseis</p>
+				<div className="flex flex-col sm:flex-row items-center justify-center gap-x-1">
+					<span className="flex items-center gap-x-1">
+						<p className="text-xs sm:text-sm">Créé avec </p>
+						<HeartIcon className="h-[14px]" />
+					</span>
+
+					<p className="text-xs text-sm"> par Joachim Jasmin et Titouan Gignouard pour Ipseis</p>
 				</div>
 			</footer>
 		</div>
