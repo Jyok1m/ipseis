@@ -1,8 +1,29 @@
+"use client";
+
+import React, { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { CheckCircleIcon, InformationCircleIcon } from "@heroicons/react/20/solid";
 
 export default function FormationPage() {
+	const params = useSearchParams();
+	const trainingId = params.get("id");
+
+	const [isLoaded, setIsLoaded] = useState(false);
+
+	useEffect(() => {
+		if (trainingId) {
+			setIsLoaded(true);
+		}
+	}, [trainingId]);
+
+	console.log(params.get("id"));
+
+	if (!isLoaded) {
+		return <div className="bg-support px-6 py-32 lg:px-8"></div>;
+	}
+
 	return (
-		<div className="bg-white px-6 py-32 lg:px-8">
+		<div className="bg-support px-6 py-32 lg:px-8">
 			<div className="mx-auto max-w-3xl text-base/7 text-gray-700">
 				<p className="text-base/7 font-semibold text-indigo-600">Introducing</p>
 				<h1 className="mt-2 text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">JavaScript for beginners</h1>
