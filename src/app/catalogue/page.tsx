@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, memo } from "react";
+import { useRouter } from "next/navigation";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Modal, ConfigProvider, Spin } from "antd";
 import clsx from "clsx";
@@ -43,7 +44,9 @@ const BubbleContainer = ({ children }: { children: React.ReactNode }) => (
 	<div className="grid grid-cols-3 grid-rows-3 gap-2 items-center justify-center max-w-2xl">{children}</div>
 );
 
-export default function Formations() {
+export default function CataloguePage() {
+	const router = useRouter();
+
 	// Thématiques de formations
 	const [themesLoading, setThemesLoading] = useState(true);
 	const [themes, setThemes] = useState([]);
@@ -57,6 +60,17 @@ export default function Formations() {
 	/*                           Effect Hooks                           */
 	/* ---------------------------------------------------------------- */
 
+	const fetchThemes = useCallback(async () => {
+		try {
+			const response = await axios.get(`${process.env.BACKEND_URL}/themes/list`);
+			if (response.status === 200) {
+				setThemes(response.data);
+			}
+		} catch (error) {
+			console.error("Erreur lors de la récupération des thématiques :", error);
+		}
+	}, []);
+
 	useEffect(() => {
 		fetchThemes();
 
@@ -66,7 +80,7 @@ export default function Formations() {
 			setSelectedTheme("");
 			setCatalogueModalOpen(false);
 		};
-	}, []);
+	}, [fetchThemes]);
 
 	useEffect(() => {
 		if (themes.length > 0) {
@@ -83,17 +97,6 @@ export default function Formations() {
 	/* ---------------------------------------------------------------- */
 	/*                             Functions                            */
 	/* ---------------------------------------------------------------- */
-
-	const fetchThemes = useCallback(async () => {
-		try {
-			const response = await axios.get(`${process.env.BACKEND_URL}/themes/list`);
-			if (response.status === 200) {
-				setThemes(response.data);
-			}
-		} catch (error) {
-			console.error("Erreur lors de la récupération des thématiques :", error);
-		}
-	}, []);
 
 	const fetchCatalogue = useCallback(async (themeId: string, themeTitle: string) => {
 		try {
@@ -113,6 +116,11 @@ export default function Formations() {
 		setCatalogue([]);
 	};
 
+	const handleRouting = (trainingId: string) => {
+		const query = "?id=" + trainingId;
+		router.push(`/catalogue/formation${query}`);
+	};
+
 	/* ---------------------------------------------------------------- */
 	/*                                JSX                               */
 	/* ---------------------------------------------------------------- */
@@ -121,7 +129,7 @@ export default function Formations() {
 		<div className="bg-support py-8 h-full">
 			<div className="mx-auto max-w-7xl px-6 lg:px-8 flex flex-col items-center">
 				<div className="mx-auto max-w-2xl text-center text-univers mb-16">
-					<h1 className="mt-2 text-2xl font-bold tracking-wider sm:text-4xl text-center uppercase">Nos formations</h1>
+					<h1 className="mt-2 text-2xl font-bold tracking-wider sm:text-4xl text-center uppercase">Catalogue de formations</h1>
 					<p className="mt-6 text-md sm:text-xl leading-6">
 						Découvrez nos secteurs d&apos;activité et explorez les différentes thématiques que nous proposons pour répondre à vos besoins
 						professionnels.
@@ -181,6 +189,7 @@ export default function Formations() {
 							{catalogue.map((training: any) => (
 								<div
 									key={training._id}
+									onClick={() => handleRouting(training._id)}
 									className="flex justify-center items-center aspect-1 ring-2 ring-cohesion/30 hover:ring-cohesion cursor-pointer rounded-xl shadow-2xl p-2 hover:transform hover:scale-105 duration-500"
 								>
 									<p

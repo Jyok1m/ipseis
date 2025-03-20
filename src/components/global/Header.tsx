@@ -8,8 +8,8 @@ import Link from "next/link";
 
 const navigation = [
 	{ name: "Accueil", href: "/" },
-	{ name: "Formations", href: "/formations" },
-	{ name: "Organisme", href: "/a-propos" },
+	{ name: "Nos formations", href: "/catalogue" },
+	{ name: "Notre organisme", href: "/a-propos" },
 ];
 
 const Header = () => {

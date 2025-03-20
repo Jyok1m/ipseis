@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React from "react";
 import Image from "next/image";
@@ -7,7 +7,7 @@ import Link from "next/link";
 import { InformationCircleIcon } from "@heroicons/react/20/solid";
 import { formations } from "@/app/static/catalogue";
 
-export default function FormationPage({ params }: { params: { id: string } }) {
+export default function TrainingPage({ params }: { params: { trainingId: string } }) {
 	const formation = formations.find((formation) => formation.id === parseInt(params.id));
 
 	return (
