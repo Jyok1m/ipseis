@@ -12,6 +12,7 @@ export default function Formations() {
 
 	// Catalogue
 	const [catalogue, setCatalogue] = useState([]);
+	const [selectedTheme, setSelectedTheme] = useState("");
 	const [catalogueModalOpen, setCatalogueModalOpen] = useState(false);
 
 	/* ---------------------------------------------------------------- */
@@ -24,6 +25,7 @@ export default function Formations() {
 		return () => {
 			setThemes([]);
 			setCatalogue([]);
+			setSelectedTheme("");
 			setCatalogueModalOpen(false);
 		};
 	}, []);
@@ -39,10 +41,11 @@ export default function Formations() {
 		}
 	};
 
-	const fetchCatalogue = async (themeId: string) => {
+	const fetchCatalogue = async (themeId: string, themeTitle: string) => {
 		const response = await axios.get(`${process.env.BACKEND_URL}/trainings/by-theme/${themeId}`);
 		if (response.status === 200) {
 			setCatalogue(response.data);
+			setSelectedTheme(themeTitle);
 			setTimeout(() => {
 				setCatalogueModalOpen(true);
 			}, 200);
@@ -51,6 +54,7 @@ export default function Formations() {
 
 	const handleModalClose = () => {
 		setCatalogueModalOpen(false);
+		setSelectedTheme("");
 		setCatalogue([]);
 	};
 
@@ -93,7 +97,7 @@ export default function Formations() {
 						return (
 							<div
 								key={theme._id}
-								onClick={() => fetchCatalogue(theme._id)}
+								onClick={() => fetchCatalogue(theme._id, theme.title)}
 								className={clsx(
 									index === 0
 										? "hover:-translate-y-5"
@@ -131,12 +135,12 @@ export default function Formations() {
 				}}
 			>
 				<Modal
-					title="Thématique : Accueil et Communication"
+					title={`Thématique : ${selectedTheme}`}
 					centered
 					open={catalogueModalOpen}
 					footer={null}
 					width={600}
-					onCancel={() => setCatalogueModalOpen(false)}
+					onCancel={() => handleModalClose()}
 				>
 					{
 						<div className="grid grid-cols-2 grid-rows-2 gap-5 items-center justify-center max-w-[500px] mx-auto py-5">
