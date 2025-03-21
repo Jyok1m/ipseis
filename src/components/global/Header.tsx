@@ -9,7 +9,7 @@ import Link from "next/link";
 const navigation = [
 	{ name: "Accueil", href: "/" },
 	{ name: "Nos formations", href: "/catalogue" },
-	{ name: "Notre organisme", href: "/a-propos" },
+	//{ name: "Notre organisme", href: "/a-propos" },
 ];
 
 const Header = () => {
