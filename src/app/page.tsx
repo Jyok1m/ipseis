@@ -83,7 +83,7 @@ export default function Accueil() {
 						</div>
 						<div className="p-10">
 							<p className="text-base sm:text-xl text-support">
-								Ipseis est un organisme de formation dédiée aux professionnels de santé. Les formations que nous proposons s&apos;axent sur
+								Ipseis est un organisme de formation dédié aux professionnels de santé. Les formations que nous proposons s&apos;axent sur
 								l&apos;accompagnement dans le secteur des soins pour les professionnels de santé et les particuliers.
 							</p>
 							<div className="mt-5 w-full flex justify-start">
@@ -109,9 +109,9 @@ export default function Accueil() {
 			{/* Logo cloud */}
 			<div className="mx-auto max-w-7xl px-6 lg:px-8 pb-20 mt-24 text-univers">
 				<SectionTitle
-					tag="Une formation reconnue"
+					tag="Des formations reconnues"
 					title="Certifié Qualiopi"
-					description="Notre organisme de formation est aggréé Qualiopi, prouvant notre engagement dans la qualité de notre enseignement."
+					description="Notre organisme de formation est aggréé Qualiopi, prouvant notre engagement dans la qualité et la pertinence de notre enseignement."
 				/>
 
 				<div className="mx-auto grid max-w-lg grid-cols-1 items-center gap-x-8 gap-y-12 sm:max-w-xl sm:grid-cols-6 sm:gap-x-10 sm:gap-y-14 lg:mx-0 lg:max-w-none lg:grid-cols-3">
