@@ -1,13 +1,11 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
 import axios from "axios";
 import { CheckCircleIcon, InformationCircleIcon } from "@heroicons/react/20/solid";
 
-export default function FormationPage() {
-	const params = useSearchParams();
-	const trainingId = params.get("id");
+export default function FormationPage({ params }: { params: any }) {
+	const trainingId = params?.id ?? "";
 
 	const [trainingData, setTrainingData] = useState<any>(null);
 	const [isLoaded, setIsLoaded] = useState(false);

@@ -117,8 +117,7 @@ export default function CataloguePage() {
 	};
 
 	const handleRouting = (trainingId: string) => {
-		const query = "?id=" + trainingId;
-		router.push(`/catalogue/formation${query}`);
+		router.push(`/catalogue/formation/${trainingId}`);
 	};
 
 	/* ---------------------------------------------------------------- */
