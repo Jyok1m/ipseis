@@ -53,27 +53,23 @@ export default function FormationPage({ params }: { params: any }) {
 	}, [fetchtrainingData]);
 
 	return (
-		<div className="bg-support px-6 py-8 lg:px-8">
-			<div className="mx-auto max-w-3xl text-xs text-univers">
+		<div className="bg-support px-6 pt-8 lg:px-8 text-sm sm:text-base text-pretty">
+			<div className="mx-auto max-w-3xl text-univers">
 				{/* Section titre */}
 				<div>
+					<h1 className="mt-2 text-4xl font-semibold tracking-tight sm:text-5xl">{trainingData?.title}</h1>
 					<p className="text-lg font-semibold text-cohesion">{trainingData?.theme}</p>
-					<h1 className="mt-2 text-pretty text-4xl font-semibold tracking-tight sm:text-5xl">{trainingData?.title}</h1>
-					<p className="mt-6 text-xl/8">
-						Aliquet nec orci mattis amet quisque ullamcorper neque, nibh sem. At arcu, sit dui mi, nibh dui, diam eget aliquam. Quisque id at vitae
-						feugiat egestas ac. Diam nulla orci at in viverra scelerisque eget. Eleifend egestas fringilla sapien.
-					</p>
 				</div>
 
 				{/* Section objectifs pédagogiques */}
 
 				<div>
-					<h2 className="mt-10 mb-5 text-pretty text-2xl font-semibold tracking-tight flex items-center gap-x-2">
+					<h2 className="mt-10 mb-5 text-lg sm:text-xl font-semibold tracking-tight flex items-center gap-x-2">
 						<FontAwesomeIcon icon={faBullseyePointer} />
 						Objectifs pédagogiques
 					</h2>
 					{trainingData?.pedagogical_objectives.map((el: string, index: number) => (
-						<li key={index} className="flex">
+						<li key={index} className="flex mb-2">
 							<Image
 								aria-hidden="true"
 								src={require("/src/_images/logo/star_orange.svg")}
@@ -81,9 +77,9 @@ export default function FormationPage({ params }: { params: any }) {
 								title="Logo Ipseis"
 								width={40}
 								height={40}
-								className="h-10 w-10 flex-none"
+								className="h-10 w-10 flex-none -mt-2.5"
 							/>
-							<span className="flex items-center">{el}</span>
+							<span>{el}</span>
 						</li>
 					))}
 				</div>
@@ -91,16 +87,16 @@ export default function FormationPage({ params }: { params: any }) {
 				{/* Programme */}
 
 				<div>
-					<h2 className="mt-10 mb-5 text-pretty text-2xl font-semibold tracking-tight flex items-center gap-x-2">
+					<h2 className="mt-10 mb-5 text-lg sm:text-xl font-semibold tracking-tight flex items-center gap-x-2">
 						<FontAwesomeIcon icon={faListCheck} />
 						Programme
 					</h2>
 					{trainingData?.program.map((el: string, index: number) => (
-						<li key={index} className="flex">
-							<div className="h-10 min-w-10 flex items-center justify-center text-cohesion">
-								<FontAwesomeIcon icon={faCheck} className="flex-none" />
+						<li key={index} className="flex mb-2">
+							<div className="h-10 min-w-10 flex justify-center text-cohesion">
+								<FontAwesomeIcon icon={faCheck} className="flex-none mt-1" />
 							</div>
-							<span className="flex items-center">{el}</span>
+							<span>{el}</span>
 						</li>
 					))}
 				</div>
@@ -108,17 +104,17 @@ export default function FormationPage({ params }: { params: any }) {
 				{/* Méthodes pédagogiques */}
 
 				<div>
-					<h2 className="mt-10 mb-5 text-pretty text-2xl font-semibold tracking-tight flex items-center gap-x-2">
+					<h2 className="mt-10 mb-5 text-lg sm:text-xl font-semibold tracking-tight flex items-center gap-x-2">
 						<FontAwesomeIcon icon={faHeadSideBrain} />
 						Méthodologie
 					</h2>
-					<div className="grid grid-cols-1 sm:grid-cols-2 gap-0 sm:gap-3">
+					<div className="grid grid-cols-2 gap-3">
 						{trainingData?.pedagogical_methods.map((el: string, index: number) => (
-							<li key={index} className="flex ring-0 sm:ring-1 ring-cohesion rounded-lg p-0 sm:p-2">
-								<div className="h-10 min-w-10 flex items-center justify-center text-cohesion">
-									<FontAwesomeIcon icon={faHandBackPointRight} className="flex-none" />
+							<li key={index} className="flex ring-0 sm:ring-1 ring-cohesion rounded-lg p-0 sm:p-2 mb-2 sm:mb-0">
+								<div className="h-10 min-w-10 flex justify-center text-cohesion">
+									<FontAwesomeIcon icon={faHandBackPointRight} className="flex-none mt-1" />
 								</div>
-								<span className="flex items-center">{el}</span>
+								<span>{el}</span>
 							</li>
 						))}
 					</div>
@@ -127,7 +123,7 @@ export default function FormationPage({ params }: { params: any }) {
 				{/* Infos pratiques */}
 
 				<div>
-					<h2 className="mt-10 mb-5 text-pretty text-2xl font-semibold tracking-tight flex items-center gap-x-2">
+					<h2 className="mt-10 mb-5 text-lg sm:text-xl font-semibold tracking-tight flex items-center gap-x-2">
 						<FontAwesomeIcon icon={faCircleInfo} />
 						Infos pratiques
 					</h2>
@@ -142,10 +138,10 @@ export default function FormationPage({ params }: { params: any }) {
 							</div>
 							{trainingData?.evaluation_methods.map((el: string, index: number) => (
 								<li key={index} className="flex">
-									<div className="h-10 min-w-10 flex items-center justify-center">
-										<FontAwesomeIcon icon={faCheck} className="flex-none" />
+									<div className="h-10 min-w-10 flex justify-center">
+										<FontAwesomeIcon icon={faCheck} className="flex-none mt-1" />
 									</div>
-									<span className="flex items-center">{el}</span>
+									<span>{el}</span>
 								</li>
 							))}
 						</li>
@@ -185,7 +181,7 @@ export default function FormationPage({ params }: { params: any }) {
 								<div className="h-10 min-w-10 flex items-center justify-center text-cohesion">
 									<FontAwesomeIcon icon={faUsersMedical} className="flex-none" />
 								</div>
-								<h3 className="font-semibold">Nombre de stagiaires</h3>
+								<h3 className="font-semibold">Capacité</h3>
 							</div>
 							<span className="flex items-center ml-3">{trainingData?.number_of_trainees}</span>
 						</li>
