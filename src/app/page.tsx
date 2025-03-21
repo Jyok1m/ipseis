@@ -106,7 +106,7 @@ export default function Accueil() {
 			<div className="rounded-3xl py-10 px-6 mt-12 flex flex-col items-center">
 				<div className="mx-auto max-w-2xl text-center mb-16 text-univers">
 					<h2 className="text-lg font-semibold leading-6 text-cohesion">100% personnalisé</h2>
-					<h1 className="mt-2 text-2xl sm:text-4xl font-bold tracking-wider text-center uppercase">Parlons de vos besoins</h1>
+					<h1 className="mt-2 text-2xl sm:text-4xl font-bold tracking-wider text-center">Parlons de vos besoins</h1>
 					<p className="mt-6 text-md sm:text-lg leading-6">
 						Notre équipe est à votre disposition pour répondre à vos questions et vous accompagner dans le choix de votre formation.
 					</p>
