@@ -164,7 +164,7 @@ export default function CataloguePage() {
 				theme={{
 					components: {
 						Modal: {
-							titleFontSize: 20,
+							titleFontSize: 18,
 							titleColor: "#263c27",
 							headerBg: "#fffce8",
 							contentBg: "#fffce8",
@@ -192,7 +192,7 @@ export default function CataloguePage() {
 									className="flex justify-center items-center aspect-1 ring-2 ring-cohesion/30 hover:ring-cohesion cursor-pointer rounded-xl shadow-2xl p-2 hover:transform hover:scale-105 duration-500"
 								>
 									<p
-										className="text-wrap text-center text-univers text-[10px] sm:text-xs md:text-sm lg:text-md font-semibold"
+										className="text-wrap text-center text-univers text-xs sm:text-base font-semibold"
 										onClick={() => console.log(training.title)}
 									>
 										{training.title}
