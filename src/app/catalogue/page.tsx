@@ -125,7 +125,7 @@ export default function CataloguePage() {
 	/* ---------------------------------------------------------------- */
 
 	return (
-		<div className="bg-support py-8 h-full">
+		<div className="bg-support py-8 min-h-screen">
 			<div className="mx-auto max-w-7xl px-6 lg:px-8 flex flex-col items-center">
 				<div className="mx-auto max-w-2xl text-center text-univers mb-16">
 					<h1 className="mt-2 text-2xl font-bold tracking-wider sm:text-4xl text-center uppercase">Catalogue de formations</h1>
