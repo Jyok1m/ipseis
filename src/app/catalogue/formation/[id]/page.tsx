@@ -70,7 +70,7 @@ export default function FormationPage({ params }: { params: any }) {
 	}, [trainingData]);
 
 	const handleRouting = (trainingId: string) => {
-		router.push(`/catalogue/formation/${trainingId}`);
+		router.replace(`/catalogue/formation/${trainingId}`);
 	};
 
 	return (
