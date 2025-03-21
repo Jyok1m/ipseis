@@ -98,7 +98,7 @@ export default function Accueil() {
 							</p>
 							<div className="mt-10 w-full flex sm:justify-start justify-center">
 								<button
-									onClick={() => router.push("/formations")}
+									onClick={() => router.push("/catalogue")}
 									className="bg-maitrise text-support py-3 px-5 rounded-xl hover:opacity-80 shadow-2xl text-xl"
 								>
 									Parcourir nos formations
