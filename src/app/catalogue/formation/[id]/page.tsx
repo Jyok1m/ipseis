@@ -99,14 +99,16 @@ export default function FormationPage({ params }: { params: any }) {
 						<FontAwesomeIcon icon={faHeadSideBrain} />
 						Méthodologie
 					</h2>
-					{trainingData?.pedagogical_methods.map((el: string, index: number) => (
-						<li key={index} className="flex gap-x-3">
-							<div className="h-10 min-w-10 flex items-center justify-center text-cohesion">
-								<FontAwesomeIcon icon={faHandBackPointRight} className="flex-none" />
-							</div>
-							<span className="flex items-center">{el}</span>
-						</li>
-					))}
+					<div className="grid grid-cols-1 sm:grid-cols-2 gap-0 sm:gap-3">
+						{trainingData?.pedagogical_methods.map((el: string, index: number) => (
+							<li key={index} className="flex gap-x-3 ring-0 sm:ring-1 ring-cohesion rounded-lg p-0 sm:p-2">
+								<div className="h-10 min-w-10 flex items-center justify-center text-cohesion">
+									<FontAwesomeIcon icon={faHandBackPointRight} className="flex-none" />
+								</div>
+								<span className="flex items-center">{el}</span>
+							</li>
+						))}
+					</div>
 				</div>
 
 				{/* Infos pratiques */}
