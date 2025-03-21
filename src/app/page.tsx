@@ -38,7 +38,7 @@ const posts = [
 export default function Accueil() {
 	const router = useRouter();
 	return (
-		<div className="overflow-x-hidden">
+		<div>
 			{/* Hero section */}
 			<div className="flex flex-col-reverse lg:flex-row lg:justify-between lg:items-center bg-univers">
 				<div className="bg-univers flex justify-evenly py-10">
