@@ -1,31 +1,47 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
+import axios from "axios";
 import { CheckCircleIcon, InformationCircleIcon } from "@heroicons/react/20/solid";
 
 export default function FormationPage() {
 	const params = useSearchParams();
 	const trainingId = params.get("id");
 
+	const [trainingData, setTrainingData] = useState<any>(null);
 	const [isLoaded, setIsLoaded] = useState(false);
 
-	useEffect(() => {
-		if (trainingId) {
-			setIsLoaded(true);
+	console.log(trainingData);
+
+	/* ---------------------------------------------------------------- */
+	/*                           Effect Hooks                           */
+	/* ---------------------------------------------------------------- */
+
+	const fetchtrainingData = useCallback(async () => {
+		try {
+			const response = await axios.get(`${process.env.BACKEND_URL}/trainings/by-id/${trainingId}`);
+			if (response.status === 200) {
+				setTrainingData(response.data);
+			}
+		} catch (error) {
+			console.error("Erreur lors de la récupération des thématiques :", error);
 		}
-	}, [trainingId]);
+	}, []);
 
-	console.log(params.get("id"));
+	useEffect(() => {
+		fetchtrainingData();
 
-	if (!isLoaded) {
-		return <div className="bg-support px-6 py-32 lg:px-8"></div>;
-	}
+		return () => {
+			setTrainingData(null);
+			setIsLoaded(false);
+		};
+	}, [fetchtrainingData]);
 
 	return (
 		<div className="bg-support px-6 py-32 lg:px-8">
-			<div className="mx-auto max-w-3xl text-base/7 text-gray-700">
-				<p className="text-base/7 font-semibold text-indigo-600">Introducing</p>
+			<div className="mx-auto max-w-3xl text-base/7 text-univers">
+				<p className="text-base/7 font-semibold text-indigo-600">{trainingData?.theme}</p>
 				<h1 className="mt-2 text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">JavaScript for beginners</h1>
 				<p className="mt-6 text-xl/8">
 					Aliquet nec orci mattis amet quisque ullamcorper neque, nibh sem. At arcu, sit dui mi, nibh dui, diam eget aliquam. Quisque id at vitae

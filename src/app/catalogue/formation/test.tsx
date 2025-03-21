@@ -7,7 +7,7 @@ import Link from "next/link";
 import { InformationCircleIcon } from "@heroicons/react/20/solid";
 import { formations } from "@/app/static/catalogue";
 
-export default function TrainingPage({ params }: { params: { trainingId: string } }) {
+export default function TrainingPage({ params }: { params: any }) {
 	const formation = formations.find((formation) => formation.id === parseInt(params.id));
 
 	return (
