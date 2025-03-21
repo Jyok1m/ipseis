@@ -33,42 +33,12 @@ const posts = [
 				"https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
 		},
 	},
-	// {
-	// 	id: 2,
-	// 	title: "Gérontologie, gériatrie, personnes âgées",
-	// 	href: "/formations",
-	// 	description:
-	// 		"Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel. Iusto corrupti dicta.",
-	// 	imageUrl: "/images/formations/2.jpg",
-	// 	date: "Mar 16, 2020",
-	// 	datetime: "2020-03-16",
-	// 	author: {
-	// 		name: "Michael Foster",
-	// 		imageUrl:
-	// 			"https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-	// 	},
-	// },
-	// {
-	// 	id: 3,
-	// 	title: "Personnes en situation de Handicap",
-	// 	href: "/formations",
-	// 	description:
-	// 		"Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel. Iusto corrupti dicta.",
-	// 	imageUrl: "/images/formations/3.jpg",
-	// 	date: "Mar 16, 2020",
-	// 	datetime: "2020-03-16",
-	// 	author: {
-	// 		name: "Michael Foster",
-	// 		imageUrl:
-	// 			"https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-	// 	},
-	// },
 ];
 
 export default function Accueil() {
 	const router = useRouter();
 	return (
-		<div>
+		<div className="overflow-x-hidden">
 			{/* Hero section */}
 			<div className="flex flex-col-reverse lg:flex-row lg:justify-between lg:items-center bg-univers">
 				<div className="bg-univers flex justify-evenly py-10">
