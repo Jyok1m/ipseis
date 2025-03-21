@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
 	faBullseyePointer,
@@ -17,16 +18,16 @@ import {
 	faCalendarClock,
 	faCircleEuro,
 } from "@fortawesome/pro-regular-svg-icons";
+import Link from "next/link";
 import Image from "next/image";
 import axios from "axios";
 
 export default function FormationPage({ params }: { params: any }) {
+	const router = useRouter();
 	const trainingId = params?.id ?? "";
 
 	const [trainingData, setTrainingData] = useState<any>(null);
-	const [isLoaded, setIsLoaded] = useState(false);
-
-	console.log(trainingData);
+	const [catalogue, setCatalogue] = useState<any>([]);
 
 	/* ---------------------------------------------------------------- */
 	/*                           Effect Hooks                           */
@@ -48,17 +49,37 @@ export default function FormationPage({ params }: { params: any }) {
 
 		return () => {
 			setTrainingData(null);
-			setIsLoaded(false);
 		};
 	}, [fetchtrainingData]);
+
+	const fetchCatalogue = async () => {
+		try {
+			const response = await axios.get(`${process.env.BACKEND_URL}/trainings/by-theme/${trainingData?.themeId}`);
+			if (response.status === 200) {
+				setCatalogue(response.data.filter((el: any) => el._id !== trainingData?._id));
+			}
+		} catch (error) {
+			console.error("Erreur lors de la récupération du catalogue :", error);
+		}
+	};
+
+	useEffect(() => {
+		if (trainingData) {
+			fetchCatalogue();
+		}
+	}, [trainingData]);
+
+	const handleRouting = (trainingId: string) => {
+		router.push(`/catalogue/formation/${trainingId}`);
+	};
 
 	return (
 		<div className="bg-support px-6 pt-8 lg:px-8 text-sm sm:text-base text-pretty">
 			<div className="mx-auto max-w-3xl text-univers">
 				{/* Section titre */}
 				<div>
-					<h1 className="mt-2 text-4xl font-semibold tracking-tight sm:text-5xl">{trainingData?.title}</h1>
-					<p className="text-lg font-semibold text-cohesion">{trainingData?.theme}</p>
+					<h1 className="mt-2 text-2xl font-semibold tracking-tight sm:text-5xl">{trainingData?.title}</h1>
+					<p className="text-md font-semibold text-cohesion">{trainingData?.theme}</p>
 				</div>
 
 				{/* Section objectifs pédagogiques */}
@@ -110,7 +131,7 @@ export default function FormationPage({ params }: { params: any }) {
 					</h2>
 					<div className="grid grid-cols-2 gap-3">
 						{trainingData?.pedagogical_methods.map((el: string, index: number) => (
-							<li key={index} className="flex ring-0 sm:ring-1 ring-cohesion rounded-lg p-0 sm:p-2 mb-2 sm:mb-0">
+							<li key={index} className="flex rounded-lg p-0 sm:p-2 mb-2 sm:mb-0">
 								<div className="h-10 min-w-10 flex justify-center text-cohesion">
 									<FontAwesomeIcon icon={faHandBackPointRight} className="flex-none mt-1" />
 								</div>
@@ -123,7 +144,7 @@ export default function FormationPage({ params }: { params: any }) {
 				{/* Infos pratiques */}
 
 				<div>
-					<h2 className="mt-10 mb-5 text-lg sm:text-xl font-semibold tracking-tight flex items-center gap-x-2">
+					<h2 className="mt-10 mb-3 sm:mb-5 text-lg sm:text-xl font-semibold tracking-tight flex items-center gap-x-2">
 						<FontAwesomeIcon icon={faCircleInfo} />
 						Infos pratiques
 					</h2>
@@ -207,13 +228,43 @@ export default function FormationPage({ params }: { params: any }) {
 						</li>
 					</div>
 				</div>
+			</div>
 
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
+			<div className="mx-auto mt-20 max-w-3xl text-univers">
+				<div>
+					<h1 className="mt-2 text-2xl font-semibold tracking-tight sm:text-5xl text-center">Nos autres formations</h1>
+					<p className="my-3 leading-6 text-base sm:text-lg text-center">
+						Découvrez nos autres formations portant sur le thème : <span className="font-semibold text-cohesion">{trainingData?.theme}</span>
+					</p>
+				</div>
+
+				<div className="grid grid-cols-2 sm:grid-cols-3 gap-3 items-center justify-center mx-auto py-3">
+					{catalogue.map((training: any) => (
+						<div
+							key={training._id}
+							onClick={() => handleRouting(training._id)}
+							className="flex justify-center items-center aspect-1 ring-2 ring-cohesion/30 hover:ring-cohesion cursor-pointer rounded-xl shadow-2xl p-2 hover:transform hover:scale-105 duration-500"
+						>
+							<p className="text-wrap text-center text-univers text-xs sm:text-base font-semibold">{training.title}</p>
+						</div>
+					))}
+				</div>
+			</div>
+
+			<div className="mx-auto max-w-3xl bg-maitrise mt-20 rounded-3xl">
+				<div className="px-6 py-12 sm:px-6 lg:px-8">
+					<div className="mx-auto max-w-2xl text-center">
+						<h2 className="text-balance text-3xl font-semibold tracking-tight text-support sm:text-5xl">Vous souhaitez en savoir plus ?</h2>
+						<div className="mt-10 flex items-center justify-center gap-x-6">
+							<Link
+								href="/contact"
+								className="rounded-md bg-univers px-3 py-3 text-md md:text-lg text-support font-normal shadow-sm hover:bg-univers/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maitrise"
+							>
+								<span className="flex items-center gap-x-2 text-support">Contactez-nous</span>
+							</Link>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	);

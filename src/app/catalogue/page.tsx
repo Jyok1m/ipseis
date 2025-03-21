@@ -191,12 +191,7 @@ export default function CataloguePage() {
 									onClick={() => handleRouting(training._id)}
 									className="flex justify-center items-center aspect-1 ring-2 ring-cohesion/30 hover:ring-cohesion cursor-pointer rounded-xl shadow-2xl p-2 hover:transform hover:scale-105 duration-500"
 								>
-									<p
-										className="text-wrap text-center text-univers text-xs sm:text-base font-semibold"
-										onClick={() => console.log(training.title)}
-									>
-										{training.title}
-									</p>
+									<p className="text-wrap text-center text-univers text-xs sm:text-base font-semibold">{training.title}</p>
 								</div>
 							))}
 						</div>
