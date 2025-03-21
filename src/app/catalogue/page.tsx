@@ -10,10 +10,10 @@ import axios from "axios";
 
 const ThemeBubble = memo(({ theme, index, onClick }: any) => {
 	const positions = [
-		"col-start-2 row-start-1", // Haut
-		"col-start-3 row-start-2", // Droite
-		"col-start-2 row-start-3", // Bas
-		"col-start-1 row-start-2", // Gauche
+		"col-start-2 row-start-1 justify-self-center w-[130px] sm:w-full", // Haut
+		"col-start-3 row-start-2 justify-self-center w-[130px] sm:w-full", // Droite
+		"col-start-2 row-start-3 justify-self-center w-[130px] sm:w-full", // Bas
+		"col-start-1 row-start-2 justify-self-center w-[130px] sm:w-full", // Gauche
 	];
 
 	return (
@@ -22,20 +22,20 @@ const ThemeBubble = memo(({ theme, index, onClick }: any) => {
 			onClick={onClick}
 			className={clsx(
 				index === 0
-					? "hover:-translate-y-5"
+					? "sm:hover:-translate-y-5"
 					: index === 1
-					? "hover:translate-x-5"
+					? "sm:hover:translate-x-5"
 					: index === 2
-					? "hover:translate-y-5"
+					? "sm:hover:translate-y-5"
 					: index === 3
-					? "hover:-translate-x-5"
+					? "sm:hover:-translate-x-5"
 					: "",
 				`${
 					positions[index % positions.length]
-				} flex justify-center items-center aspect-1 ring-2 ring-cohesion/30 hover:ring-cohesion cursor-pointer rounded-full shadow-2xl p-2 hover:transform hover:scale-105 duration-500`
+				} flex justify-center items-center aspect-1 ring-2 ring-cohesion/30 hover:ring-cohesion cursor-pointer rounded-full shadow-2xl p-2 hover:transform hover:scale-110 duration-500`
 			)}
 		>
-			<h2 className="text-univers text-[10px] sm:text-xs md:text-sm lg:text-md font-bold text-center">{theme.title}</h2>
+			<h2 className="text-univers text-xs sm:text-base font-semibold text-center">{theme.title}</h2>
 		</div>
 	);
 });
@@ -129,7 +129,7 @@ export default function CataloguePage() {
 			<div className="mx-auto max-w-7xl px-6 lg:px-8 flex flex-col items-center">
 				<div className="mx-auto max-w-2xl text-center text-univers mb-16">
 					<h1 className="mt-2 text-2xl font-bold tracking-wider sm:text-4xl text-center uppercase">Catalogue de formations</h1>
-					<p className="mt-6 text-md sm:text-xl leading-6">
+					<p className="mt-6 leading-6 text-base sm:text-lg">
 						Découvrez nos secteurs d&apos;activité et explorez les différentes thématiques que nous proposons pour répondre à vos besoins
 						professionnels.
 					</p>

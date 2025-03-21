@@ -19,7 +19,6 @@ import {
 } from "@fortawesome/pro-regular-svg-icons";
 import Image from "next/image";
 import axios from "axios";
-import { CheckCircleIcon, InformationCircleIcon } from "@heroicons/react/20/solid";
 
 export default function FormationPage({ params }: { params: any }) {
 	const trainingId = params?.id ?? "";
@@ -55,7 +54,7 @@ export default function FormationPage({ params }: { params: any }) {
 
 	return (
 		<div className="bg-support px-6 py-8 lg:px-8">
-			<div className="mx-auto max-w-3xl text-base/7 text-univers">
+			<div className="mx-auto max-w-3xl text-xs text-univers">
 				{/* Section titre */}
 				<div>
 					<p className="text-lg font-semibold text-cohesion">{trainingData?.theme}</p>
