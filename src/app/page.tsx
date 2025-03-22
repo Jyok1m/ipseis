@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+import { SectionWrapper } from "@/components/global/Wrappers";
 import SectionTitle from "@/components/global/SectionTitle";
 import ContactForm from "@/components/home/ContactForm";
 
@@ -11,7 +12,7 @@ export default function Accueil() {
 	return (
 		<div className="w-screen">
 			{/* Hero section */}
-			<div className="flex flex-col-reverse lg:flex-row lg:justify-between lg:items-center bg-univers">
+			<div className="flex flex-col-reverse lg:flex-row lg:justify-between lg:items-center bg-univers mb-10">
 				<div className="bg-univers flex justify-evenly py-10">
 					<div className="lg:w-1/2">
 						<div className="text-2xl sm:text-4xl font-bold tracking-widest text-support bg-univers p-10 pb-5">
@@ -48,14 +49,12 @@ export default function Accueil() {
 			</div>
 
 			{/* Logo cloud */}
-			<div className="mx-auto max-w-7xl px-6 lg:px-8 pb-20 mt-24 text-univers">
+			<SectionWrapper>
 				<SectionTitle
 					tag="Des formations reconnues"
 					title="Certifié Qualiopi"
 					description="Notre organisme de formation est aggréé Qualiopi, prouvant notre engagement dans la qualité et la pertinence de notre enseignement."
 				/>
-
-				{/* <div className="mx-auto grid max-w-lg grid-cols-1 items-center gap-x-8 gap-y-12 sm:max-w-xl sm:grid-cols-6 sm:gap-x-10 sm:gap-y-14 lg:mx-0 lg:max-w-none lg:grid-cols-3"> */}
 				<div className="w-full flex justify-center">
 					<Image
 						title={"Logo Qualiopi"}
@@ -67,26 +66,24 @@ export default function Accueil() {
 					/>
 				</div>
 
-				{/* </div> */}
-
 				<div className="mt-16 flex items-center justify-center gap-x-6">
 					<Link href="/catalogue" className="text-base font-semibold leading-6 hover:underline hover:underline-offset-4">
 						Voir nos formations <span aria-hidden="true">→</span>
 					</Link>
 				</div>
-			</div>
+			</SectionWrapper>
+
+			<div className="mx-auto max-w-[95%] border-t border-cohesion" />
 
 			{/* Contact form */}
-			<div className="rounded-3xl py-10 px-6 mt-12 flex flex-col items-center">
-				<div className="mx-auto max-w-2xl text-center mb-16 text-univers">
-					<h2 className="text-lg font-semibold leading-6 text-cohesion">100% personnalisé</h2>
-					<h1 className="mt-2 text-2xl sm:text-4xl font-bold tracking-wider text-center">Parlons de vos besoins</h1>
-					<p className="mt-6 text-base sm:text-lg leading-6">
-						Notre équipe est à votre disposition pour répondre à vos questions et vous accompagner dans le choix de votre formation.
-					</p>
-				</div>
+			<SectionWrapper>
+				<SectionTitle
+					tag="100% personnalisé"
+					title="Parlons de vos besoins"
+					description="Notre équipe est à votre disposition pour répondre à vos questions et vous accompagner dans le choix de votre formation."
+				/>
 				<ContactForm />
-			</div>
+			</SectionWrapper>
 		</div>
 	);
 }
