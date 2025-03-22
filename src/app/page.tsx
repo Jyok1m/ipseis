@@ -33,42 +33,12 @@ const posts = [
 				"https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
 		},
 	},
-	// {
-	// 	id: 2,
-	// 	title: "Gérontologie, gériatrie, personnes âgées",
-	// 	href: "/formations",
-	// 	description:
-	// 		"Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel. Iusto corrupti dicta.",
-	// 	imageUrl: "/images/formations/2.jpg",
-	// 	date: "Mar 16, 2020",
-	// 	datetime: "2020-03-16",
-	// 	author: {
-	// 		name: "Michael Foster",
-	// 		imageUrl:
-	// 			"https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-	// 	},
-	// },
-	// {
-	// 	id: 3,
-	// 	title: "Personnes en situation de Handicap",
-	// 	href: "/formations",
-	// 	description:
-	// 		"Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel. Iusto corrupti dicta.",
-	// 	imageUrl: "/images/formations/3.jpg",
-	// 	date: "Mar 16, 2020",
-	// 	datetime: "2020-03-16",
-	// 	author: {
-	// 		name: "Michael Foster",
-	// 		imageUrl:
-	// 			"https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-	// 	},
-	// },
 ];
 
 export default function Accueil() {
 	const router = useRouter();
 	return (
-		<div>
+		<div className="w-screen">
 			{/* Hero section */}
 			<div className="flex flex-col-reverse lg:flex-row lg:justify-between lg:items-center bg-univers">
 				<div className="bg-univers flex justify-evenly py-10">
@@ -83,7 +53,7 @@ export default function Accueil() {
 						</div>
 						<div className="p-10">
 							<p className="text-base sm:text-xl text-support">
-								Ipseis est un organisme de formation dédiée aux professionnels de santé. Les formations que nous proposons s&apos;axent sur
+								Ipseis est un organisme de formation dédié aux professionnels de santé. Les formations que nous proposons s&apos;axent sur
 								l&apos;accompagnement dans le secteur des soins pour les professionnels de santé et les particuliers.
 							</p>
 							<div className="mt-5 w-full flex justify-start">
@@ -109,9 +79,9 @@ export default function Accueil() {
 			{/* Logo cloud */}
 			<div className="mx-auto max-w-7xl px-6 lg:px-8 pb-20 mt-24 text-univers">
 				<SectionTitle
-					tag="Une formation reconnue"
+					tag="Des formations reconnues"
 					title="Certifié Qualiopi"
-					description="Notre organisme de formation est aggréé Qualiopi, prouvant notre engagement dans la qualité de notre enseignement."
+					description="Notre organisme de formation est aggréé Qualiopi, prouvant notre engagement dans la qualité et la pertinence de notre enseignement."
 				/>
 
 				<div className="mx-auto grid max-w-lg grid-cols-1 items-center gap-x-8 gap-y-12 sm:max-w-xl sm:grid-cols-6 sm:gap-x-10 sm:gap-y-14 lg:mx-0 lg:max-w-none lg:grid-cols-3">
@@ -136,7 +106,7 @@ export default function Accueil() {
 			<div className="rounded-3xl py-10 px-6 mt-12 flex flex-col items-center">
 				<div className="mx-auto max-w-2xl text-center mb-16 text-univers">
 					<h2 className="text-lg font-semibold leading-6 text-cohesion">100% personnalisé</h2>
-					<h1 className="mt-2 text-2xl sm:text-4xl font-bold tracking-wider text-center uppercase">Parlons de vos besoins</h1>
+					<h1 className="mt-2 text-2xl sm:text-4xl font-bold tracking-wider text-center">Parlons de vos besoins</h1>
 					<p className="mt-6 text-md sm:text-lg leading-6">
 						Notre équipe est à votre disposition pour répondre à vos questions et vous accompagner dans le choix de votre formation.
 					</p>
