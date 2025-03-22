@@ -100,7 +100,7 @@ export default function ContactForm() {
 			<div className="mx-auto max-w-xl">
 				<div className="flex flex-col gap-16 sm:gap-y-20 lg:flex-row">
 					<div className="lg:flex-auto">
-						<div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+						<div className="grid grid-cols-1 gap-x-8 gap-y-5 sm:grid-cols-2">
 							<InputWrapper label="Prénom">
 								<TextInput
 									onChange={(e: any) => setFirstName(e.target.value)}
