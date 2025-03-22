@@ -3,40 +3,11 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 import SectionTitle from "@/components/global/SectionTitle";
-import FeaturedCompanyLogo from "@/components/utils/FeaturedCompanyLogo";
 import ContactForm from "@/components/home/ContactForm";
 
-const featuredLogos = [
-	{
-		name: "Transistor",
-		alt: "Transistor",
-		image: "https://tailwindui.com/img/logos/158x48/transistor-logo-gray-900.svg",
-	},
-];
-
-const posts = [
-	{
-		id: 1,
-		title: "Accueil, communication",
-		href: "/formations",
-		description:
-			"Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel. Iusto corrupti dicta.",
-		imageUrl: "/images/formations/1.jpg",
-		date: "Mar 16, 2020",
-		datetime: "2020-03-16",
-		author: {
-			name: "Michael Foster",
-			imageUrl:
-				"https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-		},
-	},
-];
-
 export default function Accueil() {
-	const router = useRouter();
 	return (
 		<div className="w-screen">
 			{/* Hero section */}
