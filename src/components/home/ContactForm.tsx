@@ -7,8 +7,8 @@ import { Spin } from "antd";
 
 import Notification from "@/components/utils/Notification";
 
-const InputWrapper = ({ label, children, otherProps }: { label: string; children: React.ReactNode; otherProps?: any }) => (
-	<div {...otherProps}>
+const InputWrapper = ({ label, children, className }: { label: string; children: React.ReactNode; className?: string }) => (
+	<div className={className}>
 		<label htmlFor={label} className="text-base sm:text-lg leading-6 text-support font-semibold">
 			{label}
 		</label>
@@ -144,7 +144,7 @@ export default function ContactForm() {
 									placeholder="ex. jean.dupont@test.fr"
 								/>
 							</InputWrapper>
-							<InputWrapper label="Message">
+							<InputWrapper label="Message" className="col-span-full sm:col-span-2">
 								<TextAreaInput
 									onChange={(e: any) => setMessage(e.target.value)}
 									value={message}
