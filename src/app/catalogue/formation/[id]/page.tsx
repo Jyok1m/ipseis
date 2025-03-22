@@ -79,7 +79,7 @@ export default function FormationPage({ params }: { params: any }) {
 				{/* Section titre */}
 				<div>
 					<h1 className="mt-2 text-2xl font-semibold tracking-tight sm:text-5xl">{trainingData?.title}</h1>
-					<p className="text-md font-semibold text-cohesion">{trainingData?.theme}</p>
+					<p className="text-base font-semibold text-cohesion">{trainingData?.theme}</p>
 				</div>
 
 				{/* Section objectifs pédagogiques */}
@@ -258,7 +258,7 @@ export default function FormationPage({ params }: { params: any }) {
 						<div className="mt-10 flex items-center justify-center gap-x-6">
 							<Link
 								href="/contact"
-								className="rounded-md bg-univers px-3 py-3 text-md md:text-lg text-support font-normal shadow-sm hover:bg-univers/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maitrise"
+								className="rounded-md bg-univers px-3 py-3 text-base md:text-lg text-support font-normal shadow-sm hover:bg-univers/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maitrise"
 							>
 								<span className="flex items-center gap-x-2 text-support">Contactez-nous</span>
 							</Link>

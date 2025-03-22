@@ -1,12 +1,45 @@
 "use client";
 
 import React, { useState } from "react";
-import Image from "next/image";
 
 import { LoadingOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
 
 import Notification from "@/components/utils/Notification";
+
+const InputWrapper = ({ label, children, otherProps }: { label: string; children: React.ReactNode; otherProps?: any }) => (
+	<div {...otherProps}>
+		<label htmlFor={label} className="text-base sm:text-lg leading-6 text-support font-semibold">
+			{label}
+		</label>
+		<div className="mt-2.5">{children}</div>
+	</div>
+);
+
+const TextInput = ({ onChange, value, id, name, type, autoComplete, placeholder }: any) => (
+	<input
+		onChange={onChange}
+		value={value}
+		id={id}
+		name={name}
+		type={type}
+		autoComplete={autoComplete}
+		placeholder={placeholder}
+		className="block w-full rounded-md px-3 py-2 text-gray-900 shadow-sm placeholder:text-univers placeholder:opacity-30 text-sm sm:text-base"
+	/>
+);
+
+const TextAreaInput = ({ onChange, value, id, name, rows, placeholder }: any) => (
+	<textarea
+		onChange={onChange}
+		value={value}
+		id={id}
+		name={name}
+		rows={rows}
+		placeholder={placeholder}
+		className="block w-full rounded-md px-3 py-2 text-gray-900 shadow-sm placeholder:text-univers placeholder:opacity-30 text-sm sm:text-base"
+	/>
+);
 
 export default function ContactForm() {
 	const [firstName, setFirstName] = useState("");
@@ -68,89 +101,60 @@ export default function ContactForm() {
 				<div className="flex flex-col gap-16 sm:gap-y-20 lg:flex-row">
 					<div className="lg:flex-auto">
 						<div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
-							<div>
-								<label htmlFor="first-name" className="block text-sm sm:text-base lg:text-xl leading-6 text-support">
-									Prénom
-								</label>
-								<div className="mt-2.5">
-									<input
-										onChange={(e) => setFirstName(e.target.value)}
-										value={firstName}
-										id="first-name"
-										name="first-name"
-										type="text"
-										autoComplete="given-name"
-										placeholder="ex. Jean"
-										className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-univers text-xs sm:text-md sm:leading-6"
-									/>
-								</div>
-							</div>
-							<div>
-								<label htmlFor="last-name" className="block text-sm sm:text-base lg:text-xl leading-6 text-support">
-									Nom de famille
-								</label>
-								<div className="mt-2.5">
-									<input
-										onChange={(e) => setLastName(e.target.value)}
-										value={lastName}
-										id="last-name"
-										name="last-name"
-										type="text"
-										autoComplete="family-name"
-										placeholder="ex. Dupont"
-										className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-univers text-xs sm:text-md sm:leading-6"
-									/>
-								</div>
-							</div>
-							<div>
-								<label htmlFor="budget" className="block text-sm sm:text-base lg:text-xl leading-6 text-support">
-									Budget (€)
-								</label>
-								<div className="mt-2.5">
-									<input
-										onChange={(e) => setBudget(e.target.value)}
-										value={budget}
-										id="budget"
-										name="budget"
-										type="number"
-										placeholder="ex. 1500"
-										className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-univers text-xs sm:text-md sm:leading-6"
-									/>
-								</div>
-							</div>
-							<div>
-								<label htmlFor="email" className="block text-sm sm:text-base lg:text-xl leading-6 text-support">
-									Email
-								</label>
-								<div className="mt-2.5">
-									<input
-										onChange={(e) => setEmail(e.target.value)}
-										value={email}
-										id="email"
-										name="email"
-										type="email"
-										autoComplete="email"
-										placeholder="ex. jean.dupont@test.fr"
-										className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-univers text-xs sm:text-md sm:leading-6"
-									/>
-								</div>
-							</div>
-							<div className="sm:col-span-2">
-								<label htmlFor="message" className="block text-sm sm:text-base lg:text-xl leading-6 text-support">
-									Message
-								</label>
-								<div className="mt-2.5">
-									<textarea
-										onChange={(e) => setMessage(e.target.value)}
-										value={message}
-										id="message"
-										name="message"
-										rows={4}
-										placeholder="ex. Bonjour, je souhaiterais plus d'informations sur..."
-										className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-univers text-xs sm:text-md sm:leading-6"
-									/>
-								</div>
-							</div>
+							<InputWrapper label="Prénom">
+								<TextInput
+									onChange={(e: any) => setFirstName(e.target.value)}
+									value={firstName}
+									id="first-name"
+									name="first-name"
+									type="text"
+									autoComplete="given-name"
+									placeholder="ex. Jean"
+								/>
+							</InputWrapper>
+							<InputWrapper label="Nom de famille">
+								<TextInput
+									onChange={(e: any) => setLastName(e.target.value)}
+									value={lastName}
+									id="last-name"
+									name="last-name"
+									type="text"
+									autoComplete="family-name"
+									placeholder="ex. Dupont"
+								/>
+							</InputWrapper>
+							<InputWrapper label="Budget (€)">
+								<TextInput
+									onChange={(e: any) => setBudget(e.target.value)}
+									value={budget}
+									id="budget"
+									name="budget"
+									type="number"
+									placeholder="ex. 1500"
+								/>
+							</InputWrapper>
+							<InputWrapper label="Email">
+								<TextInput
+									onChange={(e: any) => setEmail(e.target.value)}
+									value={email}
+									id="email"
+									name="email"
+									type="email"
+									autoComplete="email"
+									placeholder="ex. jean.dupont@test.fr"
+								/>
+							</InputWrapper>
+							<InputWrapper label="Message">
+								<TextAreaInput
+									onChange={(e: any) => setMessage(e.target.value)}
+									value={message}
+									id="message"
+									name="message"
+									rows={4}
+									placeholder="ex. Bonjour, je souhaiterais plus d'informations sur..."
+									className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-univers text-xs sm:text-base sm:leading-6"
+								/>
+							</InputWrapper>
 						</div>
 						<div className="mt-10">
 							<button

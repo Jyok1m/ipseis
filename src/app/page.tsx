@@ -30,7 +30,7 @@ export default function Accueil() {
 							<div className="mt-5 w-full flex justify-start">
 								<Link
 									href="/catalogue"
-									className="rounded-md bg-maitrise px-3 py-2 sm:py-3 text-md md:text-lg text-support font-normal shadow-sm hover:bg-maitrise/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maitrise"
+									className="rounded-md bg-maitrise px-3 py-2 sm:py-3 text-base md:text-lg text-support font-normal shadow-sm hover:bg-maitrise/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maitrise"
 								>
 									<span className="flex items-center gap-x-2 text-support">Parcourir nos formations</span>
 								</Link>
@@ -70,7 +70,7 @@ export default function Accueil() {
 				{/* </div> */}
 
 				<div className="mt-16 flex items-center justify-center gap-x-6">
-					<Link href="/catalogue" className="text-md font-semibold leading-6 hover:underline hover:underline-offset-4">
+					<Link href="/catalogue" className="text-base font-semibold leading-6 hover:underline hover:underline-offset-4">
 						Voir nos formations <span aria-hidden="true">→</span>
 					</Link>
 				</div>
@@ -81,7 +81,7 @@ export default function Accueil() {
 				<div className="mx-auto max-w-2xl text-center mb-16 text-univers">
 					<h2 className="text-lg font-semibold leading-6 text-cohesion">100% personnalisé</h2>
 					<h1 className="mt-2 text-2xl sm:text-4xl font-bold tracking-wider text-center">Parlons de vos besoins</h1>
-					<p className="mt-6 text-md sm:text-lg leading-6">
+					<p className="mt-6 text-base sm:text-lg leading-6">
 						Notre équipe est à votre disposition pour répondre à vos questions et vous accompagner dans le choix de votre formation.
 					</p>
 				</div>
