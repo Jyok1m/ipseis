@@ -1,18 +1,18 @@
 import React from "react";
 
+import { PageWrapper } from "@/components/global/Wrappers";
+import SectionTitle from "@/components/global/SectionTitle";
 import ContactForm from "@/components/home/ContactForm";
 
 export default function Contact() {
 	return (
-		<div className="rounded-3xl py-10 px-6 mt-12 flex flex-col items-center">
-			<div className="mx-auto max-w-2xl text-center mb-16 text-univers">
-				<h1 className="mt-2 text-4xl font-bold tracking-wider sm:text-4xl text-center uppercase">Parlons de vos besoins</h1>
-				<p className="mt-6 text-xl leading-6">
-					Quis tellus eget adipiscing convallis sit sit eget aliquet quis. Suspendisse eget egestas a elementum pulvinar et feugiat blandit at. In mi
-					viverra elit nunc.
-				</p>
-			</div>
+		<PageWrapper>
+			<SectionTitle
+				tag="Parlons de vos besoins"
+				title="Formulaire de contact"
+				description="Si vous souhaitez en savoir plus sur nos formations, nos tarifs ou nos disponibilités, n'hésitez pas à nous contacter via le formulaire ci-dessous."
+			/>
 			<ContactForm />
-		</div>
+		</PageWrapper>
 	);
 }
