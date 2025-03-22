@@ -71,7 +71,7 @@ export default function Accueil() {
 						alt="Étoile Ipseis"
 						width={500}
 						height={500}
-						className="absolute z-10 opacity-20 lg:opacity-80 -top-0 lg:-top-10 -right-20 md:right-10 aspect-square"
+						className="absolute z-10 opacity-80 top-10 lg:-top-10 right-0 lg:right-10 aspect-square w-[175px] h-[175px] sm:w-[300px] sm:h-[300px] md:w-[500px] md:h-[500px]"
 					/>
 				</div>
 			</div>
@@ -84,16 +84,19 @@ export default function Accueil() {
 					description="Notre organisme de formation est aggréé Qualiopi, prouvant notre engagement dans la qualité et la pertinence de notre enseignement."
 				/>
 
-				<div className="mx-auto grid max-w-lg grid-cols-1 items-center gap-x-8 gap-y-12 sm:max-w-xl sm:grid-cols-6 sm:gap-x-10 sm:gap-y-14 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+				{/* <div className="mx-auto grid max-w-lg grid-cols-1 items-center gap-x-8 gap-y-12 sm:max-w-xl sm:grid-cols-6 sm:gap-x-10 sm:gap-y-14 lg:mx-0 lg:max-w-none lg:grid-cols-3"> */}
+				<div className="w-full flex justify-center">
 					<Image
 						title={"Logo Qualiopi"}
 						alt={"Logo Qualiopi"}
-						src={"/images/Qualiopi_logo.png"}
-						width={158}
-						height={48}
-						className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
+						src={"/images/qualiopi_logo_bg_removed.png"}
+						width={300}
+						height={120}
+						className="justify-self-center"
 					/>
 				</div>
+
+				{/* </div> */}
 
 				<div className="mt-16 flex items-center justify-center gap-x-6">
 					<Link href="/catalogue" className="text-md font-semibold leading-6 hover:underline hover:underline-offset-4">
