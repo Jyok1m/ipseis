@@ -3,9 +3,9 @@
 import React, { useState } from "react";
 import clsx from "clsx";
 import { LoadingOutlined } from "@ant-design/icons";
-import { Spin } from "antd";
-
-import Notification from "@/components/utils/Notification";
+import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/outline";
+import { Spin, notification, ConfigProvider } from "antd";
+type NotificationType = "success" | "info" | "warning" | "error";
 
 const InputWrapper = ({ label, children, className }: { label: string; children: React.ReactNode; className?: string }) => (
 	<div className={className}>
@@ -42,6 +42,8 @@ const TextAreaInput = ({ onChange, value, id, name, rows, placeholder }: any) =>
 );
 
 export default function ContactForm() {
+	const [api, contextHolder] = notification.useNotification();
+
 	const [firstName, setFirstName] = useState("");
 	const [lastName, setLastName] = useState("");
 	const [budget, setBudget] = useState("");
@@ -49,8 +51,19 @@ export default function ContactForm() {
 	const [message, setMessage] = useState("");
 
 	const [isLoading, setIsLoading] = useState(false);
-	const [error, setError] = useState("");
-	const [success, setSuccess] = useState("");
+
+	const openNotification = (type: NotificationType, title: string, message: string) => {
+		api[type]({
+			message: title,
+			description: message,
+			icon:
+				type === "success" ? (
+					<CheckCircleIcon aria-hidden="true" className="h-6 w-6 text-green-400" />
+				) : (
+					<XCircleIcon aria-hidden="true" className="h-6 w-6 text-red-400" />
+				),
+		});
+	};
 
 	const handleSubmit = async () => {
 		setIsLoading(true);
@@ -58,7 +71,7 @@ export default function ContactForm() {
 		const payload = { firstName, lastName, budget, email, message };
 
 		if (Object.values(payload).some((value) => value.length === 0)) {
-			setError("Veuillez remplir tous les champs.");
+			openNotification("error", "Zut... ", "Veuillez remplir tous les champs.");
 			setIsLoading(false);
 			return;
 		}
@@ -75,14 +88,14 @@ export default function ContactForm() {
 			const data = await res.json();
 
 			if (res.ok) {
-				setSuccess(data.message);
+				openNotification("success", "Merci !", data.message);
 				setFirstName("");
 				setLastName("");
 				setBudget("");
 				setEmail("");
 				setMessage("");
 			} else {
-				setError(data.error);
+				openNotification("error", "Zut... ", data.error);
 			}
 		} catch (error: any) {
 			window.alert(error.message);
@@ -94,8 +107,18 @@ export default function ContactForm() {
 
 	return (
 		<div className="relative isolate bg-maitrise px-10 py-10 w-full lg:max-w-4xl rounded-2xl">
-			<Notification type="success" title="Merci !" message={success} isVisible={success.length > 0} onClose={() => setSuccess("")} />
-			<Notification type="error" title="Oh non..." message={error} isVisible={error.length > 0} onClose={() => setError("")} />
+			<ConfigProvider
+				theme={{
+					token: {
+						colorBgElevated: "#fffce8",
+						colorTextHeading: "#263c27",
+						colorText: "#263c27",
+						fontFamily: "Halibut",
+					},
+				}}
+			>
+				{contextHolder}
+			</ConfigProvider>
 
 			<div className="mx-auto max-w-xl">
 				<div className="flex flex-col gap-16 sm:gap-y-20 lg:flex-row">
@@ -152,7 +175,7 @@ export default function ContactForm() {
 									name="message"
 									rows={4}
 									placeholder="ex. Bonjour, je souhaiterais plus d'informations sur..."
-									className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-univers text-xs sm:text-base sm:leading-6"
+									className="block w-full rounded-md border-0 px-3.5 py-2 text-univers shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-univers text-xs sm:text-base sm:leading-6"
 								/>
 							</InputWrapper>
 						</div>
