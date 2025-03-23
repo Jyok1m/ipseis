@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-
+import clsx from "clsx";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
 
@@ -158,13 +158,16 @@ export default function ContactForm() {
 						</div>
 						<div className="mt-10">
 							<button
-								onClick={handleSubmit}
+								onClick={() => handleSubmit()}
 								disabled={isLoading}
-								className={`${
-									isLoading ? "cursor-not-allowed" : ""
-								} block w-full rounded-md bg-univers px-3.5 py-2.5 text-center text-sm sm:text-base lg:text-xl font-semibold text-support shadow-sm hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
+								className={clsx(
+									isLoading ? "cursor-not-allowed" : "cursor-pointer",
+									"w-full rounded-md bg-univers px-3 py-2 sm:py-3 text-base md:text-lg text-support font-normal shadow-sm hover:bg-univers/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-univers"
+								)}
 							>
-								{!isLoading ? <p>Envoyer</p> : <Spin indicator={<LoadingOutlined spin className="text-support" />} />}
+								<span className="flex justify-center text-support">
+									{!isLoading ? <p className="text">Envoyer</p> : <Spin indicator={<LoadingOutlined spin />} />}
+								</span>
 							</button>
 						</div>
 					</div>
