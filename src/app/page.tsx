@@ -33,7 +33,7 @@ export default function Accueil() {
 									href="/catalogue"
 									className="rounded-md bg-maitrise px-3 py-2 sm:py-3 text-base md:text-lg text-support font-normal shadow-sm hover:bg-maitrise/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maitrise"
 								>
-									<span className="flex items-center gap-x-2 text-support">Parcourir nos formations</span>
+									<span className="flex items-center gap-x-2 text-support">Découvrir nos formations</span>
 								</Link>
 							</div>
 						</div>
