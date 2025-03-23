@@ -49,7 +49,6 @@ export default function ContactForm() {
 
 	const [firstName, setFirstName] = useState("");
 	const [lastName, setLastName] = useState("");
-	const [budget, setBudget] = useState("");
 	const [email, setEmail] = useState("");
 	const [message, setMessage] = useState("");
 
@@ -71,7 +70,7 @@ export default function ContactForm() {
 	const handleSubmit = async () => {
 		setIsLoading(true);
 
-		const payload = { firstName, lastName, budget, email, message };
+		const payload = { firstName, lastName, email, message };
 
 		if (Object.values(payload).some((value) => value.length === 0)) {
 			openNotification("error", "Zut...", "Veuillez remplir tous les champs.");
@@ -86,7 +85,6 @@ export default function ContactForm() {
 				openNotification("success", "Merci !", response.data.message);
 				setFirstName("");
 				setLastName("");
-				setBudget("");
 				setEmail("");
 				setMessage("");
 			} else {
@@ -143,18 +141,7 @@ export default function ContactForm() {
 									placeholder="ex. Dupont"
 								/>
 							</InputWrapper>
-							<InputWrapper label="Budget (€)">
-								<TextInput
-									onChange={(e: any) => setBudget(e.target.value)}
-									value={budget}
-									disabled={isLoading}
-									id="budget"
-									name="budget"
-									type="number"
-									placeholder="ex. 1500"
-								/>
-							</InputWrapper>
-							<InputWrapper label="Email">
+							<InputWrapper label="Email" className="col-span-full sm:col-span-2">
 								<TextInput
 									onChange={(e: any) => setEmail(e.target.value)}
 									value={email}
