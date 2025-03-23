@@ -17,10 +17,11 @@ const InputWrapper = ({ label, children, className }: { label: string; children:
 	</div>
 );
 
-const TextInput = ({ onChange, value, id, name, type, autoComplete, placeholder }: any) => (
+const TextInput = ({ onChange, value, id, name, type, autoComplete, placeholder, disabled }: any) => (
 	<input
 		onChange={onChange}
 		value={value}
+		disabled={disabled}
 		id={id}
 		name={name}
 		type={type}
@@ -30,10 +31,11 @@ const TextInput = ({ onChange, value, id, name, type, autoComplete, placeholder 
 	/>
 );
 
-const TextAreaInput = ({ onChange, value, id, name, rows, placeholder }: any) => (
+const TextAreaInput = ({ onChange, value, id, name, rows, placeholder, disabled }: any) => (
 	<textarea
 		onChange={onChange}
 		value={value}
+		disabled={disabled}
 		id={id}
 		name={name}
 		rows={rows}
@@ -72,7 +74,7 @@ export default function ContactForm() {
 		const payload = { firstName, lastName, budget, email, message };
 
 		if (Object.values(payload).some((value) => value.length === 0)) {
-			openNotification("error", "Zut... ", "Veuillez remplir tous les champs.");
+			openNotification("error", "Zut...", "Veuillez remplir tous les champs.");
 			setIsLoading(false);
 			return;
 		}
@@ -88,10 +90,10 @@ export default function ContactForm() {
 				setEmail("");
 				setMessage("");
 			} else {
-				openNotification("error", "Zut... ", response.data.error);
+				openNotification("error", "Zut...", response.data.error);
 			}
 		} catch (error: any) {
-			window.alert(error.message);
+			openNotification("error", "Oops...", error.message);
 			setIsLoading(false);
 		} finally {
 			setIsLoading(false);
@@ -121,6 +123,7 @@ export default function ContactForm() {
 								<TextInput
 									onChange={(e: any) => setFirstName(e.target.value)}
 									value={firstName}
+									disabled={isLoading}
 									id="first-name"
 									name="first-name"
 									type="text"
@@ -132,6 +135,7 @@ export default function ContactForm() {
 								<TextInput
 									onChange={(e: any) => setLastName(e.target.value)}
 									value={lastName}
+									disabled={isLoading}
 									id="last-name"
 									name="last-name"
 									type="text"
@@ -143,6 +147,7 @@ export default function ContactForm() {
 								<TextInput
 									onChange={(e: any) => setBudget(e.target.value)}
 									value={budget}
+									disabled={isLoading}
 									id="budget"
 									name="budget"
 									type="number"
@@ -153,6 +158,7 @@ export default function ContactForm() {
 								<TextInput
 									onChange={(e: any) => setEmail(e.target.value)}
 									value={email}
+									disabled={isLoading}
 									id="email"
 									name="email"
 									type="email"
@@ -164,6 +170,7 @@ export default function ContactForm() {
 								<TextAreaInput
 									onChange={(e: any) => setMessage(e.target.value)}
 									value={message}
+									disabled={isLoading}
 									id="message"
 									name="message"
 									rows={4}
