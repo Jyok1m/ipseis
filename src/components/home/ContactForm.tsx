@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import clsx from "clsx";
+import axios from "axios";
 import { LoadingOutlined } from "@ant-design/icons";
 import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { Spin, notification, ConfigProvider } from "antd";
@@ -77,25 +78,17 @@ export default function ContactForm() {
 		}
 
 		try {
-			const res = await fetch("/api/message", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({ ...payload }),
-			});
+			const response = await axios.post(`${process.env.BACKEND_URL}/messages/new`, payload);
 
-			const data = await res.json();
-
-			if (res.ok) {
-				openNotification("success", "Merci !", data.message);
+			if (response.status === 200) {
+				openNotification("success", "Merci !", response.data.message);
 				setFirstName("");
 				setLastName("");
 				setBudget("");
 				setEmail("");
 				setMessage("");
 			} else {
-				openNotification("error", "Zut... ", data.error);
+				openNotification("error", "Zut... ", response.data.error);
 			}
 		} catch (error: any) {
 			window.alert(error.message);
