@@ -73,7 +73,7 @@ export default function Accueil() {
 				</div>
 			</SectionWrapper>
 
-			<div className="mx-auto max-w-[95%] border-t border-cohesion/30" />
+			<div className="mx-auto max-w-[95%] border-t border-cohesion/30 my-10" />
 
 			{/* Contact form */}
 			<SectionWrapper>
