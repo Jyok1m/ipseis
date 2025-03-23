@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-
+import { Analytics } from "@vercel/analytics/react";
 import Header from "@/components/global/Header";
 import Footer from "@/components/global/Footer";
 
@@ -37,6 +37,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="fr" className="font-serif">
+			<Analytics />
 			<body className="flex flex-col justify-between min-h-screen max-w-screen bg-support overflow-x-hidden">
 				<Header />
 				{children}
