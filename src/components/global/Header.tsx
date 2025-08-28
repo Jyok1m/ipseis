@@ -23,7 +23,7 @@ const Header = () => {
 				<div className="flex lg:flex-1">
 					<Link href="/" className="-m-1.5 p-1.5">
 						<span className="sr-only">Ipseis</span>
-						<Image src={require("/src/_images/logo/logo_beige.svg")} alt="Logo Ipseis" title="Logo Ipseis" height={45} />
+						<Image src={require("/src/_images/logo/logo_beige.svg")} alt="Logo Ipseis" title="Logo Ipseis" height={60} />
 					</Link>
 				</div>
 				<div className="hidden md:flex md:gap-x-12">
@@ -64,7 +64,7 @@ const Header = () => {
 					<div className="flex items-center gap-x-6">
 						<Link href="/" className="-m-1.5 p-1.5" tabIndex={-1}>
 							<span className="sr-only">Ipseis</span>
-							<Image src={require("/src/_images/logo/logo_beige.svg")} alt="Logo Ipseis" title="Logo Ipseis" height={45} />
+							<Image src={require("/src/_images/logo/logo_beige.svg")} alt="Logo Ipseis" title="Logo Ipseis" height={60} />
 						</Link>
 
 						<Link
