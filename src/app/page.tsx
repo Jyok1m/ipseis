@@ -14,11 +14,11 @@ export default function Accueil() {
 			{/* Hero section */}
 			<div className="flex flex-col-reverse lg:flex-row lg:justify-between lg:items-center bg-univers mb-10">
 				<div className="bg-univers flex justify-evenly py-10">
-					<div className="lg:w-1/2">
+					<div className="lg:w-1/2 sm:w-3/4">
 						<div className="text-2xl sm:text-4xl font-bold tracking-widest text-support bg-univers p-10 pb-5">
 							<h1 className="text-cohesion leading-snug mb-5">
 								Vous êtes unique, <br />
-								nos formations aussi.
+								nos formations et accompagnements aussi.
 							</h1>
 
 							<Image src={require("../_images/tiret-home.png")} alt="tiret" height={50} width={75} />
@@ -43,7 +43,7 @@ export default function Accueil() {
 						alt="Étoile Ipseis"
 						width={500}
 						height={500}
-						className="absolute z-10 opacity-80 top-14 sm:top-5 lg:-top-10 right-0 lg:right-10 aspect-square w-[175px] h-[175px] sm:w-[300px] sm:h-[300px] md:w-[500px] md:h-[500px]"
+						className="absolute z-10 opacity-80 top-14 sm:top-5 lg:top-10 right-0 lg:right-10 aspect-square w-[175px] h-[175px] sm:w-[300px] sm:h-[300px] lg:w-[500px] lg:h-[500px]"
 					/>
 				</div>
 			</div>
