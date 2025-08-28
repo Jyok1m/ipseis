@@ -43,7 +43,7 @@ export default function Accueil() {
 						alt="Étoile Ipseis"
 						width={500}
 						height={500}
-						className="absolute z-10 opacity-80 top-10 lg:-top-10 right-0 lg:right-10 aspect-square w-[175px] h-[175px] sm:w-[300px] sm:h-[300px] md:w-[500px] md:h-[500px]"
+						className="absolute z-10 opacity-80 top-14 sm:top-5 lg:-top-10 right-0 lg:right-10 aspect-square w-[175px] h-[175px] sm:w-[300px] sm:h-[300px] md:w-[500px] md:h-[500px]"
 					/>
 				</div>
 			</div>
