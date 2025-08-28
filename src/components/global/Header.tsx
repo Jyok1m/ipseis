@@ -7,9 +7,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 const navigation = [
-	{ name: "Accueil", href: "/" },
-	{ name: "Nos formations", href: "/catalogue" },
-	//{ name: "Notre organisme", href: "/a-propos" },
+	{ name: "Nous connaître", href: "/a-propos" },
+	{ name: "Secteur santé", href: "/" },
+	{ name: "Autres secteurs", href: "/" },
 ];
 
 const Header = () => {
