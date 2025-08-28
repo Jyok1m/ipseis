@@ -29,12 +29,19 @@ export default function Accueil() {
 								transmission et expérimentation. Nous concevons des expériences pédagogiques sur-mesure, ancrées dans le réel, pour faire évoluer les
 								pratiques quotidiennes et les comportements pour un meilleur fonctionnement d’équipe.
 							</p>
-							<div className="mt-5 w-full flex justify-start">
+							<p className="text-base sm:text-xl text-support block md:hidden mt-10 md:mt-0">Et si la formation devenait une expérience à vivre ?</p>
+							<div className="mt-10 w-full flex justify-start">
 								<Link
 									href="/catalogue"
-									className="rounded-md bg-maitrise px-3 py-2 sm:py-3 text-base md:text-lg text-support font-normal shadow-sm hover:bg-maitrise/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maitrise"
+									className="flex flex-col justify-center items-center gap-y-1 rounded-md bg-maitrise px-3 py-2 sm:py-3 text-base sm:text-md sm:text-lg text-support font-normal shadow-sm hover:bg-maitrise/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maitrise"
 								>
-									<span className="flex items-center gap-x-2 text-support">Découvrir nos formations</span>
+									<span className="md:flex items-center gap-x-2 text-support text-center hidden">
+										Et si la formation devenait une expérience à vivre ?
+									</span>
+									<span className="flex items-center gap-x-2 text-support font-semibold text-center">
+										<span>Découvrir nos formations</span>
+										<span className="mt-1">→</span>
+									</span>
 								</Link>
 							</div>
 						</div>
