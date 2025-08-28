@@ -14,7 +14,7 @@ export default function Accueil() {
 			{/* Hero section */}
 			<div className="flex flex-col-reverse lg:flex-row lg:justify-between lg:items-center bg-univers mb-10">
 				<div className="bg-univers flex justify-evenly py-10">
-					<div className="lg:w-1/2 sm:w-3/4">
+					<div className="sm:w-5/6 lg:w-3/5">
 						<div className="text-2xl sm:text-4xl font-bold tracking-widest text-support bg-univers p-10 pb-5">
 							<h1 className="text-cohesion leading-snug mb-5">
 								Vous êtes unique, <br />
