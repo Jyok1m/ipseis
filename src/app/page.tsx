@@ -4,58 +4,50 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+import Button from "@/components/global/Button";
+
 import { SectionWrapper } from "@/components/global/Wrappers";
 import SectionTitle from "@/components/global/SectionTitle";
 import ContactForm from "@/components/home/ContactForm";
 
 export default function Accueil() {
 	return (
-		<div className="w-screen">
-			{/* Hero section */}
-			<div className="flex flex-col-reverse lg:flex-row lg:justify-between lg:items-center bg-univers mb-10 h-[calc(100vh-108px)]">
-				<div className="bg-univers flex justify-evenly py-10">
-					<div className="sm:w-5/6 lg:w-3/5">
-						<div className="text-2xl sm:text-4xl font-bold tracking-widest text-support bg-univers p-10 pb-5">
-							<h1 className="text-cohesion leading-snug mb-5">
-								Vous êtes unique, <br />
-								nos formations et accompagnements aussi.
-							</h1>
+		<div className="w-screen h-full flex flex-col items-center justify-center bg-univers -mt-14 sm:-mt-16">
+			<div className="flex flex-col items-center justify-center gap-y-2 sm:gap-y-5 m-10 sm:w-5/6 lg:w-3/5">
+				{/* Gros titre */}
 
-							<Image src={require("../_images/tiret-home.png")} alt="tiret" height={50} width={75} />
-						</div>
-						<div className="p-10">
-							<p className="text-base sm:text-xl text-support">
-								Chez IPSEIS, nous croyons que l’apprentissage des professionnels passe par une alliance subtile entre théorie et pratique,
-								transmission et expérimentation. Nous concevons des expériences pédagogiques sur-mesure, ancrées dans le réel, pour faire évoluer les
-								pratiques quotidiennes et les comportements pour un meilleur fonctionnement d’équipe.
-							</p>
-							<p className="text-base sm:text-xl text-support block md:hidden mt-10 md:mt-0">Et si la formation devenait une expérience à vivre ?</p>
-							<div className="mt-10 w-full flex justify-start">
-								<Link
-									href="/catalogue"
-									className="flex flex-col justify-center items-center gap-y-1 rounded-md bg-maitrise px-3 py-2 sm:py-3 text-base sm:text-md sm:text-lg text-support font-normal shadow-sm hover:bg-maitrise/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maitrise"
-								>
-									<span className="md:flex items-center gap-x-2 text-support text-center hidden">
-										Et si la formation devenait une expérience à vivre ?
-									</span>
-									<span className="flex items-center gap-x-2 text-support font-semibold text-center">
-										<span>Découvrir nos formations</span>
-										<span className="mt-1">→</span>
-									</span>
-								</Link>
-							</div>
-						</div>
+				<div className="text-2xl sm:text-4xl font-bold tracking-widest text-cohesion leading-snug">
+					<h1>Vous êtes unique, nos formations et accompagnements aussi.</h1>
+					<Image src={require("../_images/tiret-home.png")} alt="tiret" height={50} width={75} className="my-5" />
+				</div>
+
+				{/* Description */}
+
+				<div className="flex flex-col text-base sm:text-xl text-support gap-y-2 sm:gap-y-5">
+					<p>
+						Chez IPSEIS, nous croyons que l’apprentissage des professionnels passe par une alliance subtile entre théorie et pratique, transmission et
+						expérimentation. Nous concevons des expériences pédagogiques sur-mesure, ancrées dans le réel, pour faire évoluer les pratiques
+						quotidiennes et les comportements pour un meilleur fonctionnement d’équipe.
+					</p>
+					<p className="block md:hidden">Et si la formation devenait une expérience à vivre ?</p>
+					<div className="w-full flex justify-start text-support mt-2 sm:mt-5">
+						<Button href="/catalogue">
+							<span className="md:block items-center text-center hidden">Et si la formation devenait une expérience à vivre ?</span>
+							<span className="flex items-center gap-x-2 font-semibold text-center">
+								<span>Découvrir nos formations</span>
+								<span className="mt-1">→</span>
+							</span>
+						</Button>
 					</div>
-					<Image
-						src="/images/star_beige.svg"
-						alt="Étoile Ipseis"
-						width={500}
-						height={500}
-						className="absolute z-10 opacity-80 top-14 sm:top-5 lg:top-10 right-0 lg:right-10 aspect-square w-[175px] h-[175px] sm:w-[300px] sm:h-[300px] lg:w-[500px] lg:h-[500px]"
-					/>
 				</div>
 			</div>
-
+			<Image
+				src="/images/star_beige.svg"
+				alt="Étoile Ipseis"
+				width={500}
+				height={500}
+				className="absolute z-10 opacity-30 top-5 -right-28 sm:-top-5 md:w-[750px] md:-top-20 md:-right-44 lg:w-[1000px] lg:-top-36 lg:-right-60"
+			/>
 			{/* Logo cloud */}
 			{/* <SectionWrapper>
 				<SectionTitle

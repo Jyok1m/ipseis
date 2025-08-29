@@ -40,8 +40,8 @@ export default function RootLayout({
 			<Analytics />
 			<body className="flex flex-col justify-between min-h-screen max-w-screen bg-support overflow-x-hidden">
 				<Header />
-				{children}
-				<Footer />
+				<div className="h-[calc(100vh-108px)] bg-univers">{children}</div>
+				{/* <Footer /> */}
 			</body>
 		</html>
 	);
