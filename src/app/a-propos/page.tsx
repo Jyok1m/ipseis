@@ -3,13 +3,6 @@
 import React from "react";
 import Image from "next/image";
 
-// import { type Metadata } from "next";
-
-// export const metadata: Metadata = {
-// 	title: "About",
-// 	description: "I’m Spencer Sharp. I live in New York City, where I design the future.",
-// };
-
 export default function APropos() {
 	return (
 		<div className="bg-support py-8 h-full">
@@ -19,14 +12,14 @@ export default function APropos() {
 					<div className="border border-univers w-12 my-8"></div>
 				</div>
 				<div>
-					<p className="space-y-7 text-xl text-zinc-600">
+					<p className="space-y-7 text-base sm:text-xl text-zinc-600">
 						<Image
 							src="/images/about-image-hélène.jpg"
 							alt="Photo d'Hélène de Montabert"
 							sizes="(min-width: 1024px) 12rem, 8rem"
 							width={200}
-							height={200}
-							className="rounded-2xl bg-zinc-100 object-cover dark:bg-zinc-800 float-left mr-8 mb-4 max-w-xs"
+							height={220}
+							className="rounded-2xl bg-zinc-100 object-cover dark:bg-zinc-800 float-left m-4 max-w-xs w-[160px] h-[180px] sm:w-[200px] sm:h-[220px]"
 						/>
 						Madame, Monsieur, <br />
 						<br />
