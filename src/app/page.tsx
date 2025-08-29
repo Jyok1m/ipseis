@@ -34,7 +34,7 @@ export default function Accueil() {
 						<Button href="/catalogue">
 							<span className="md:block items-center text-center hidden">Et si la formation devenait une expérience à vivre ?</span>
 							<span className="flex items-center gap-x-2 font-semibold text-center">
-								<span>Découvrir nos formations</span>
+								<span className="hover:underline hover:underline-offset-8">Découvrir nos formations</span>
 								<span className="mt-1">→</span>
 							</span>
 						</Button>
