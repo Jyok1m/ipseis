@@ -8,7 +8,7 @@ import Link from "next/link";
 
 const navigation = [
 	{ name: "Nous connaître", href: "/a-propos" },
-	{ name: "Secteur santé", href: "/" },
+	{ name: "Secteur santé", href: "/secteur-sante" },
 	{ name: "Autres secteurs", href: "/" },
 ];
 
