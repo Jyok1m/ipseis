@@ -12,7 +12,7 @@ export default function Accueil() {
 	return (
 		<div className="w-screen">
 			{/* Hero section */}
-			<div className="flex flex-col-reverse lg:flex-row lg:justify-between lg:items-center bg-univers mb-10">
+			<div className="flex flex-col-reverse lg:flex-row lg:justify-between lg:items-center bg-univers mb-10 h-[calc(100vh-108px)]">
 				<div className="bg-univers flex justify-evenly py-10">
 					<div className="sm:w-5/6 lg:w-3/5">
 						<div className="text-2xl sm:text-4xl font-bold tracking-widest text-support bg-univers p-10 pb-5">
@@ -57,7 +57,7 @@ export default function Accueil() {
 			</div>
 
 			{/* Logo cloud */}
-			<SectionWrapper>
+			{/* <SectionWrapper>
 				<SectionTitle
 					tag="Des formations reconnues"
 					title="Certifié Qualiopi"
@@ -79,19 +79,19 @@ export default function Accueil() {
 						Voir nos formations <span aria-hidden="true">→</span>
 					</Link>
 				</div>
-			</SectionWrapper>
+			</SectionWrapper> */}
 
-			<div className="mx-auto max-w-[95%] border-t border-cohesion/30 my-10" />
+			{/* <div className="mx-auto max-w-[95%] border-t border-cohesion/30 my-10" /> */}
 
 			{/* Contact form */}
-			<SectionWrapper>
+			{/* <SectionWrapper>
 				<SectionTitle
 					tag="100% personnalisé"
 					title="Parlons de vos besoins"
 					description="Notre équipe est à votre disposition pour répondre à vos questions et vous accompagner dans le choix de votre formation."
 				/>
 				<ContactForm />
-			</SectionWrapper>
+			</SectionWrapper> */}
 		</div>
 	);
 }
