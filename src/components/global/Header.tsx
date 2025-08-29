@@ -28,7 +28,7 @@ const Header = () => {
 				</div>
 				<div className="hidden md:flex md:gap-x-12">
 					{navigation.map((item) => (
-						<Link key={item.name} href={item.href} className="text-lg font-normal text-support">
+						<Link key={item.name} href={item.href} className="text-lg font-normal text-support hover:underline hover:underline-offset-8">
 							{item.name}
 						</Link>
 					))}
