@@ -32,12 +32,22 @@ const features = [
 	},
 ];
 
-function FeatBox({ title, description, bgColor }: { title: string; description: string; bgColor: "support" | "maitrise" }) {
+function FeatBox({
+	title,
+	description,
+	bgColor,
+	className,
+}: {
+	title: string;
+	description: string;
+	bgColor: "support" | "maitrise";
+	className?: string;
+}) {
 	return (
 		<div
 			className={`p-4 bg-${bgColor} rounded-3xl shadow-lg border-[1px] border-maitrise text-${
 				bgColor === "support" ? "maitrise" : "support"
-			} h-full sm:h-[260px] text-center flex flex-col justify-center items-center`}
+			} h-full sm:h-[260px] text-center flex flex-col justify-center items-center ${className || ""}`}
 		>
 			<p className="mt-2 text-base sm:text-xl font-bold tracking-tight">{title}</p>
 			<p className="mt-2 text-sm">{description}</p>
@@ -129,12 +139,15 @@ export default function SecteurSante() {
 							/>
 						</div>
 						{/* center */}
-						<div className="sm:col-start-2 sm:row-start-2">
-							<FeatBox
-								title="Former autrement"
-								description="Concevoir et animer des formations actives, engageantes et sur-mesure, centrées sur le réel et pour une performance respectueuse."
-								bgColor="maitrise"
-							/>
+						<div className="sm:col-start-2 sm:row-start-2 flex justify-center">
+							<div className="relative z-20 sm:-mt-8 sm:-mb-8 sm:-mx-6">
+								<FeatBox
+									title="Former autrement"
+									description="Concevoir et animer des formations actives, engageantes et sur-mesure, centrées sur le réel et pour une performance respectueuse."
+									bgColor="maitrise"
+									className="p-6 sm:h-[320px]"
+								/>
+							</div>
 						</div>
 						{/* bottom-left */}
 						<div className="sm:col-start-1 sm:row-start-3">
