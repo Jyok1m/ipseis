@@ -34,6 +34,16 @@ const features = [
 	},
 ];
 
+const formatteurPoints = [
+	"Des experts reconnus, engagés et évalués,",
+	"5 ans d’expérience terrain minimum",
+	"Évalués sur le contenu, la pédagogie et l’accompagnement à chaque session",
+	"En veille continue sur leur domaine d’expertise, se formant régulièrement",
+	"Utilisent des méthodes pédagogiques innovantes et interactives",
+	"Conformes au Référentiel National Qualité (Qualiopi)",
+	"Signent notre charte qualité de formateur",
+];
+
 function FeatBox({
 	title,
 	description,
@@ -51,9 +61,20 @@ function FeatBox({
 				bgColor === "support" ? "maitrise" : "support"
 			} h-full text-center flex flex-col justify-center items-center ${className || ""}`}
 		>
-			<p className="mt-2 text-base sm:text-xl font-bold tracking-tight">{title}</p>
+			<p className="mt-2 text-lg sm:text-xl font-bold tracking-tight">{title}</p>
 			<p className="mt-2 text-sm sm:text-base">{description}</p>
 		</div>
+	);
+}
+
+function FormatteurPoint({ point }: { point: string }) {
+	return (
+		<p className="relative pl-10 text-base sm:text-xl tracking-wider leading-6 text-univers">
+			<span className="absolute left-0 top-1/2 transform -translate-y-1/2">
+				<Image src={require("../../_images/logo/star_orange.svg")} alt="Check" width={40} height={40} />
+			</span>
+			{point}
+		</p>
 	);
 }
 
@@ -190,7 +211,7 @@ export default function SecteurSante() {
 			{/* Section Valeurs */}
 
 			<Divider />
-			<TitleSection tag="Des valeurs fortes et des formateurs au service de la santé" title=" Des valeurs qui nous ressemblent et vous rassemblent" />
+			<TitleSection tag="Nos valeurs" title="Des valeurs et des formateurs qui nous ressemblent et vous rassemblent" />
 			<div className="pb-10 mx-auto max-w-7xl px-6 lg:px-8 tracking-wider">
 				<div className="mx-auto max-w-5xl">
 					{/* Grille 3x3 — cartes rapprochées de l’étoile */}
@@ -242,6 +263,15 @@ export default function SecteurSante() {
 						</div>
 					</div>
 				</div>
+			</div>
+
+			{/* Section Valeurs */}
+			<Divider />
+			<TitleSection tag="Notre expertise" title="Des formateurs sélectionnés pour leurs valeurs et expertise" />
+			<div className="pb-10 mx-auto max-w-7xl px-6 lg:px-8">
+				{formatteurPoints.map((point, index) => (
+					<FormatteurPoint key={index} point={point} />
+				))}
 			</div>
 		</div>
 	);
