@@ -92,8 +92,60 @@ export default function SecteurSante() {
 			</div>
 
 			{/* Section Missions */}
+
 			<Divider />
 			<TitleSection tag="Nos missions" title="Agir, transmettre, transformer, engager vos équipes" />
+
+			<div className="pb-10 mx-auto max-w-7xl px-6 lg:px-8 tracking-wider">
+				{/* 3x3 grid where five cards sit like a die face (1,1  -  1,3  -  2,2  -  3,1  -  3,3) */}
+				<div className="mx-auto max-w-5xl">
+					<div className="grid grid-cols-1 gap-4 sm:gap-0 sm:grid-cols-3 sm:grid-rows-3">
+						{/* top-left */}
+						<div className="sm:col-start-1 sm:row-start-1">
+							<div className="p-4 bg-support rounded-lg shadow-lg border-[1px] border-maitrise text-maitrise h-full sm:h-[260px] text-center flex flex-col justify-center items-center">
+								<p className="mt-2 text-base sm:text-xl font-bold tracking-tight">Transmettre par l’expérimentation</p>
+								<p className="mt-2 text-sm">
+									Innover avec des espaces de co-apprentissage dynamiques, et des dispositifs comme les SEGAPTM « Serious escape games pédagogiques ».
+								</p>
+							</div>
+						</div>
+						{/* top-right */}
+						<div className="sm:col-start-3 sm:row-start-1">
+							<div className="p-4 bg-support rounded-lg shadow-lg border-[1px] border-maitrise text-maitrise h-full sm:h-[260px] text-center flex flex-col justify-center items-center">
+								<p className="mt-2 text-base sm:text-xl font-bold tracking-tight">Renforcer les compétences</p>
+								<p className="mt-2 text-sm">
+									Proposer des parcours exigeants, immersifs et collectifs, qui renforcent autonomie, intelligence collective et transversalité.
+								</p>
+							</div>
+						</div>
+						{/* center */}
+						<div className="sm:col-start-2 sm:row-start-2">
+							<div className="p-4 bg-maitrise rounded-lg shadow-lg border-[1px] border-maitrise text-support h-full sm:h-[260px] text-center flex flex-col justify-center items-center">
+								<p className="mt-2 text-base sm:text-xl font-bold tracking-tight">Former autrement</p>
+								<p className="mt-2 text-sm">
+									Concevoir et animer des formations actives, engageantes et sur-mesure, centrées sur le réel et pour une performance respectueuse.
+								</p>
+							</div>
+						</div>
+						{/* bottom-left */}
+						<div className="sm:col-start-1 sm:row-start-3">
+							<div className="p-4 bg-support rounded-lg shadow-lg border-[1px] border-maitrise text-maitrise h-full sm:h-[260px] text-center flex flex-col justify-center items-center">
+								<p className="mt-2 text-base sm:text-xl font-bold tracking-tight">Transformer les pratiques</p>
+								<p className="mt-2 text-sm">Accompagner les professionnels vers plus d’efficacité, de confiance et de bien-être au travail.</p>
+							</div>
+						</div>
+						{/* bottom-right */}
+						<div className="sm:col-start-3 sm:row-start-3">
+							<div className="p-4 bg-support rounded-lg shadow-lg border-[1px] border-maitrise text-maitrise h-full sm:h-[260px] text-center flex flex-col justify-center items-center">
+								<p className="mt-2 text-base sm:text-xl font-bold tracking-tight">Garantir l’excellence</p>
+								<p className="mt-2 text-sm">S’appuyer sur une démarche qualité continue, certifiée et reconnue.</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			{/* Section */}
 		</div>
 	);
 }
