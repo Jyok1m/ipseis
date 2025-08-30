@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -15,7 +17,6 @@ const Footer = () => {
 						<p>Créé avec </p>
 						<FontAwesomeIcon icon={faHeart} className="h-3 sm:h-[14px] text-cohesion" />
 					</span>
-
 					<p> par Joachim Jasmin et Titouan Gignouard pour Ipseis</p>
 				</div>
 			</footer>

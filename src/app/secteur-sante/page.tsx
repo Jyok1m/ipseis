@@ -6,6 +6,7 @@ import TitlePage from "@/components/global/TitlePage";
 import TitleSection from "@/components/global/TitleSection";
 import Divider from "@/components/global/Divider";
 import Button from "@/components/global/Button";
+import Footer from "@/components/global/Footer";
 
 const features = [
 	{
@@ -77,14 +78,14 @@ function FeatBox({
 			} h-full text-center flex flex-col justify-center ${className || ""}`}
 		>
 			<p className="mt-2 text-lg sm:text-xl font-bold tracking-tight items-center">{title}</p>
-			<p className={`mt-2 text-base sm:text-lg ${centered ? "text-center" : "text-left"}`}>{description}</p>
+			<span className={`mt-2 text-base sm:text-lg ${centered ? "text-center" : "text-left"}`}>{description}</span>
 		</div>
 	);
 }
 
 function FormatteurPoint({ point }: { point: string }) {
 	return (
-		<p className="relative pl-10 text-base sm:text-lg tracking-wider leading-6 text-univers">
+		<div className="relative pl-10 text-base sm:text-lg tracking-wider leading-6 text-univers">
 			<span className="absolute left-0 -top-2">
 				{/* fixé en haut du paragraphe */}
 				<Image
@@ -96,7 +97,7 @@ function FormatteurPoint({ point }: { point: string }) {
 				/>
 			</span>
 			{point}
-		</p>
+		</div>
 	);
 }
 
@@ -346,6 +347,7 @@ export default function SecteurSante() {
 					</div>
 				</div>
 			</div>
+			<Footer />
 		</div>
 	);
 }
