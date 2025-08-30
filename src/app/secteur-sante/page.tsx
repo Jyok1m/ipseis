@@ -1,6 +1,34 @@
 import React from "react";
+import Image from "next/image";
 import TitlePage from "@/components/global/TitlePage";
 import TitleSection from "@/components/global/TitleSection";
+
+const features = [
+	{
+		name: "Une pédagogie impactante, active et immersive",
+		src: "/images/sante_features/1.png",
+	},
+	{
+		name: "Une approche de proximité, humaine et coopérative",
+		src: "/images/sante_features/2.png",
+	},
+	{
+		name: "Des formations innovantes & sur mesure de qualité",
+		src: "/images/sante_features/3.png",
+	},
+	{
+		name: "Respect engagements  et réactivité",
+		src: "/images/sante_features/4.png",
+	},
+	{
+		name: "Des intervenants experts et engagés",
+		src: "/images/sante_features/5.png",
+	},
+	{
+		name: "Une qualité certifiée, exigeante et reconnue",
+		src: "/images/sante_features/6.png",
+	},
+];
 
 export default function SecteurSante() {
 	return (
@@ -20,6 +48,19 @@ export default function SecteurSante() {
 				title="Choisir Ipseis c’est apprendre autrement pour progresser durablement"
 				description="Participer à nos formations vous permettra d’acquérir, d’assimiler et de mettre en œuvre plus facilement les compétences clés pour exercer votre métier de soignant de manière plus efficace et plus sereine."
 			/>
+			<div className="mx-auto max-w-7xl px-6 lg:px-8 tracking-wider">
+				<dl className="mx-auto grid grid-cols-1 gap-8 text-base sm:text-xl text-univers sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:gap-x-16">
+					{features.map((feature) => (
+						<div key={feature.name} className="relative">
+							<dt className="flex items-center gap-x-2 font-medium">
+								<Image src={feature.src} alt={`Image de ${feature.name}`} width={40} height={40} />
+								{feature.name}
+							</dt>
+							{/* <dd className="inline">{feature.description}</dd> */}
+						</div>
+					))}
+				</dl>
+			</div>
 		</div>
 	);
 }

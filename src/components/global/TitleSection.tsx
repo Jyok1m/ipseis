@@ -10,7 +10,7 @@ const TitleSection = ({ tag, title, description }: TitleSectionProps) => {
 			<div className="text-2xl sm:text-4xl tracking-wider text-univers">
 				{tag && <h2 className="text-base font-semibold leading-6 text-cohesion mb-3">{tag}</h2>}
 				<p className="text-2xl sm:text-4xl tracking-wider font-semibold text-univers">{title}</p>
-				<p className="mt-6 leading-6 text-base sm:text-lg">{description}</p>
+				<p className="mt-6 leading-6 text-base sm:text-xl">{description}</p>
 			</div>
 		</div>
 	);
