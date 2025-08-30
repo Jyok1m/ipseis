@@ -15,10 +15,10 @@ const TitleSection = ({ centered, tag, title, description }: TitleSectionProps) 
 					<div className="flex items-center mb-3 text-base sm:text-xl font-semibold leading-6 text-cohesion">
 						<Image
 							src={require("../../_images/logo/star_orange.svg")}
-							alt="Image de l'élément de séparation 1"
-							width={50}
-							height={50}
-							className="-ml-4"
+							alt="Image de l'élément de tag"
+							width={64}
+							height={64}
+							className="-ml-4 w-16 aspect-square"
 						/>
 						<h2>{tag}</h2>
 					</div>
