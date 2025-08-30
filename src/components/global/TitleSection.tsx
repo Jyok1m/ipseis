@@ -1,15 +1,16 @@
 import Image from "next/image";
 
 type TitleSectionProps = {
+	noPaddingTop?: boolean;
 	centered?: boolean;
 	tag?: string;
 	title: string;
 	description?: string;
 };
 
-const TitleSection = ({ centered, tag, title, description }: TitleSectionProps) => {
+const TitleSection = ({ noPaddingTop, centered, tag, title, description }: TitleSectionProps) => {
 	return (
-		<div className="mx-auto max-w-7xl px-6 lg:px-8 py-10 tracking-wider">
+		<div className={`mx-auto max-w-7xl px-6 lg:px-8 tracking-wider ${noPaddingTop ? "pt-0 pb-10" : "py-10"}`}>
 			<div className={`text-2xl sm:text-4xl tracking-wider text-univers ${centered ? "text-center" : ""}`}>
 				{tag && (
 					<div className="flex items-center mb-3 text-base sm:text-xl font-semibold leading-6 text-cohesion">
