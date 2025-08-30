@@ -4,7 +4,7 @@ type TitleSectionProps = {
 	centered?: boolean;
 	tag?: string;
 	title: string;
-	description: string;
+	description?: string;
 };
 
 const TitleSection = ({ centered, tag, title, description }: TitleSectionProps) => {
@@ -24,7 +24,7 @@ const TitleSection = ({ centered, tag, title, description }: TitleSectionProps) 
 					</div>
 				)}
 				<p className="text-2xl sm:text-4xl tracking-wider font-semibold text-univers">{title}</p>
-				<p className="mt-6 leading-6 text-base sm:text-xl">{description}</p>
+				{description && <p className="mt-6 leading-6 text-base sm:text-xl">{description}</p>}
 			</div>
 		</div>
 	);

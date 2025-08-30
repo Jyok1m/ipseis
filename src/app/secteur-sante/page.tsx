@@ -93,11 +93,7 @@ export default function SecteurSante() {
 
 			{/* Section Missions */}
 			<Divider />
-			<TitleSection
-				tag="Nos missions"
-				title="Agir, transmettre, transformer, engager vos équipes"
-				description="Participer à nos formations vous permettra d’acquérir, d’assimiler et de mettre en œuvre plus facilement les compétences clés pour exercer votre métier de soignant de manière plus efficace et plus sereine."
-			/>
+			<TitleSection tag="Nos missions" title="Agir, transmettre, transformer, engager vos équipes" />
 		</div>
 	);
 }
