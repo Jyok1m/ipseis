@@ -47,7 +47,7 @@ function FeatBox({
 		<div
 			className={`p-4 bg-${bgColor} rounded-3xl shadow-lg border-[1px] border-maitrise text-${
 				bgColor === "support" ? "maitrise" : "support"
-			} h-full sm:h-[260px] text-center flex flex-col justify-center items-center ${className || ""}`}
+			} h-full text-center flex flex-col justify-center items-center ${className || ""}`}
 		>
 			<p className="mt-2 text-base sm:text-xl font-bold tracking-tight">{title}</p>
 			<p className="mt-2 text-sm">{description}</p>
@@ -189,7 +189,60 @@ export default function SecteurSante() {
 
 			<Divider />
 			<TitleSection tag="Des valeurs fortes et des formateurs au service de la santé" title="	Des valeurs qui nous ressemblent et vous rassemblent" />
-			<div className="pb-10 mx-auto max-w-7xl px-6 lg:px-8 tracking-wider"></div>
+			<div className="pb-10 mx-auto max-w-7xl px-6 lg:px-8 tracking-wider">
+				<div className="mx-auto max-w-5xl">
+					<div className="relative grid grid-cols-1 gap-4 sm:grid-cols-5 sm:grid-rows-5">
+						{/* (1,3) — top center */}
+						<div className="sm:col-start-3 sm:row-start-1">
+							<FeatBox title="Créativité & Innovation" description="Oser penser différemment pour former autrement" bgColor="maitrise" />
+						</div>
+
+						{/* (3,1) — middle left */}
+						<div className="sm:col-start-1 sm:row-start-3">
+							<FeatBox title="Transmission & Partage" description="Faire circuler les savoirs pour faire grandir les équipes" bgColor="maitrise" />
+						</div>
+
+						{/* (3,3) — center */}
+						<div className="sm:col-start-3 sm:row-start-3 flex justify-center items-center">
+							<Image
+								src={require("../../_images/logo/star_orange.svg")}
+								alt="Image de l'étoile d'Ipseis"
+								width={35}
+								height={35}
+								className="w-full h-full"
+							/>
+						</div>
+
+						{/* (3,5) — middle right */}
+						<div className="sm:col-start-5 sm:row-start-3">
+							<FeatBox
+								title="Transformer les pratiques"
+								description="Accompagner les professionnels vers plus d’efficacité, de confiance et de bien-être au travail."
+								bgColor="maitrise"
+							/>
+						</div>
+
+						{/* (5,2) — bottom row, col 2 */}
+						<div className="sm:col-start-2 sm:row-start-5">
+							<FeatBox
+								title="Garantir l’excellence"
+								description="S’appuyer sur une démarche qualité continue, certifiée et reconnue."
+								bgColor="maitrise"
+							/>
+						</div>
+
+						{/* (5,4) — bottom row, col 4 (sixième carte) */}
+						<div className="sm:col-start-4 sm:row-start-5">
+							<FeatBox
+								title="Accompagner le changement"
+								description="Faciliter la transition vers de nouvelles pratiques et approches."
+								bgColor="maitrise"
+							/>
+							<p className="mt-2 text-sm">Favoriser l’adoption durable par le coaching et la facilitation.</p>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	);
 }
