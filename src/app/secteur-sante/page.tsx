@@ -3,6 +3,7 @@ import Image from "next/image";
 import TitlePage from "@/components/global/TitlePage";
 import TitleSection from "@/components/global/TitleSection";
 import Divider from "@/components/global/Divider";
+import Button from "@/components/global/Button";
 
 const features = [
 	{
@@ -33,7 +34,9 @@ const features = [
 
 export default function SecteurSante() {
 	return (
-		<div className="bg-support py-8 h-full">
+		<div className="bg-support h-full">
+			{/* Titre */}
+
 			<TitlePage
 				title="Ipseis Santé"
 				descriptionNode={
@@ -44,6 +47,9 @@ export default function SecteurSante() {
 					</>
 				}
 			/>
+
+			{/* Section approche */}
+
 			<Divider />
 			<TitleSection
 				tag="Notre approche"
@@ -62,6 +68,31 @@ export default function SecteurSante() {
 					))}
 				</dl>
 			</div>
+
+			{/* Section Qualiopi */}
+
+			<div className="flex justify-center px-10">
+				<div className="max-w-7xl tracking-wider border-cohesion border-2 rounded-md mb-10">
+					<TitleSection
+						centered
+						title="Certifié Qualiopi"
+						description="Notre organisme de formation est aggréé Qualiopi, gage de notre engagement envers la qualité et la pertinence de nos enseignements."
+					/>
+					<div className="pb-10 flex flex-col gap-y-10 justify-center items-center mx-auto max-w-7xl px-6 lg:px-8 tracking-wider w-[320px]">
+						<Image title={"Logo Qualiopi"} alt={"Logo Qualiopi"} src={"/images/qualiopi_logo_bg_removed.png"} width={320} height={140} />
+
+						<Button href="/catalogue">
+							<span className="flex items-center gap-x-2 font-semibold text-center">
+								<span className="hover:underline hover:underline-offset-8">Nos formations santé</span>
+								<span className="mt-1">→</span>
+							</span>
+						</Button>
+					</div>
+				</div>
+			</div>
+
+			{/* Section Missions */}
+			<Divider />
 		</div>
 	);
 }

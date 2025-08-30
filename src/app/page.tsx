@@ -48,32 +48,6 @@ export default function Accueil() {
 				height={500}
 				className="absolute z-10 opacity-30 top-5 -right-28 sm:-top-5 md:w-[750px] md:-top-20 md:-right-44 lg:w-[1000px] lg:-top-36 lg:-right-60"
 			/>
-			{/* Logo cloud */}
-			{/* <SectionWrapper>
-				<SectionTitle
-					tag="Des formations reconnues"
-					title="Certifié Qualiopi"
-					description="Notre organisme de formation est aggréé Qualiopi, prouvant notre engagement dans la qualité et la pertinence de notre enseignement."
-				/>
-				<div className="w-full flex justify-center">
-					<Image
-						title={"Logo Qualiopi"}
-						alt={"Logo Qualiopi"}
-						src={"/images/qualiopi_logo_bg_removed.png"}
-						width={300}
-						height={120}
-						className="justify-self-center"
-					/>
-				</div>
-
-				<div className="mt-16 flex items-center justify-center gap-x-6">
-					<Link href="/catalogue" className="text-base font-semibold leading-6 hover:underline hover:underline-offset-4">
-						Voir nos formations <span aria-hidden="true">→</span>
-					</Link>
-				</div>
-			</SectionWrapper> */}
-
-			{/* <div className="mx-auto max-w-[95%] border-t border-cohesion/30 my-10" /> */}
 
 			{/* Contact form */}
 			{/* <SectionWrapper>
