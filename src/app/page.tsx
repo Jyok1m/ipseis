@@ -12,7 +12,7 @@ import ContactForm from "@/components/home/ContactForm";
 
 export default function Accueil() {
 	return (
-		<div className="w-screen h-full flex flex-col items-center justify-center bg-univers -mt-14 sm:-mt-16">
+		<div className="w-screen h-full relative overflow-hidden flex flex-col items-center justify-center bg-univers -mt-14 sm:-mt-16">
 			<div className="flex flex-col items-center justify-center gap-y-2 sm:gap-y-5 m-10 sm:w-5/6 lg:w-3/5">
 				{/* Gros titre */}
 
