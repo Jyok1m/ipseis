@@ -44,32 +44,47 @@ const formatteurPoints = [
 	"Signent notre charte qualité de formateur",
 ];
 
+const structures = [
+	"Sanitaires : Hôpitaux, Cliniques, SSR, CCR, USLD, CMP, CATTP, EPSM, HDJ…",
+	"Medico social : EHPAD EHPA SSIAD, Accueil de jour, Foyers de vie, ESAT, MAS SESSAD…",
+	"Social : Service d’aide à la personne, familles d’accueil, Aidants…",
+];
+
+const collaborateurs = [
+	"IDE, Psychologue, Ergothérapeute, Cadre de Santé…",
+	"Agent de soin AS, ASG, ASH, AMP…",
+	"Agent Administratif, Animatrice, Auxiliaire de vie…",
+	"Nous adaptons nos formations afin d’accueillir les stagiaires en situation de handicap",
+];
+
 function FeatBox({
 	title,
 	description,
 	bgColor,
 	className,
+	centered,
 }: {
 	title: string;
-	description: string;
+	description: React.ReactNode;
 	bgColor: "support" | "maitrise";
 	className?: string;
+	centered?: boolean;
 }) {
 	return (
 		<div
 			className={`p-4 bg-${bgColor} rounded-3xl shadow-lg border-[1px] border-maitrise text-${
 				bgColor === "support" ? "maitrise" : "support"
-			} h-full text-center flex flex-col justify-center items-center ${className || ""}`}
+			} h-full text-center flex flex-col justify-center ${className || ""}`}
 		>
-			<p className="mt-2 text-lg sm:text-xl font-bold tracking-tight">{title}</p>
-			<p className="mt-2 text-sm sm:text-base">{description}</p>
+			<p className="mt-2 text-lg sm:text-xl font-bold tracking-tight items-center">{title}</p>
+			<p className={`mt-2 text-base sm:text-lg ${centered ? "text-center" : "text-left"}`}>{description}</p>
 		</div>
 	);
 }
 
 function FormatteurPoint({ point }: { point: string }) {
 	return (
-		<p className="relative pl-10 text-base sm:text-xl tracking-wider leading-6 text-univers">
+		<p className="relative pl-10 text-base sm:text-lg tracking-wider leading-6 text-univers">
 			<span className="absolute left-0 -top-2">
 				{/* fixé en haut du paragraphe */}
 				<Image
@@ -110,7 +125,7 @@ export default function SecteurSante() {
 				description="Participer à nos formations vous permettra d’acquérir, d’assimiler et de mettre en œuvre plus facilement les compétences clés pour exercer votre métier de soignant de manière plus efficace et plus sereine."
 			/>
 			<div className="pb-10 mx-auto max-w-7xl px-6 lg:px-8 tracking-wider">
-				<dl className="mx-auto grid grid-cols-1 gap-8 text-base sm:text-xl text-univers sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:gap-x-16">
+				<dl className="mx-auto grid grid-cols-1 gap-8 text-base sm:text-lg text-univers sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:gap-x-16">
 					{features.map((feature) => (
 						<div key={feature.name} className="relative">
 							<dt className="flex items-center gap-x-2 font-medium">
@@ -154,7 +169,7 @@ export default function SecteurSante() {
 				</div>
 			</div>
 
-			{/* Section Missions */}
+			{/* Section Mission */}
 
 			<Divider />
 			<TitleSection tag="Nos missions" title="Agir, transmettre, transformer, engager vos équipes" />
@@ -168,6 +183,7 @@ export default function SecteurSante() {
 								title="Transmettre par l’expérimentation"
 								description="Innover avec des espaces de co-apprentissage dynamiques, et des dispositifs comme les SEGAPTM « Serious escape games pédagogiques »."
 								bgColor="support"
+								centered
 							/>
 						</div>
 						{/* top-right */}
@@ -176,6 +192,7 @@ export default function SecteurSante() {
 								title="Renforcer les compétences"
 								description="Proposer des parcours exigeants, immersifs et collectifs, qui renforcent autonomie, intelligence collective et transversalité."
 								bgColor="support"
+								centered
 							/>
 						</div>
 						{/* center */}
@@ -186,6 +203,7 @@ export default function SecteurSante() {
 									description="Concevoir et animer des formations actives, engageantes et sur-mesure, centrées sur le réel et pour une performance respectueuse."
 									bgColor="maitrise"
 									className="p-6 sm:h-[320px]"
+									centered
 								/>
 							</div>
 						</div>
@@ -195,6 +213,7 @@ export default function SecteurSante() {
 								title="Transformer les pratiques"
 								description="Accompagner les professionnels vers plus d’efficacité, de confiance et de bien-être au travail."
 								bgColor="support"
+								centered
 							/>
 						</div>
 						{/* bottom-right */}
@@ -203,6 +222,7 @@ export default function SecteurSante() {
 								title="Garantir l’excellence"
 								description="S’appuyer sur une démarche qualité continue, certifiée et reconnue."
 								bgColor="support"
+								centered
 							/>
 						</div>
 					</div>
@@ -235,12 +255,17 @@ export default function SecteurSante() {
 					<div className="relative grid grid-cols-1 gap-4 sm:gap-2 sm:[grid-template-columns:0.9fr_1fr_0.9fr] sm:[grid-template-rows:0.9fr_1fr_0.9fr] place-items-stretch">
 						{/* (1,2) — haut centre */}
 						<div className="sm:col-start-2 sm:row-start-1">
-							<FeatBox title="Créativité & Innovation" description="Oser penser différemment pour former autrement" bgColor="maitrise" />
+							<FeatBox title="Créativité & Innovation" description="Oser penser différemment pour former autrement" bgColor="maitrise" centered />
 						</div>
 
 						{/* (2,1) — milieu gauche */}
 						<div className="sm:col-start-1 sm:row-start-2 sm:translate-x-2">
-							<FeatBox title="Transmission & Partage" description="Faire circuler les savoirs pour faire grandir les équipes" bgColor="maitrise" />
+							<FeatBox
+								title="Transmission & Partage"
+								description="Faire circuler les savoirs pour faire grandir les équipes"
+								bgColor="maitrise"
+								centered
+							/>
 						</div>
 
 						{/* (2,2) — centre : étoile */}
@@ -262,6 +287,7 @@ export default function SecteurSante() {
 								title="Transformer les pratiques"
 								description="Accompagner les professionnels vers plus d’efficacité, de confiance et de bien-être au travail"
 								bgColor="maitrise"
+								centered
 							/>
 						</div>
 
@@ -271,24 +297,54 @@ export default function SecteurSante() {
 								title="Professionnalisme & Qualité"
 								description="Délivrer le meilleur en engageant, avec exigence et rigueur"
 								bgColor="maitrise"
+								centered
 							/>
 						</div>
 
 						{/* (3,3) — bas droite */}
 						<div className="sm:col-start-3 sm:row-start-3 sm:-translate-x-24 md:-translate-x-32 lg:-translate-x-36">
-							<FeatBox title="Respect & Intégrité" description="Faire de la confiance une évidence" bgColor="maitrise" />
+							<FeatBox title="Respect & Intégrité" description="Faire de la confiance une évidence" bgColor="maitrise" centered />
 						</div>
 					</div>
 				</div>
 			</div>
 
 			{/* Section Valeurs */}
+
 			<Divider />
 			<TitleSection tag="Notre expertise" title="Des formateurs sélectionnés pour leurs valeurs et expertise" />
 			<div className="pb-10 mx-auto max-w-7xl px-6 lg:px-8">
 				{formatteurPoints.map((point, index) => (
 					<FormatteurPoint key={index} point={point} />
 				))}
+			</div>
+
+			{/* Section Expertise */}
+
+			<TitleSection title="Apporter notre expertise au personnel des structures en santé" noPaddingTop />
+			<div className="pb-10 mx-auto max-w-7xl px-6 lg:px-8 tracking-wider">
+				<div className="mx-auto max-w-5xl">
+					<div className="mx-auto grid grid-cols-1 gap-8 text-base sm:text-xl text-univers sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:gap-x-16">
+						<div className="sm:col-start-1 sm:row-start-1">
+							<FeatBox
+								title="Structures"
+								description={structures.map((structure, index) => (
+									<FormatteurPoint key={index} point={structure} />
+								))}
+								bgColor="support"
+							/>
+						</div>
+						<div className="sm:col-start-2 sm:row-start-1">
+							<FeatBox
+								title="Collaborateurs"
+								description={collaborateurs.map((collaborateur, index) => (
+									<FormatteurPoint key={index} point={collaborateur} />
+								))}
+								bgColor="support"
+							/>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	);
