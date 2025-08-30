@@ -70,13 +70,14 @@ function FeatBox({
 function FormatteurPoint({ point }: { point: string }) {
 	return (
 		<p className="relative pl-10 text-base sm:text-xl tracking-wider leading-6 text-univers">
-			<span className="absolute left-0 top-1/2 transform -translate-y-1/2">
+			<span className="absolute left-0 -top-2">
+				{/* fixé en haut du paragraphe */}
 				<Image
 					src={require("../../_images/logo/star_orange.svg")}
 					alt="Check"
 					width={40}
 					height={40}
-					className="w-10 h-10 flex-shrink-0 object-contain"
+					className="w-10 h-10 flex-shrink-0 object-contain align-top"
 				/>
 			</span>
 			{point}
