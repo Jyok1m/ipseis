@@ -102,7 +102,7 @@ export default function SecteurSante() {
 				title="Choisir Ipseis c’est apprendre autrement pour progresser durablement"
 				description="Participer à nos formations vous permettra d’acquérir, d’assimiler et de mettre en œuvre plus facilement les compétences clés pour exercer votre métier de soignant de manière plus efficace et plus sereine."
 			/>
-			<div className="pb-10 mx-auto max-w-7xl px-60 lg:px-8 tracking-wider">
+			<div className="pb-10 mx-auto max-w-7xl px-6 lg:px-8 tracking-wider">
 				<dl className="mx-auto grid grid-cols-1 gap-8 text-base sm:text-xl text-univers sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:gap-x-16">
 					{features.map((feature) => (
 						<div key={feature.name} className="relative">
@@ -124,8 +124,18 @@ export default function SecteurSante() {
 						title="Certifié Qualiopi"
 						description="Notre organisme de formation est aggréé Qualiopi, gage de notre engagement envers la qualité et la pertinence de nos enseignements."
 					/>
-					<div className="pb-10 flex flex-col gap-y-10 justify-center items-center mx-auto max-w-7xl px-60 lg:px-8 tracking-wider w-[320px]">
-						<Image title={"Logo Qualiopi"} alt={"Logo Qualiopi"} src={"/images/qualiopi_logo_bg_removed.png"} width={320} height={140} />
+					<div className="pb-10 flex flex-col gap-y-10 justify-center items-center mx-auto max-w-7xl px-8 lg:px-60 tracking-wider">
+						<div className="w-full max-w-[320px]">
+							<Image
+								title="Logo Qualiopi"
+								alt="Logo Qualiopi"
+								src="/images/qualiopi_logo_bg_removed.png"
+								width={320}
+								height={140}
+								sizes="(max-width: 640px) 240px, 320px"
+								className="w-full h-auto object-contain"
+							/>
+						</div>
 
 						<Button href="/catalogue">
 							<span className="flex items-center gap-x-2 font-semibold text-center">
