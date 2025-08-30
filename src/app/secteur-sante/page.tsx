@@ -27,7 +27,7 @@ const features = [
 	},
 	{
 		name: "Une qualité certifiée, exigeante et reconnue",
-		src: "/images/qualiopi_logo_bg_removed.png",
+		src: "/images/Qualiopi_logo.png",
 	},
 ];
 
