@@ -1,18 +1,17 @@
-"use client";
-
 import React from "react";
 import Image from "next/image";
+import Footer from "@/components/global/Footer";
 
 export default function APropos() {
 	return (
-		<div className="bg-support py-8 h-full">
+		<div className="bg-support pt-8 min-h-full">
 			<div className="mx-auto max-w-7xl px-6 lg:px-8 pb-10">
 				<div className="text-2xl sm:text-4xl font-bold tracking-wider text-univers">
 					<h1 className="mt-2 font-bold tracking-wider uppercase">Bienvenue dans l’univers unique d’apprentissage d’IPSEIS</h1>
 					<div className="border border-univers w-12 my-8"></div>
 				</div>
 				<div>
-					<p className="space-y-7 text-base sm:text-xl text-zinc-600">
+					<p className="space-y-7 text-base sm:text-xl text-univers">
 						<Image
 							src="/images/about-image-hélène.jpg"
 							alt="Photo d'Hélène de Montabert"
@@ -48,6 +47,7 @@ export default function APropos() {
 					</p>
 				</div>
 			</div>
+			<Footer />
 		</div>
 	);
 }

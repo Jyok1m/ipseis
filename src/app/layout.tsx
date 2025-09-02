@@ -37,10 +37,9 @@ export default function RootLayout({
 	return (
 		<html lang="fr" className="font-serif">
 			<Analytics />
-			<body className="flex flex-col justify-between min-h-screen max-w-screen bg-support overflow-x-hidden">
+			<body className="flex flex-col justify-between min-h-screen max-w-screen bg-univers overflow-x-hidden">
 				<Header />
 				<div className="h-[calc(100vh-108px)] bg-univers">{children}</div>
-				{/* <Footer /> */}
 			</body>
 		</html>
 	);
