@@ -58,6 +58,37 @@ const collaborateurs = [
 	"Nous adaptons nos formations afin d’accueillir les stagiaires en situation de handicap",
 ];
 
+const formationKeyPoints = [
+	<span>
+		<span className="font-bold">Formations continues</span> pour développer les compétences essentielles dans les pratiques de soin, d’accompagnement
+		et de management en santé
+	</span>,
+	<span>
+		<span className="font-bold">Durées adaptatives</span>, de la demi-journée à 3 jours avec un format recommandé à 2+1 jours en présentiel,
+		distanciel ou hybride. En intra (dans vos locaux) ou dans des lieux inspirants
+	</span>,
+	<span>
+		Un <span className="font-bold">dispositif de formation souple</span> avec un planning ajusté à vos besoins, des groupes adaptés à votre réalité
+		terrain et des supports accessibles avant et après la formation
+	</span>,
+	<span>
+		Des <span className="font-bold">modules ciblés</span> sur des besoins fondamentaux en Gériatrie, Accueil, Communication, Relation d’aide, pour
+		aider les soignants au quotidien dans leur pratique
+	</span>,
+	<span>
+		<span className="font-bold">Accompagnements personnalisés et analyse de la pratique</span> : Individuels ou collectifs, sur mesure selon vos
+		besoins, vos objectifs, vos contraintes de temps et de lieu.
+	</span>,
+	<span>
+		<span className="font-bold">Création de scénarios pédagogiques spécifiques</span> pour amener les apprenants à acquérir, assimiler et appliquer
+		les connaissances dans leur quotidien
+	</span>,
+	<span>
+		<span className="font-bold">Ressources et outils</span> mis à disposition : Supports numériques, capsules vidéo, Bibliothèque thématique, fiches
+		mémo, supports illustrés…
+	</span>,
+];
+
 function FeatBox({
 	title,
 	description,
@@ -83,10 +114,10 @@ function FeatBox({
 	);
 }
 
-function FormatteurPoint({ point }: { point: string }) {
+function FormatteurPoint({ point }: { point: React.ReactNode }) {
 	return (
 		<div className="relative pl-10 text-base sm:text-lg tracking-wider leading-6 text-univers">
-			<span className="absolute left-0 -top-2">
+			<span className="absolute left-0 -top-[6px]">
 				{/* fixé en haut du paragraphe */}
 				<Image
 					src={require("../../_images/logo/star_orange.svg")}
@@ -106,20 +137,91 @@ export default function Pedagogie() {
 		<div className="bg-support min-h-full">
 			{/* Titre */}
 
-			<TitlePage
-				title="Ipseis Santé"
-				descriptionNode={
-					<>
-						<span className="font-bold text-cohesion">La raison d’être d’IPSEIS Santé</span> est de permettre aux soignants et professionnels de santé
-						de renforcer leurs compétences dans un cadre innovant, collaboratif et respectueux, pour une pratique des soins plus efficace et plus
-						humaine.
-					</>
-				}
-			/>
+			<TitlePage title="Notre pédagogie" descriptionNode={<p>Une démarche pédagogique pour former autrement et transformer durablement</p>} />
 
-			{/* Section approche */}
+			{/* Section "Nos formations" */}
+
+			<TitleSection tag="Nos formations" title="Des formations variées et adaptatives pour plus d’efficacité" />
+			<div className="pb-10 mx-auto max-w-7xl px-6 lg:px-8">
+				{formationKeyPoints.map((point, index) => (
+					<FormatteurPoint key={index} point={point} />
+				))}
+			</div>
+
+			{/* Section Méthode */}
 
 			<Divider />
+			<TitleSection tag="Notre méthode" title="Une méthode participative qui engage et transforme" />
+			<div className="pb-10 mx-auto max-w-7xl px-6 lg:px-8 tracking-wider">
+				{/* 3x3 grid where five cards sit like a die face (1,1  -  1,3  -  2,2  -  3,1  -  3,3) */}
+				<div className="mx-auto max-w-5xl">
+					<div className="relative grid grid-cols-1 gap-4 sm:gap-0 sm:grid-cols-3 sm:grid-rows-3">
+						{/* top-left */}
+						<div className="sm:col-start-1 sm:row-start-1">
+							<FeatBox
+								title="Transmettre par l’expérimentation"
+								description="Innover avec des espaces de co-apprentissage dynamiques, et des dispositifs comme les SEGAPTM « Serious escape games pédagogiques »."
+								bgColor="support"
+								centered
+							/>
+						</div>
+						{/* top-right */}
+						<div className="sm:col-start-3 sm:row-start-1">
+							<FeatBox
+								title="Renforcer les compétences"
+								description="Proposer des parcours exigeants, immersifs et collectifs, qui renforcent autonomie, intelligence collective et transversalité."
+								bgColor="support"
+								centered
+							/>
+						</div>
+						{/* center */}
+						{/* <div className="sm:col-start-2 sm:row-start-2 flex justify-center">
+							<div className="relative z-20 sm:-my-8 sm:-mx-6 flex items-center justify-center">
+								<FeatBox
+									title="Former autrement"
+									description="Concevoir et animer des formations actives, engageantes et sur-mesure, centrées sur le réel et pour une performance respectueuse."
+									bgColor="maitrise"
+									className="p-6 sm:h-[320px]"
+									centered
+								/>
+							</div>
+						</div> */}
+
+						<div className="sm:col-start-2 sm:row-start-2 justify-center items-center relative z-10 hidden sm:flex">
+							<div className="relative z-20 sm:-mt-20 sm:-mb-20 sm:-mx-20">
+								<Image
+									src={require("../../_images/logo/star_green.svg")}
+									alt="Image de l'étoile d'Ipseis"
+									width={48}
+									height={48}
+									className="w-96 h-96"
+								/>
+							</div>
+						</div>
+
+						{/* bottom-left */}
+						<div className="sm:col-start-1 sm:row-start-3">
+							<FeatBox
+								title="Transformer les pratiques"
+								description="Accompagner les professionnels vers plus d’efficacité, de confiance et de bien-être au travail."
+								bgColor="support"
+								centered
+							/>
+						</div>
+						{/* bottom-right */}
+						<div className="sm:col-start-3 sm:row-start-3">
+							<FeatBox
+								title="Garantir l’excellence"
+								description="S’appuyer sur une démarche qualité continue, certifiée et reconnue."
+								bgColor="support"
+								centered
+							/>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			{/* <Divider /> */}
 			<TitleSection
 				tag="Notre approche"
 				title="Choisir Ipseis c’est apprendre autrement pour progresser durablement"
@@ -171,64 +273,6 @@ export default function Pedagogie() {
 			</div>
 
 			{/* Section Mission */}
-
-			<Divider />
-			<TitleSection tag="Nos missions" title="Agir, transmettre, transformer, engager vos équipes" />
-			<div className="pb-10 mx-auto max-w-7xl px-6 lg:px-8 tracking-wider">
-				{/* 3x3 grid where five cards sit like a die face (1,1  -  1,3  -  2,2  -  3,1  -  3,3) */}
-				<div className="mx-auto max-w-5xl">
-					<div className="relative grid grid-cols-1 gap-4 sm:gap-0 sm:grid-cols-3 sm:grid-rows-3">
-						{/* top-left */}
-						<div className="sm:col-start-1 sm:row-start-1">
-							<FeatBox
-								title="Transmettre par l’expérimentation"
-								description="Innover avec des espaces de co-apprentissage dynamiques, et des dispositifs comme les SEGAPTM « Serious escape games pédagogiques »."
-								bgColor="support"
-								centered
-							/>
-						</div>
-						{/* top-right */}
-						<div className="sm:col-start-3 sm:row-start-1">
-							<FeatBox
-								title="Renforcer les compétences"
-								description="Proposer des parcours exigeants, immersifs et collectifs, qui renforcent autonomie, intelligence collective et transversalité."
-								bgColor="support"
-								centered
-							/>
-						</div>
-						{/* center */}
-						<div className="sm:col-start-2 sm:row-start-2 flex justify-center">
-							<div className="relative z-20 sm:-my-8 sm:-mx-6 flex items-center justify-center">
-								<FeatBox
-									title="Former autrement"
-									description="Concevoir et animer des formations actives, engageantes et sur-mesure, centrées sur le réel et pour une performance respectueuse."
-									bgColor="maitrise"
-									className="p-6 sm:h-[320px]"
-									centered
-								/>
-							</div>
-						</div>
-						{/* bottom-left */}
-						<div className="sm:col-start-1 sm:row-start-3">
-							<FeatBox
-								title="Transformer les pratiques"
-								description="Accompagner les professionnels vers plus d’efficacité, de confiance et de bien-être au travail."
-								bgColor="support"
-								centered
-							/>
-						</div>
-						{/* bottom-right */}
-						<div className="sm:col-start-3 sm:row-start-3">
-							<FeatBox
-								title="Garantir l’excellence"
-								description="S’appuyer sur une démarche qualité continue, certifiée et reconnue."
-								bgColor="support"
-								centered
-							/>
-						</div>
-					</div>
-				</div>
-			</div>
 
 			{/* Section Vision et promesse */}
 

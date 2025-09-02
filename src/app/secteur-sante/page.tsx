@@ -86,7 +86,7 @@ function FeatBox({
 function FormatteurPoint({ point }: { point: string }) {
 	return (
 		<div className="relative pl-10 text-base sm:text-lg tracking-wider leading-6 text-univers">
-			<span className="absolute left-0 -top-2">
+			<span className="absolute left-0 -top-[6px]">
 				{/* fixé en haut du paragraphe */}
 				<Image
 					src={require("../../_images/logo/star_orange.svg")}
@@ -119,7 +119,7 @@ export default function SecteurSante() {
 
 			{/* Section approche */}
 
-			<Divider />
+			{/* <Divider /> */}
 			<TitleSection
 				tag="Notre approche"
 				title="Choisir Ipseis c’est apprendre autrement pour progresser durablement"
