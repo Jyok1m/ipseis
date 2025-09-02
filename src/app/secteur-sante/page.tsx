@@ -103,7 +103,7 @@ function FormatteurPoint({ point }: { point: string }) {
 
 export default function SecteurSante() {
 	return (
-		<div className="bg-support h-full">
+		<div className="bg-support min-h-full">
 			{/* Titre */}
 
 			<TitlePage
@@ -198,7 +198,7 @@ export default function SecteurSante() {
 						</div>
 						{/* center */}
 						<div className="sm:col-start-2 sm:row-start-2 flex justify-center">
-							<div className="relative z-20 sm:-mt-8 sm:-mb-8 sm:-mx-6">
+							<div className="relative z-20 sm:-my-8 sm:-mx-6 flex items-center justify-center">
 								<FeatBox
 									title="Former autrement"
 									description="Concevoir et animer des formations actives, engageantes et sur-mesure, centrées sur le réel et pour une performance respectueuse."
