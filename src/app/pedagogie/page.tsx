@@ -155,9 +155,9 @@ export default function Pedagogie() {
 			<div className="pb-10 mx-auto max-w-7xl px-6 lg:px-8 tracking-wider">
 				{/* 3x3 grid where five cards sit like a die face (1,1  -  1,3  -  2,2  -  3,1  -  3,3) */}
 				<div className="mx-auto max-w-5xl">
-					<div className="relative grid grid-cols-1 gap-4 sm:gap-0 sm:grid-cols-3 sm:grid-rows-3">
+					<div className="relative grid grid-cols-1 gap-4 md:gap-0 md:grid-cols-3 md:grid-rows-3">
 						{/* top-left */}
-						<div className="sm:col-start-1 sm:row-start-1">
+						<div className="md:col-start-1 md:row-start-1">
 							<FeatBox
 								title="Transmettre par l’expérimentation"
 								description="Innover avec des espaces de co-apprentissage dynamiques, et des dispositifs comme les SEGAPTM « Serious escape games pédagogiques »."
@@ -166,7 +166,7 @@ export default function Pedagogie() {
 							/>
 						</div>
 						{/* top-right */}
-						<div className="sm:col-start-3 sm:row-start-1">
+						<div className="md:col-start-3 md:row-start-1">
 							<FeatBox
 								title="Renforcer les compétences"
 								description="Proposer des parcours exigeants, immersifs et collectifs, qui renforcent autonomie, intelligence collective et transversalité."
@@ -175,20 +175,8 @@ export default function Pedagogie() {
 							/>
 						</div>
 						{/* center */}
-						{/* <div className="sm:col-start-2 sm:row-start-2 flex justify-center">
-							<div className="relative z-20 sm:-my-8 sm:-mx-6 flex items-center justify-center">
-								<FeatBox
-									title="Former autrement"
-									description="Concevoir et animer des formations actives, engageantes et sur-mesure, centrées sur le réel et pour une performance respectueuse."
-									bgColor="maitrise"
-									className="p-6 sm:h-[320px]"
-									centered
-								/>
-							</div>
-						</div> */}
-
-						<div className="sm:col-start-2 sm:row-start-2 justify-center items-center relative z-10 hidden sm:flex">
-							<div className="relative z-20 sm:-mt-20 sm:-mb-20 sm:-mx-20">
+						<div className="md:col-start-2 md:row-start-2 justify-center items-center relative z-10 hidden md:flex">
+							<div className="relative z-20 md:-mt-20 md:-mb-20 md:-mx-20">
 								<Image
 									src={require("../../_images/logo/star_green.svg")}
 									alt="Image de l'étoile d'Ipseis"
@@ -198,9 +186,8 @@ export default function Pedagogie() {
 								/>
 							</div>
 						</div>
-
 						{/* bottom-left */}
-						<div className="sm:col-start-1 sm:row-start-3">
+						<div className="md:col-start-1 md:row-start-3">
 							<FeatBox
 								title="Transformer les pratiques"
 								description="Accompagner les professionnels vers plus d’efficacité, de confiance et de bien-être au travail."
@@ -209,7 +196,7 @@ export default function Pedagogie() {
 							/>
 						</div>
 						{/* bottom-right */}
-						<div className="sm:col-start-3 sm:row-start-3">
+						<div className="md:col-start-3 md:row-start-3">
 							<FeatBox
 								title="Garantir l’excellence"
 								description="S’appuyer sur une démarche qualité continue, certifiée et reconnue."
