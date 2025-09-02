@@ -2,13 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import Link from "next/link";
-
 import Button from "@/components/global/Button";
-
-import { SectionWrapper } from "@/components/global/Wrappers";
-import SectionTitle from "@/components/global/SectionTitle";
-import ContactForm from "@/components/home/ContactForm";
 
 export default function Accueil() {
 	return (
@@ -46,18 +40,8 @@ export default function Accueil() {
 				alt="Étoile Ipseis"
 				width={500}
 				height={500}
-				className="absolute z-10 opacity-30 top-5 -right-28 sm:-top-5 md:w-[750px] md:-top-20 md:-right-44 lg:w-[1000px] lg:-top-36 lg:-right-60"
+				className="absolute z-10 opacity-10 top-5 -right-28 sm:-top-5 md:w-[750px] md:-top-20 md:-right-44 lg:w-[1000px] lg:-top-36 lg:-right-60"
 			/>
-
-			{/* Contact form */}
-			{/* <SectionWrapper>
-				<SectionTitle
-					tag="100% personnalisé"
-					title="Parlons de vos besoins"
-					description="Notre équipe est à votre disposition pour répondre à vos questions et vous accompagner dans le choix de votre formation."
-				/>
-				<ContactForm />
-			</SectionWrapper> */}
 		</div>
 	);
 }
