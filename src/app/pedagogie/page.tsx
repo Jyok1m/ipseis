@@ -175,7 +175,7 @@ export default function Pedagogie() {
 			<div className="pb-10 mx-auto max-w-7xl px-6 lg:px-8 tracking-wider">
 				{/* 3x3 grid where five cards sit like a die face (1,1  -  1,3  -  2,2  -  3,1  -  3,3) */}
 				<div className="mx-auto max-w-5xl">
-					<div className="relative grid grid-cols-1 gap-4 md:gap-4 md:grid-cols-2 md:grid-rows-2 place-items-stretch">
+					<div className="relative grid grid-cols-1 gap-4 md:gap-24 md:grid-cols-2 md:grid-rows-2 place-items-stretch">
 						{/* top-left */}
 						<div className="md:col-start-1 md:row-start-1">
 							<FeatBox
