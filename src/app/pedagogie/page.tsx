@@ -58,6 +58,26 @@ const collaborateurs = [
 	"Nous adaptons nos formations afin d’accueillir les stagiaires en situation de handicap",
 ];
 
+const connaissanceList = [
+	"Apports théoriques, scientifiques et réglementaires actualisé et ciblés",
+	"Chaque session démarre par un socle de savoirs fondamentaux adaptés au niveau et aux besoins des apprenants",
+];
+
+const experimentationList = [
+	"Études de cas collaboratives",
+	"Les apprenants testent, analysent et retiennent. L’apprentissage passe par l’action dans un cadre sécurisé et motivant",
+];
+
+const interactionList = [
+	"Questionnements réguliers, feedbacks en temps réel, adaptation des contenus",
+	"Le formateur ajuste sa pédagogie en direct, l’apprenant devient acteur de son parcours",
+];
+
+const approachList = [
+	"Simulations, SEGAPTM, jeux de rôles, scénarios pédagogiques, quizz",
+	"L’apprentissage devient une expérience concrète et collective, favorisant l’ancrage et la transférabilité",
+];
+
 const formationKeyPoints = [
 	<span>
 		<span className="font-bold">Formations continues</span> pour développer les compétences essentielles dans les pratiques de soin, d’accompagnement
@@ -114,9 +134,9 @@ function FeatBox({
 	);
 }
 
-function FormatteurPoint({ point }: { point: React.ReactNode }) {
+function FormatteurPoint({ point, isWhite }: { point: React.ReactNode; isWhite?: boolean }) {
 	return (
-		<div className="relative pl-10 text-base sm:text-lg tracking-wider leading-6 text-univers">
+		<div className={`relative pl-10 text-base sm:text-lg tracking-wider leading-6 ${isWhite ? "text-support" : "text-univers"}`}>
 			<span className="absolute left-0 -top-[6px]">
 				{/* fixé en haut du paragraphe */}
 				<Image
@@ -155,27 +175,29 @@ export default function Pedagogie() {
 			<div className="pb-10 mx-auto max-w-7xl px-6 lg:px-8 tracking-wider">
 				{/* 3x3 grid where five cards sit like a die face (1,1  -  1,3  -  2,2  -  3,1  -  3,3) */}
 				<div className="mx-auto max-w-5xl">
-					<div className="relative grid grid-cols-1 gap-4 md:gap-0 md:grid-cols-3 md:grid-rows-3">
+					<div className="relative grid grid-cols-1 gap-4 md:gap-4 md:grid-cols-2 md:grid-rows-2 place-items-stretch">
 						{/* top-left */}
 						<div className="md:col-start-1 md:row-start-1">
 							<FeatBox
-								title="Transmettre par l’expérimentation"
-								description="Innover avec des espaces de co-apprentissage dynamiques, et des dispositifs comme les SEGAPTM « Serious escape games pédagogiques »."
-								bgColor="support"
-								centered
+								title="Connaissances clés"
+								description={connaissanceList.map((data, index) => (
+									<FormatteurPoint key={index} point={data} isWhite />
+								))}
+								bgColor="maitrise"
 							/>
 						</div>
 						{/* top-right */}
-						<div className="md:col-start-3 md:row-start-1">
+						<div className="md:col-start-2 md:row-start-1">
 							<FeatBox
-								title="Renforcer les compétences"
-								description="Proposer des parcours exigeants, immersifs et collectifs, qui renforcent autonomie, intelligence collective et transversalité."
-								bgColor="support"
-								centered
+								title="Expérimentation guidée"
+								description={experimentationList.map((data, index) => (
+									<FormatteurPoint key={index} point={data} isWhite />
+								))}
+								bgColor="maitrise"
 							/>
 						</div>
 						{/* center */}
-						<div className="md:col-start-2 md:row-start-2 justify-center items-center relative z-10 hidden md:flex">
+						<div className="md:col-start-1 md:row-start-1 justify-center items-center absolute z-10 hidden md:flex">
 							<div className="relative z-20 md:-mt-20 md:-mb-20 md:-mx-20">
 								<Image
 									src={require("../../_images/logo/star_green.svg")}
@@ -187,21 +209,23 @@ export default function Pedagogie() {
 							</div>
 						</div>
 						{/* bottom-left */}
-						<div className="md:col-start-1 md:row-start-3">
+						<div className="md:col-start-1 md:row-start-2">
 							<FeatBox
-								title="Transformer les pratiques"
-								description="Accompagner les professionnels vers plus d’efficacité, de confiance et de bien-être au travail."
-								bgColor="support"
-								centered
+								title="Interaction continue"
+								description={interactionList.map((data, index) => (
+									<FormatteurPoint key={index} point={data} isWhite />
+								))}
+								bgColor="maitrise"
 							/>
 						</div>
 						{/* bottom-right */}
-						<div className="md:col-start-3 md:row-start-3">
+						<div className="md:col-start-2 md:row-start-2">
 							<FeatBox
-								title="Garantir l’excellence"
-								description="S’appuyer sur une démarche qualité continue, certifiée et reconnue."
-								bgColor="support"
-								centered
+								title="Approche collaborative et immersive"
+								description={approachList.map((data, index) => (
+									<FormatteurPoint key={index} point={data} isWhite />
+								))}
+								bgColor="maitrise"
 							/>
 						</div>
 					</div>
