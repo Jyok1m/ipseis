@@ -1,7 +1,7 @@
 import React from "react";
 import { TitleSection } from "@/components/TitleSection";
 
-export const FormationVisionSection = () => {
+export const HealthVisionSection = () => {
 	return (
 		<TitleSection
 			tag="Un organisme à votre écoute"

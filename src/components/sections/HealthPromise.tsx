@@ -1,7 +1,7 @@
 import React from "react";
 import { TitleSection } from "@/components/TitleSection";
 
-export const FormationPromiseSection = () => {
+export const HealthPromiseSection = () => {
 	return (
 		<TitleSection
 			noPaddingTop
