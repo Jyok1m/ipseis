@@ -109,6 +109,17 @@ const formationKeyPoints = [
 	</span>,
 ];
 
+const avantList = ["Analyse des attentes et du contexte", "Questionnaire de positionnement", "Mise à disposition de connaissance introductive"];
+
+const pendantList = [
+	"Feedbacks réguliers",
+	"Évaluation continue des acquis",
+	"Questionnement collectif",
+	"Questionnaire de satisfaction « à chaud »",
+];
+
+const aprèsList = ["Évaluation de l’impact « à froid »", "Débrief personnalisé avec la structure", "Recommandations pour aller plus loin"];
+
 function FeatBox({
 	title,
 	description,
@@ -236,7 +247,7 @@ export default function Pedagogie() {
 
 			<Divider />
 			<TitleSection tag="Une formation adaptée et optimisée" title="Un processus efficace, fluide, collaboratif et de proximité" />
-			<div className="pb-10 mx-auto max-w-7xl px-6 lg:px-8 tracking-wider sm:mt-24">
+			<div className="pb-10 mx-auto max-w-7xl px-6 lg:px-8 tracking-wider sm:mt-24 sm:mb-24">
 				<div className="mx-auto max-w-5xl">
 					<div className="relative grid grid-cols-1 gap-4 sm:gap-2 sm:[grid-template-columns:0.9fr_1fr_0.9fr] sm:[grid-template-rows:0.9fr_1fr_0.9fr] place-items-stretch">
 						<div className="sm:col-start-2 sm:row-start-1 sm:-translate-y-24">
@@ -403,16 +414,6 @@ export default function Pedagogie() {
 
 			{/* <Divider /> */}
 			<Divider />
-			<Divider />
-			<Divider />
-			<Divider />
-			<Divider />
-			<Divider />
-			<Divider />
-			<Divider />
-			<Divider />
-			<Divider />
-			<Divider />
 			<TitleSection
 				tag="Notre approche"
 				title="Choisir Ipseis c’est apprendre autrement pour progresser durablement"
@@ -431,14 +432,51 @@ export default function Pedagogie() {
 				</dl>
 			</div>
 
+			{/* Évaluation et suivi */}
+			<Divider />
+			<TitleSection tag="Évaluation & suivi" title="Un accompagnement qualitatif sur-mesure pour le bénéfice des apprenants" />
+			<div className="pb-10 mx-auto max-w-7xl px-6 lg:px-8 tracking-wider">
+				<div className="mx-auto max-w-5xl">
+					<div className="mx-auto grid grid-cols-1 gap-8 text-base sm:text-xl text-univers sm:grid-cols-3 lg:mx-0 lg:max-w-none lg:gap-x-16">
+						<div className="sm:col-start-1 sm:row-start-1">
+							<FeatBox
+								title="Avant la formation"
+								description={avantList.map((data, index) => (
+									<FormatteurPoint key={index} point={data} />
+								))}
+								bgColor="support"
+							/>
+						</div>
+						<div className="sm:col-start-2 sm:row-start-1">
+							<FeatBox
+								title="Pendant la formation"
+								description={pendantList.map((data, index) => (
+									<FormatteurPoint key={index} point={data} />
+								))}
+								bgColor="support"
+							/>
+						</div>
+						<div className="sm:col-start-3 sm:row-start-1">
+							<FeatBox
+								title="Après la formation"
+								description={aprèsList.map((data, index) => (
+									<FormatteurPoint key={index} point={data} />
+								))}
+								bgColor="support"
+							/>
+						</div>
+					</div>
+				</div>
+			</div>
+
 			{/* Section Qualiopi */}
 
 			<div className="flex justify-center px-10">
 				<div className="max-w-7xl tracking-wider border-cohesion border-2 rounded-md mb-10">
 					<TitleSection
 						centered
-						title="Certifié Qualiopi"
-						description="Notre organisme de formation est aggréé Qualiopi, gage de notre engagement envers la qualité et la pertinence de nos enseignements."
+						title="Des formations délivrées par un organisme certifié"
+						description="Notre organisme de formation est certifié Qualiopi, gage de notre engagement envers la qualité et la pertinence de nos enseignements."
 					/>
 					<div className="pb-10 flex flex-col gap-y-10 justify-center items-center mx-auto max-w-7xl px-8 lg:px-60 tracking-wider">
 						<div className="w-full max-w-[320px]">
