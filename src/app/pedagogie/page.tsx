@@ -11,6 +11,7 @@ import { PedagogyProcessSection } from "@/components/sections/PedagogyProcess";
 import { ApproachSection } from "@/components/sections/Approach";
 import { PedagogyFollowUpSection } from "@/components/sections/PedagogyFollowUp";
 import { QualiopiSection } from "@/components/sections/Qualiopi";
+import { PedagogyQualityOutcomeSection } from "@/components/sections/PedagogyQualityOutcomes";
 
 export default function Pedagogie() {
 	return (
@@ -43,6 +44,9 @@ export default function Pedagogie() {
 			<Divider />
 			<PedagogyFollowUpSection />
 			<QualiopiSection />
+
+			<Divider />
+			<PedagogyQualityOutcomeSection />
 
 			<Footer />
 		</div>

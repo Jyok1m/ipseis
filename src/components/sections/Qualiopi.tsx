@@ -5,7 +5,7 @@ import { TitleSection } from "@/components/TitleSection";
 
 export const QualiopiSection = () => {
 	return (
-		<div className="flex justify-center px-10">
+		<div className="flex justify-center px-10 mt-10">
 			<div className="max-w-7xl tracking-wider border-cohesion border-2 rounded-md mb-10">
 				<TitleSection
 					centered
