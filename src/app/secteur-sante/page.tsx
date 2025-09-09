@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import TitlePage from "@/components/global/TitlePage";
-import TitleSection from "@/components/global/TitleSection";
+import { TitleSection } from "@/components/TitleSection";
 import Divider from "@/components/global/Divider";
 import Button from "@/components/global/Button";
 import Footer from "@/components/global/Footer";
