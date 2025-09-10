@@ -18,7 +18,7 @@ export default function Pedagogie() {
 		<div className="bg-support min-h-full">
 			{/* Titre */}
 
-			<TitlePage title="Notre pédagogie" descriptionNode={<p>Une démarche pédagogique pour former autrement et transformer durablement</p>} />
+			<TitlePage title="Notre pédagogie" descriptionNode={<span>Une démarche pédagogique pour former autrement et transformer durablement</span>} />
 
 			{/* Section "Nos formations" */}
 
