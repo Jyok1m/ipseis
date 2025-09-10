@@ -53,7 +53,7 @@ export const PedagogyMethodologySection = () => {
 							/>
 						</div>
 						{/* center */}
-						<div className="md:col-start-1 md:row-start-1 justify-center items-center absolute z-10 hidden md:flex">
+						<div className="absolute inset-0 z-10 hidden md:flex items-center justify-center">
 							<div className="relative z-20 md:-mt-20 md:-mb-20 md:-mx-20">
 								<Image src={require("@/_images/logo/star_green.svg")} alt="Image de l'étoile d'Ipseis" width={48} height={48} className="w-96 h-96" />
 							</div>
