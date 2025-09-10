@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import TitlePage from "@/components/global/TitlePage";
 import Divider from "@/components/global/Divider";
@@ -12,6 +10,15 @@ import { ApproachSection } from "@/components/sections/Approach";
 import { PedagogyFollowUpSection } from "@/components/sections/PedagogyFollowUp";
 import { QualiopiSection } from "@/components/sections/Qualiopi";
 import { PedagogyQualityOutcomeSection } from "@/components/sections/PedagogyQualityOutcomes";
+import type { Metadata } from "next";
+import { buildMetadata } from "@/components/utils/seo";
+
+export const metadata: Metadata = buildMetadata({
+	title: "Notre pédagogie - Apprentissage actif & immersif",
+	description:
+		"Une démarche pédagogique innovante combinant activité, coopération et expérimentation pour transformer durablement les pratiques professionnelles.",
+	path: "/pedagogie",
+});
 
 export default function Pedagogie() {
 	return (

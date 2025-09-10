@@ -1,8 +1,15 @@
-"use client";
-
 import React from "react";
 import Image from "next/image";
 import Button from "@/components/global/Button";
+import type { Metadata } from "next";
+import { buildMetadata } from "@/components/utils/seo";
+
+export const metadata: Metadata = buildMetadata({
+	title: "Accueil - Organisme de formation innovant santé & médico-social",
+	description:
+		"IPSEIS conçoit des formations actives, immersives et sur mesure pour les professionnels de la santé, du social et médico-social. Découvrez notre approche pédagogique unique.",
+	path: "/",
+});
 
 export default function Accueil() {
 	return (

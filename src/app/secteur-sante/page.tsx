@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import Image from "next/image";
 import TitlePage from "@/components/global/TitlePage";
@@ -21,6 +19,15 @@ import { HealthValueSection } from "@/components/sections/HealthValues";
 import { HealthTrainerSection } from "@/components/sections/HealthTrainers";
 import { HealthPerimeterSection } from "@/components/sections/HealthPerimeter";
 import { PedagogyQualityOutcomeSection } from "@/components/sections/PedagogyQualityOutcomes";
+import type { Metadata } from "next";
+import { buildMetadata } from "@/components/utils/seo";
+
+export const metadata: Metadata = buildMetadata({
+	title: "IPSEIS Santé - Formations pour établissements sanitaires & médico-sociaux",
+	description:
+		"Formations professionnelles actives, immersives et sur mesure destinées aux équipes des établissements sanitaires, sociaux et médico-sociaux.",
+	path: "/secteur-sante",
+});
 
 const features = [
 	{

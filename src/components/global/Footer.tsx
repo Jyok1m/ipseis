@@ -16,14 +16,22 @@ const Footer = () => {
 						Joachim Jasmin
 					</Link>
 				</span>
-				<span className="hidden sm:flex sm:justify-center sm:items-center sm:gap-x-2">Mentions légales</span>
+				<span className="hidden sm:flex sm:justify-center sm:items-center sm:gap-x-2">
+					<Link href="/mentions-legales" className="hover:underline underline-offset-4">
+						Mentions légales
+					</Link>
+				</span>
 				<span>
 					Design par{" "}
 					<Link href="https://www.malt.fr/profile/titouanguignouard/" target="_blank" className="font-semibold hover:underline underline-offset-4">
 						Titouan Gignouard
 					</Link>
 				</span>
-				<span className="sm:hidden flex justify-center items-center gap-x-2">Mentions légales</span>
+				<span className="sm:hidden flex justify-center items-center gap-x-2">
+					<Link href="/mentions-legales" className="hover:underline underline-offset-4">
+						Mentions légales
+					</Link>
+				</span>
 			</footer>
 		</div>
 	);

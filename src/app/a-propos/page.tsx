@@ -1,6 +1,15 @@
 import React from "react";
 import Image from "next/image";
 import Footer from "@/components/global/Footer";
+import type { Metadata } from "next";
+import { buildMetadata } from "@/components/utils/seo";
+
+export const metadata: Metadata = buildMetadata({
+	title: "À propos d'IPSEIS - Pédagogie immersive & active",
+	description:
+		"Découvrez la vision d'IPSEIS : innover dans la formation des professionnels de santé et du médico-social avec des approches expérientielles engageantes.",
+	path: "/a-propos",
+});
 
 export default function APropos() {
 	return (

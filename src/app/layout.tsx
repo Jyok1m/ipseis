@@ -2,11 +2,39 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import Header from "@/components/global/Header";
+import { defaultOpenGraph, defaultTwitter } from "@/components/utils/seo";
 
 export const metadata: Metadata = {
-	title: "Ipseis",
+	metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://www.ipseis.fr"),
+	title: {
+		default: "IPSEIS - Formations innovantes santé & accompagnement",
+		template: "%s | IPSEIS",
+	},
 	description:
-		"Ipseis est un organisme de formation spécialisé dans l'accompagnement des professionnels de la santé dans le domaine de la réflexologie et de l'accompagnement des personnes agées.",
+		"IPSEIS est un organisme de formation innovant dédié aux professionnels du secteur sanitaire, social et médico-social : pédagogie active, immersive et sur mesure.",
+	keywords: ["formation santé", "organisme de formation", "pédagogie active", "innovation pédagogique", "secteur médico-social", "réflexologie"],
+	authors: [{ name: "IPSEIS" }],
+	creator: "IPSEIS",
+	publisher: "IPSEIS",
+	alternates: {
+		canonical: "/",
+	},
+	robots: {
+		index: true,
+		follow: true,
+	},
+	openGraph: {
+		...defaultOpenGraph,
+		title: "IPSEIS - Formations innovantes santé & accompagnement",
+		description:
+			"Organisme de formation certifié proposant des parcours sur mesure, actifs et immersifs pour les professionnels de santé et du médico-social.",
+		url: "/",
+	},
+	twitter: {
+		...defaultTwitter,
+		title: "IPSEIS - Formations innovantes santé & accompagnement",
+		description: "Parcours de formation actifs, immersifs et sur mesure pour les professionnels de santé et du médico-social.",
+	},
 	icons: {
 		apple: [
 			{ url: "/icons/apple-icon-57x57.png", sizes: "57x57" },
