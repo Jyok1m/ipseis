@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Button from "@/components/global/Button";
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon, EnvelopeIcon } from "@heroicons/react/24/outline";
 import { Modal, ConfigProvider, Spin } from "antd";

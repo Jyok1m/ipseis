@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import TitlePage from "@/components/global/TitlePage";
 import Footer from "@/components/global/Footer";
 import type { Metadata } from "next";
 import { buildMetadata } from "@/components/utils/seo";
@@ -13,12 +14,15 @@ export const metadata: Metadata = buildMetadata({
 
 export default function APropos() {
 	return (
-		<div className="bg-support pt-8 min-h-full">
+		<div className="bg-support min-h-full">
 			<div className="mx-auto max-w-7xl px-6 lg:px-8 pb-10">
-				<div className="text-2xl sm:text-4xl font-bold tracking-wider text-univers">
-					<h1 className="mt-2 font-bold tracking-wider uppercase">Bienvenue dans l’univers unique d’apprentissage d’IPSEIS</h1>
-					<div className="border border-univers w-12 my-8"></div>
-				</div>
+				<TitlePage
+					title="Bienvenue dans l’univers unique d’apprentissage d’IPSEIS"
+					centered={false}
+					paddingHorizontal={false}
+					paddingBottom={false}
+				/>
+				<div className="border border-univers w-12 my-8"></div>
 				<div>
 					<p className="space-y-7 text-base sm:text-xl text-univers">
 						<Image
