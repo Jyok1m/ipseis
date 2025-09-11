@@ -1,4 +1,5 @@
 import Image from "next/image";
+import starOrange from "@/_images/logo/star_orange.svg";
 
 type TitleSectionProps = {
 	noPaddingVertical?: boolean;
@@ -31,13 +32,7 @@ export const TitleSection = ({
 			<div className={`text-2xl sm:text-4xl tracking-wider text-univers ${centered ? "text-center" : ""}`}>
 				{tag && (
 					<div className="flex items-center mb-3 text-base sm:text-lg font-semibold leading-6 text-cohesion">
-						<Image
-							src={require("@/_images/logo/star_orange.svg")}
-							alt="Image de l'élément de tag"
-							width={64}
-							height={64}
-							className="-ml-4 w-16 aspect-square"
-						/>
+						<Image src={starOrange} alt="Image de l'élément de tag" width={64} height={64} className="-ml-4 w-16 aspect-square" />
 						<h2>{tag}</h2>
 					</div>
 				)}

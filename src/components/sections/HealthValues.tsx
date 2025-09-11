@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { FeatureBox } from "@/components/FeatureBox";
 import { TitleSection } from "@/components/TitleSection";
+import starGreen from "@/_images/logo/star_green.svg";
 
 export const HealthValueSection = () => {
 	return (
@@ -29,13 +30,7 @@ export const HealthValueSection = () => {
 						{/* (2,2) — centre : étoile */}
 						<div className="sm:col-start-2 sm:row-start-2 justify-center items-center relative z-10 hidden sm:flex">
 							<div className="relative z-20 sm:-mt-8 sm:-mb-8 sm:-mx-6">
-								<Image
-									src={require("../../_images/logo/star_green.svg")}
-									alt="Image de l'étoile d'Ipseis"
-									width={48}
-									height={48}
-									className="w-60 h-60"
-								/>
+								<Image src={starGreen} alt="Image de l'étoile d'Ipseis" width={48} height={48} className="w-60 h-60" />
 							</div>
 						</div>
 

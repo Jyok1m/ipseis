@@ -3,6 +3,7 @@ import Image from "next/image";
 import { FeatureBox } from "@/components/FeatureBox";
 import { TitleSection } from "@/components/TitleSection";
 import { StarBulletPoint } from "@/components/StarBulletPoint";
+import starGreen from "@/_images/logo/star_green.svg";
 
 const connaissanceList = [
 	"Apports théoriques, scientifiques et réglementaires actualisé et ciblés",
@@ -55,7 +56,7 @@ export const PedagogyMethodologySection = () => {
 						{/* center */}
 						<div className="absolute inset-0 z-10 hidden md:flex items-center justify-center">
 							<div className="relative z-20 md:-mt-20 md:-mb-20 md:-mx-20">
-								<Image src={require("@/_images/logo/star_green.svg")} alt="Image de l'étoile d'Ipseis" width={48} height={48} className="w-96 h-96" />
+								<Image src={starGreen} alt="Image de l'étoile d'Ipseis" width={48} height={48} className="w-96 h-96" />
 							</div>
 						</div>
 						{/* bottom-left */}

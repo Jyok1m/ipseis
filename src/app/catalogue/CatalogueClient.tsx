@@ -6,6 +6,7 @@ import { Modal, ConfigProvider, Spin } from "antd";
 import clsx from "clsx";
 import Image from "next/image";
 import axios from "axios";
+import starOrange from "@/_images/logo/star_orange.svg";
 
 const ThemeBubble = memo(({ theme, index, onClick }: any) => {
 	const positions = [
@@ -109,7 +110,7 @@ export default function CatalogueClient() {
 					<BubbleContainer>
 						<div className="col-start-2 row-start-2 flex justify-center items-center w-full">
 							<Image
-								src={require("/src/_images/logo/star_orange.svg")}
+								src={starOrange}
 								alt="Logo Ipseis"
 								title="Logo Ipseis"
 								height={200}

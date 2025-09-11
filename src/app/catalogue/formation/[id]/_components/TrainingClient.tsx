@@ -24,6 +24,7 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import axios from "axios";
+import starOrange from "@/_images/logo/star_orange.svg";
 
 export default function TrainingClient({ id }: { id: string }) {
 	const router = useRouter();
@@ -82,7 +83,7 @@ export default function TrainingClient({ id }: { id: string }) {
 								<div key={index} className="flex mb-2">
 									<Image
 										aria-hidden="true"
-										src={require("/src/_images/logo/star_orange.svg")}
+										src={starOrange}
 										alt="Logo Ipseis"
 										title="Logo Ipseis"
 										width={40}

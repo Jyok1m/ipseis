@@ -4,6 +4,7 @@ import Button from "@/components/global/Button";
 import Footer from "@/components/global/Footer";
 import type { Metadata } from "next";
 import { buildMetadata } from "@/components/utils/seo";
+import tiretHome from "@/_images/tiret-home.png";
 
 export const metadata: Metadata = buildMetadata({
 	title: "Accueil - Organisme de formation innovant santé & médico-social",
@@ -20,7 +21,7 @@ export default function Accueil() {
 
 				<div className="text-2xl sm:text-4xl font-bold tracking-widest text-cohesion leading-snug">
 					<h1>Vous êtes unique, nos formations et accompagnements aussi.</h1>
-					<Image src={require("../_images/tiret-home.png")} alt="tiret" height={50} width={75} className="my-5" />
+					<Image src={tiretHome} alt="tiret" height={50} width={75} className="my-5" />
 				</div>
 
 				{/* Description */}
