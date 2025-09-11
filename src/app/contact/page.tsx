@@ -1,7 +1,8 @@
 import React from "react";
-
+import Footer from "@/components/global/Footer";
 import { PageWrapper } from "@/components/global/Wrappers";
 import SectionTitle from "@/components/global/SectionTitle";
+import TitlePage from "@/components/global/TitlePage";
 import ContactForm from "@/components/home/ContactForm";
 import type { Metadata } from "next";
 import { buildMetadata } from "@/components/utils/seo";
@@ -14,13 +15,19 @@ export const metadata: Metadata = buildMetadata({
 
 export default function Contact() {
 	return (
-		<PageWrapper>
-			<SectionTitle
-				tag="Parlons de vos besoins"
+		<div className="bg-support min-h-full flex flex-col items-center justify-between">
+			<TitlePage
 				title="Formulaire de contact"
-				description="Si vous souhaitez en savoir plus sur nos formations, nos tarifs ou nos disponibilités, n'hésitez pas à nous contacter via le formulaire ci-dessous."
+				descriptionNode={
+					<>
+						Si vous souhaitez en savoir plus sur nos formations, nos tarifs ou nos disponibilités, n'hésitez pas à nous contacter via le formulaire
+						ci-dessous.
+					</>
+				}
 			/>
 			<ContactForm />
-		</PageWrapper>
+
+			<Footer />
+		</div>
 	);
 }

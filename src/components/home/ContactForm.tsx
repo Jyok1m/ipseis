@@ -99,7 +99,7 @@ export default function ContactForm() {
 	};
 
 	return (
-		<div className="relative isolate bg-maitrise px-10 py-10 w-full lg:max-w-4xl rounded-2xl">
+		<div className="relative isolate bg-maitrise p-5 w-4/5 lg:max-w-3xl rounded-2xl">
 			<ConfigProvider
 				theme={{
 					token: {
