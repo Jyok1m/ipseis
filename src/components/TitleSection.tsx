@@ -1,16 +1,33 @@
 import Image from "next/image";
 
 type TitleSectionProps = {
+	noPaddingVertical?: boolean;
 	noPaddingTop?: boolean;
+	noPaddingBottom?: boolean;
 	centered?: boolean;
 	tag?: string;
-	title: string;
+	title?: string;
+	titleNode?: React.ReactNode;
 	description?: string;
+	paddingSide?: boolean;
 };
 
-export const TitleSection = ({ noPaddingTop, centered, tag, title, description }: TitleSectionProps) => {
+export const TitleSection = ({
+	noPaddingTop,
+	noPaddingVertical,
+	centered,
+	tag,
+	title,
+	titleNode,
+	description,
+	paddingSide = true,
+}: TitleSectionProps) => {
 	return (
-		<div className={`mx-auto max-w-7xl px-6 lg:px-8 tracking-wider ${noPaddingTop ? "pt-0 pb-10" : "py-10"}`}>
+		<div
+			className={`mx-auto max-w-7xl ${paddingSide ? "px-6 lg:px-8" : ""} tracking-wider ${noPaddingTop ? "pt-0 pb-10" : "py-10"} ${
+				noPaddingVertical ? "py-0" : ""
+			}`}
+		>
 			<div className={`text-2xl sm:text-4xl tracking-wider text-univers ${centered ? "text-center" : ""}`}>
 				{tag && (
 					<div className="flex items-center mb-3 text-base sm:text-lg font-semibold leading-6 text-cohesion">
@@ -24,7 +41,7 @@ export const TitleSection = ({ noPaddingTop, centered, tag, title, description }
 						<h2>{tag}</h2>
 					</div>
 				)}
-				<p className="text-2xl sm:text-4xl tracking-wider font-semibold text-univers">{title}</p>
+				{titleNode ? titleNode : <p className="text-2xl sm:text-4xl tracking-wider font-semibold text-univers">{title}</p>}
 				{description && <p className="mt-6 leading-6 text-base sm:text-lg">{description}</p>}
 			</div>
 		</div>

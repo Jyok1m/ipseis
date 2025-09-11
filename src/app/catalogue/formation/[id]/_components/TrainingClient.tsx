@@ -2,6 +2,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { TitleSection } from "@/components/TitleSection";
+import Divider from "@/components/global/Divider";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
 import {
@@ -70,11 +72,8 @@ export default function TrainingClient({ id }: { id: string }) {
 				</div>
 			) : (
 				<>
-					<div className="mx-auto max-w-3xl text-univers">
-						<div>
-							<h1 className="mt-2 text-2xl font-semibold tracking-tight sm:text-5xl">{trainingData?.title}</h1>
-							<p className="text-base font-semibold text-cohesion">{trainingData?.theme}</p>
-						</div>
+					<div className="mx-auto max-w-3xl text-univers mb-10">
+						<TitleSection tag={trainingData?.theme} title={trainingData?.title} paddingSide={false} noPaddingVertical />
 						<div>
 							<h2 className="mt-10 mb-5 text-lg sm:text-xl font-semibold tracking-tight flex items-center gap-x-2">
 								<FontAwesomeIcon icon={faBullseyePointer} /> Objectifs pédagogiques
@@ -200,13 +199,18 @@ export default function TrainingClient({ id }: { id: string }) {
 							</div>
 						</div>
 					</div>
-					<div className="mx-auto mt-20 max-w-3xl text-univers">
-						<div>
-							<h1 className="mt-2 text-2xl font-semibold tracking-tight sm:text-5xl text-center">Nos autres formations</h1>
-							<p className="my-3 leading-6 text-base sm:text-lg text-center">
-								Découvrez nos autres formations portant sur le thème : <span className="font-semibold text-cohesion">{trainingData?.theme}</span>
-							</p>
-						</div>
+					<Divider />
+					<div className="mx-auto max-w-3xl text-univers">
+						<TitleSection
+							tag="Nos autres formations"
+							titleNode={
+								<p className="text-2xl sm:text-4xl tracking-wider font-semibold text-univers">
+									Découvrez nos autres formations portant sur le thème : <span className="font-semibold text-cohesion">{trainingData?.theme}</span>
+								</p>
+							}
+							paddingSide={false}
+							noPaddingTop
+						/>
 						<div className="grid grid-cols-2 sm:grid-cols-3 gap-3 items-center justify-center mx-auto py-3">
 							{catalogue.map((training: any) => (
 								<div
