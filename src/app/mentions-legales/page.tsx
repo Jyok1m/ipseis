@@ -1,4 +1,3 @@
-// File: app/mentions-legales/page.tsx
 import Link from "next/link";
 
 export const metadata = {
@@ -12,7 +11,7 @@ export const metadata = {
 };
 
 export default function MentionsLegalesPage() {
-	const lastUpdate = "10 septembre 2025";
+	const lastUpdate = "11 septembre 2025";
 
 	return (
 		<main className="bg-support text-univers min-h-screen">
@@ -100,12 +99,33 @@ export default function MentionsLegalesPage() {
 					<h2 className="text-xl font-bold text-cohesion mb-4">1. Éditeur du site</h2>
 					<div className="text-base leading-relaxed space-y-2">
 						<p>
-							<strong className="text-univers">IPSEIS</strong> — Organisme de formation. <br />
-							Forme juridique / SIREN : <em className="text-univers/70">Société à responsabilité limitée (931 671 606 R.C.S. Saintmalo )</em>. <br />
+							<Link href="/" className="hover:underline underline-offset-4 text-cohesion">
+								IPSEIS
+							</Link>{" "}
+							— Organisme de formation. <br />
+							<br />
+							Forme juridique / SIREN : <em className="text-univers/70">Société à responsabilité limitée (931 671 606 R.C.S. Saintmalo)</em>. <br />
 							Siège social : <em className="text-univers/70">21 Rue de la Nation, 35400 Saint-Malo</em>. <br />
 							Représentation : <em className="text-univers/70">Hélène PAILLOT DE MONTABERT</em>. <br />
 							N° TVA intracommunautaire : <em className="text-univers/70">FR85931671606</em>. <br />
 							Enregistré en tant qu'organisme de formation : <em className="text-univers/70">8559A (Formation continue d'adultes)</em>.
+							<br />
+							<br />
+							Création du site web par :{" "}
+							<Link href="https://www.linkedin.com/in/joachim-jasmin/" target="_blank" className="hover:underline underline-offset-4 text-cohesion">
+								Joachim Jasmin
+							</Link>
+							.
+							<br />
+							Design du site web par :{" "}
+							<Link
+								href="https://www.malt.fr/profile/titouanguignouard/"
+								target="_blank"
+								className="hover:underline underline-offset-4 text-cohesion"
+							>
+								Titouan Gignouard
+							</Link>
+							.
 						</p>
 					</div>
 				</section>
@@ -114,9 +134,9 @@ export default function MentionsLegalesPage() {
 					<h2 className="text-xl font-bold text-cohesion mb-4">2. Hébergeur</h2>
 					<div className="text-base leading-relaxed">
 						<p>
-							<em className="text-univers/70">À compléter</em> (ex. Vercel / OVH / Scaleway). <br />
-							Adresse : <em className="text-univers/70">à compléter</em>. <br />
-							Téléphone : <em className="text-univers/70">à compléter</em>.
+							Nom : <em className="text-univers/70">Vercel Inc</em>. <br />
+							Adresse : <em className="text-univers/70">440 N Barranca Avenue #4133, Covina, CA 91723, United States</em>. <br />
+							Email : <em className="text-univers/70">privacy@vercel.com</em>.
 						</p>
 					</div>
 				</section>
@@ -126,10 +146,10 @@ export default function MentionsLegalesPage() {
 					<div className="text-base leading-relaxed">
 						<p>
 							Pour toute question, vous pouvez nous écrire à :{" "}
-							<a href="mailto:contact@ipseis.fr" className="text-cohesion hover:underline hover:underline-offset-4">
-								contact@ipseis.fr
-							</a>{" "}
-							(adresse à adapter si besoin).
+							<a href="mailto:helenedm@ipseis.fr" className="text-cohesion hover:underline hover:underline-offset-4">
+								helenedm@ipseis.fr
+							</a>
+							.
 						</p>
 					</div>
 				</section>
@@ -236,9 +256,9 @@ export default function MentionsLegalesPage() {
 					<div className="text-base leading-relaxed space-y-4">
 						<p>
 							Conformément au RGPD et à la loi Informatique et Libertés, vous disposez des droits d'accès, rectification, effacement, limitation,
-							opposition, portabilité, et du droit de définir des directives post‑mortem. Pour exercer vos droits :{" "}
-							<a href="mailto:dpo@ipseis.fr" className="text-cohesion hover:underline hover:underline-offset-4">
-								dpo@ipseis.fr
+							opposition, portabilité, et du droit de définir des directives post-mortem. Pour exercer vos droits :{" "}
+							<a href="mailto:helenedm@ipseis.fr" className="text-cohesion hover:underline hover:underline-offset-4">
+								helenedm@ipseis.fr
 							</a>{" "}
 							(joindre tout justificatif utile).
 						</p>
