@@ -3,9 +3,9 @@
 import React from "react";
 import Link from "next/link";
 
-const Footer = () => {
+const Footer = ({ background = "bg-support" }) => {
 	return (
-		<div className="mx-auto w-screen text-sm sm:text-base text-univers mt-10">
+		<div className={`mx-auto w-screen text-sm sm:text-base ${background === "bg-univers" ? "text-support" : "text-univers"} mt-10 ${background}`}>
 			<footer
 				aria-labelledby="footer-heading"
 				className="relative border-t border-gray-900/10 flex flex-col gap-y-2 sm:flex-row items-center justify-evenly py-5"

@@ -40,7 +40,7 @@ const ThemeBubble = memo(({ theme, index, onClick }: any) => {
 });
 
 const BubbleContainer = ({ children }: { children: React.ReactNode }) => (
-	<div className="grid grid-cols-3 grid-rows-3 gap-2 items-center justify-center max-w-2xl">{children}</div>
+	<div className="grid grid-cols-3 grid-rows-3 gap-2 items-center justify-center max-w-2xl mb-10">{children}</div>
 );
 
 export default function CatalogueClient() {
@@ -104,14 +104,7 @@ export default function CatalogueClient() {
 
 	return (
 		<>
-			<div className="mx-auto max-w-7xl px-6 lg:px-8 flex flex-col items-center">
-				<div className="mx-auto max-w-2xl text-center text-univers mb-16">
-					<h1 className="mt-2 text-2xl font-bold tracking-wider sm:text-4xl text-center uppercase">Catalogue de formations</h1>
-					<p className="mt-6 leading-6 text-base sm:text-lg">
-						Découvrez nos secteurs d&apos;activité et explorez les différentes thématiques que nous proposons pour répondre à vos besoins
-						professionnels.
-					</p>
-				</div>
+			<div className="mx-auto max-w-7xl px-6 lg:px-8 flex flex-col items-center mt-10">
 				{!themesLoading ? (
 					<BubbleContainer>
 						<div className="col-start-2 row-start-2 flex justify-center items-center w-full">

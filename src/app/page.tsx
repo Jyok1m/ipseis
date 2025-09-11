@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Button from "@/components/global/Button";
+import Footer from "@/components/global/Footer";
 import type { Metadata } from "next";
 import { buildMetadata } from "@/components/utils/seo";
 
@@ -13,8 +14,8 @@ export const metadata: Metadata = buildMetadata({
 
 export default function Accueil() {
 	return (
-		<div className="w-screen h-full relative overflow-hidden flex flex-col items-center justify-center bg-univers -mt-14 sm:-mt-16">
-			<div className="flex flex-col items-center justify-center gap-y-2 sm:gap-y-5 m-10 sm:w-5/6 lg:w-3/5">
+		<div className="w-screen h-screen relative flex flex-col items-center justify-between bg-univers overflow-x-hidden">
+			<div className="flex flex-col items-center justify-center gap-y-2 sm:gap-y-5 m-10 sm:w-5/6 lg:w-3/5 mt-14 sm:mt-24">
 				{/* Gros titre */}
 
 				<div className="text-2xl sm:text-4xl font-bold tracking-widest text-cohesion leading-snug">
@@ -49,6 +50,7 @@ export default function Accueil() {
 				height={500}
 				className="absolute z-10 opacity-10 top-5 -right-28 sm:-top-5 md:w-[750px] md:-top-20 md:-right-44 lg:w-[1000px] lg:-top-36 lg:-right-60"
 			/>
+			<Footer background="bg-univers" />
 		</div>
 	);
 }
