@@ -22,6 +22,7 @@ export const metadata: Metadata = buildMetadata({
 });
 
 export default function Pedagogie() {
+	// Test
 	return (
 		<div className="bg-support min-h-full">
 			{/* Titre */}
