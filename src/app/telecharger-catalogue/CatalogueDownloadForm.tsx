@@ -74,7 +74,7 @@ export default function CatalogueDownloadForm() {
 		}
 
 		try {
-			const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/messages/catalogue`, {
+			const response = await axios.get(`${process.env.BACKEND_URL}/messages/catalogue`, {
 				params: payload,
 			});
 
