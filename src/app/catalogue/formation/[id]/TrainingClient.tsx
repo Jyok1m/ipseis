@@ -32,7 +32,7 @@ export default function TrainingClient({ id }: { id: string }) {
 
 	const fetchtrainingData = useCallback(async () => {
 		try {
-			const response = await axios.get(`${process.env.BACKEND_URL}/trainings/by-id/${trainingId}`);
+			const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/trainings/by-id/${trainingId}`);
 			if (response.status === 200) setTrainingData(response.data);
 		} catch (error) {
 			console.error("Erreur lors de la récupération des thématiques :", error);
@@ -46,7 +46,7 @@ export default function TrainingClient({ id }: { id: string }) {
 
 	const fetchCatalogue = async () => {
 		try {
-			const response = await axios.get(`${process.env.BACKEND_URL}/trainings/by-theme/${trainingData?.themeId}`);
+			const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/trainings/by-theme/${trainingData?.themeId}`);
 			if (response.status === 200) {
 				setCatalogue(response.data.filter((el: any) => el._id !== trainingData?._id));
 			}

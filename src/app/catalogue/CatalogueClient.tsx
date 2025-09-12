@@ -54,7 +54,7 @@ export default function CatalogueClient() {
 
 	const fetchThemes = useCallback(async () => {
 		try {
-			const response = await axios.get(`${process.env.BACKEND_URL}/themes/list`);
+			const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/themes/list`);
 			if (response.status === 200) {
 				setThemes(response.data);
 			}
@@ -83,7 +83,7 @@ export default function CatalogueClient() {
 
 	const fetchCatalogue = useCallback(async (themeId: string, themeTitle: string) => {
 		try {
-			const response = await axios.get(`${process.env.BACKEND_URL}/trainings/by-theme/${themeId}`);
+			const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/trainings/by-theme/${themeId}`);
 			if (response.status === 200) {
 				setCatalogue(response.data);
 				setSelectedTheme(themeTitle);

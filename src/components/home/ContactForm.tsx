@@ -79,7 +79,7 @@ export default function ContactForm() {
 		}
 
 		try {
-			const response = await axios.post(`${process.env.BACKEND_URL}/messages/new`, payload);
+			const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/messages/new`, payload);
 
 			if (response.status === 200) {
 				openNotification("success", "Merci !", response.data.message);
