@@ -58,10 +58,12 @@ export default function Pedagogie() {
 
 			{/* CTA Catalogue */}
 			<Divider />
-			<CatalogueCtaSection
-				title="Découvrez nos formations innovantes"
-				description="Explorez notre pédagogie active appliquée à travers plus de 30 formations conçues pour transformer durablement vos pratiques professionnelles."
-			/>
+			<div className="mx-auto max-w-7xl mt-20 rounded-3xl">
+				<CatalogueCtaSection
+					title="Découvrez nos formations innovantes"
+					description="Explorez notre pédagogie active appliquée à travers plus de 30 formations conçues pour transformer durablement vos pratiques professionnelles."
+				/>
+			</div>
 
 			<Footer />
 		</div>

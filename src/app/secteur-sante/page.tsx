@@ -69,10 +69,12 @@ export default function SecteurSante() {
 
 			{/* CTA Catalogue */}
 			<Divider />
-			<CatalogueCtaSection
-				title="Explorez nos formations spécialisées santé"
-				description="Découvrez notre offre complète de formations dédiées aux professionnels de santé et aux établissements sanitaires et médico-sociaux."
-			/>
+			<div className="mx-auto max-w-7xl mt-20 rounded-3xl">
+				<CatalogueCtaSection
+					title="Explorez nos formations spécialisées santé"
+					description="Découvrez notre offre complète de formations dédiées aux professionnels de santé et aux établissements sanitaires et médico-sociaux."
+				/>
+			</div>
 
 			<Footer />
 		</div>
