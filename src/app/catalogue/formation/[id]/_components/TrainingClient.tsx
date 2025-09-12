@@ -25,6 +25,7 @@ import Link from "next/link";
 import Image from "next/image";
 import axios from "axios";
 import starOrange from "@/_images/logo/star_orange.svg";
+import CatalogueCtaSection from "@/components/sections/CatalogueCtaSection";
 
 export default function TrainingClient({ id }: { id: string }) {
 	const router = useRouter();
@@ -200,7 +201,14 @@ export default function TrainingClient({ id }: { id: string }) {
 							</div>
 						</div>
 					</div>
-					<Divider />
+					{/* <Divider /> */}
+					<div className="mx-auto max-w-3xl">
+						<CatalogueCtaSection
+							title="Vous souhaitez en savoir plus ou nous contacter ?"
+							description="Téléchargez notre catalogue PDF complet avec toutes les formations détaillées, les modalités et les tarifs."
+						/>
+					</div>
+					{/* <Divider />
 					<div className="mx-auto max-w-3xl text-univers">
 						<TitleSection
 							tag="Nos autres formations"
@@ -223,22 +231,7 @@ export default function TrainingClient({ id }: { id: string }) {
 								</div>
 							))}
 						</div>
-						<div className="mx-auto max-w-3xl bg-maitrise mt-20 rounded-3xl">
-							<div className="px-6 py-10 sm:px-6 lg:px-8">
-								<div className="mx-auto max-w-2xl text-center">
-									<h2 className="mt-2 text-2xl font-bold tracking-wider sm:text-4xl text-support">Vous souhaitez en savoir plus ?</h2>
-									<div className="mt-10 flex items-center justify-center gap-x-6">
-										<Link
-											href="/contact"
-											className="rounded-md bg-univers px-3 py-3 text-base md:text-lg text-support font-normal shadow-sm hover:bg-univers/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maitrise"
-										>
-											<span className="flex items-center gap-x-2 text-support">Contactez-nous</span>
-										</Link>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
+					</div> */}
 				</>
 			)}
 		</div>

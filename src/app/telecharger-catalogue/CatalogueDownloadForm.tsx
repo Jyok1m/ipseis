@@ -4,8 +4,9 @@ import React, { useState } from "react";
 import clsx from "clsx";
 import axios from "axios";
 import { LoadingOutlined } from "@ant-design/icons";
-import { CheckCircleIcon, XCircleIcon, ChatBubbleLeftRightIcon } from "@heroicons/react/24/outline";
+import { CheckCircleIcon, XCircleIcon, DocumentArrowDownIcon } from "@heroicons/react/24/outline";
 import { Spin, notification, ConfigProvider } from "antd";
+
 type NotificationType = "success" | "info" | "warning" | "error";
 
 const InputWrapper = ({ label, children, className }: { label: string; children: React.ReactNode; className?: string }) => (
@@ -31,26 +32,12 @@ const TextInput = ({ onChange, value, id, name, type, autoComplete, placeholder,
 	/>
 );
 
-const TextAreaInput = ({ onChange, value, id, name, rows, placeholder, disabled }: any) => (
-	<textarea
-		onChange={onChange}
-		value={value}
-		disabled={disabled}
-		id={id}
-		name={name}
-		rows={rows}
-		placeholder={placeholder}
-		className="block w-full rounded-lg px-4 py-3 text-univers bg-white border-2 border-support/20 focus:border-cohesion focus:ring-2 focus:ring-cohesion/20 shadow-sm placeholder:text-univers/50 text-base sm:text-lg font-medium transition-all duration-200 resize-vertical"
-	/>
-);
-
-export default function ContactForm() {
+export default function CatalogueDownloadForm() {
 	const [api, contextHolder] = notification.useNotification();
 
 	const [firstName, setFirstName] = useState("");
 	const [lastName, setLastName] = useState("");
 	const [email, setEmail] = useState("");
-	const [message, setMessage] = useState("");
 
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -70,7 +57,7 @@ export default function ContactForm() {
 	const handleSubmit = async () => {
 		setIsLoading(true);
 
-		const payload = { firstName, lastName, email, message };
+		const payload = { firstName, lastName, email };
 
 		if (Object.values(payload).some((value) => value.length === 0)) {
 			openNotification("error", "Zut...", "Veuillez remplir tous les champs.");
@@ -78,21 +65,30 @@ export default function ContactForm() {
 			return;
 		}
 
+		// Validation basique de l'email
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		if (!emailRegex.test(email)) {
+			openNotification("error", "Zut...", "Veuillez saisir une adresse email valide.");
+			setIsLoading(false);
+			return;
+		}
+
 		try {
-			const response = await axios.post(`${process.env.BACKEND_URL}/messages/new`, payload);
+			const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/messages/catalogue`, {
+				params: payload,
+			});
 
 			if (response.status === 200) {
-				openNotification("success", "Merci !", response.data.message);
+				openNotification("success", "Parfait !", response.data.message);
 				setFirstName("");
 				setLastName("");
 				setEmail("");
-				setMessage("");
 			} else {
-				openNotification("error", "Zut...", response.data.error);
+				openNotification("error", "Zut...", response.data.error || "Une erreur est survenue.");
 			}
 		} catch (error: any) {
-			openNotification("error", "Oops...", error.message);
-			setIsLoading(false);
+			const errorMessage = error.response?.data?.error || error.message || "Une erreur inattendue est survenue.";
+			openNotification("error", "Oops...", errorMessage);
 		} finally {
 			setIsLoading(false);
 		}
@@ -117,11 +113,12 @@ export default function ContactForm() {
 				{/* Info Box */}
 				<div className="mb-8 p-5 sm:p-6 bg-support/15 border-2 border-support/30 rounded-xl">
 					<div className="flex items-start gap-4">
-						<ChatBubbleLeftRightIcon className="h-7 w-7 sm:h-8 sm:w-8 text-support mt-1 flex-shrink-0" />
+						<DocumentArrowDownIcon className="h-7 w-7 sm:h-8 sm:w-8 text-support mt-1 flex-shrink-0" />
 						<div>
-							<h3 className="text-support font-bold mb-3 text-lg sm:text-xl">Contactez-nous directement</h3>
+							<h3 className="text-support font-bold mb-3 text-lg sm:text-xl">Notre catalogue de formations 2025</h3>
 							<p className="text-support/90 text-base sm:text-lg leading-relaxed font-medium">
-								Une question sur nos formations ? Besoin d'un devis personnalisé ? Notre équipe vous répond dans les plus brefs délais.
+								Découvrez plus de 30 formations spécialisées dans le secteur de la santé et du médico-social. Le catalogue sera envoyé directement
+								dans votre boîte email au format PDF.
 							</p>
 						</div>
 					</div>
@@ -166,24 +163,13 @@ export default function ContactForm() {
 									placeholder="ex. jean.dupont@test.fr"
 								/>
 							</InputWrapper>
-							<InputWrapper label="Message" className="col-span-full sm:col-span-2">
-								<TextAreaInput
-									onChange={(e: any) => setMessage(e.target.value)}
-									value={message}
-									disabled={isLoading}
-									id="message"
-									name="message"
-									rows={5}
-									placeholder="ex. Bonjour, je souhaiterais plus d'informations sur vos formations..."
-								/>
-							</InputWrapper>
 						</div>
 
 						{/* RGPD Notice */}
 						<div className="mt-8 p-4 sm:p-5 bg-support/10 border-2 border-support/15 rounded-lg">
 							<p className="text-support/80 text-sm sm:text-base leading-relaxed font-medium">
-								En soumettant ce formulaire, vous acceptez que vos données personnelles soient utilisées pour traiter votre demande et vous
-								recontacter. Vos données sont traitées conformément à notre{" "}
+								En soumettant ce formulaire, vous acceptez que vos données personnelles soient utilisées pour vous envoyer le catalogue et vous tenir
+								informé de nos formations. Vos données sont traitées conformément à notre{" "}
 								<a href="/mentions-legales" className="text-cohesion hover:underline font-semibold">
 									politique de confidentialité
 								</a>
@@ -203,8 +189,8 @@ export default function ContactForm() {
 								<span className="flex justify-center items-center gap-3 text-support">
 									{!isLoading ? (
 										<>
-											<ChatBubbleLeftRightIcon className="h-6 w-6 sm:h-7 sm:w-7" />
-											<span className="font-bold">Envoyer le message</span>
+											<DocumentArrowDownIcon className="h-6 w-6 sm:h-7 sm:w-7" />
+											<span className="font-bold">Télécharger le catalogue</span>
 										</>
 									) : (
 										<Spin indicator={<LoadingOutlined spin className="text-xl" />} />

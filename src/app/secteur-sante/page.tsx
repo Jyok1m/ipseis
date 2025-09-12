@@ -10,6 +10,7 @@ import { HealthPromiseSection } from "@/components/sections/HealthPromise";
 import { HealthValueSection } from "@/components/sections/HealthValues";
 import { HealthTrainerSection } from "@/components/sections/HealthTrainers";
 import { HealthPerimeterSection } from "@/components/sections/HealthPerimeter";
+import CatalogueCtaSection from "@/components/sections/CatalogueCtaSection";
 import type { Metadata } from "next";
 import { buildMetadata } from "@/components/utils/seo";
 
@@ -65,6 +66,13 @@ export default function SecteurSante() {
 			{/* Section Expertise */}
 			<Divider />
 			<HealthPerimeterSection />
+
+			{/* CTA Catalogue */}
+			<Divider />
+			<CatalogueCtaSection
+				title="Explorez nos formations spécialisées santé"
+				description="Découvrez notre offre complète de formations dédiées aux professionnels de santé et aux établissements sanitaires et médico-sociaux."
+			/>
 
 			<Footer />
 		</div>

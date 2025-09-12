@@ -10,6 +10,7 @@ import { ApproachSection } from "@/components/sections/Approach";
 import { PedagogyFollowUpSection } from "@/components/sections/PedagogyFollowUp";
 import { QualiopiSection } from "@/components/sections/Qualiopi";
 import { PedagogyQualityOutcomeSection } from "@/components/sections/PedagogyQualityOutcomes";
+import CatalogueCtaSection from "@/components/sections/CatalogueCtaSection";
 import type { Metadata } from "next";
 import { buildMetadata } from "@/components/utils/seo";
 
@@ -54,6 +55,13 @@ export default function Pedagogie() {
 
 			<Divider />
 			<PedagogyQualityOutcomeSection />
+
+			{/* CTA Catalogue */}
+			<Divider />
+			<CatalogueCtaSection
+				title="Découvrez nos formations innovantes"
+				description="Explorez notre pédagogie active appliquée à travers plus de 30 formations conçues pour transformer durablement vos pratiques professionnelles."
+			/>
 
 			<Footer />
 		</div>
