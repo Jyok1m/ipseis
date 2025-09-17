@@ -18,24 +18,34 @@ const ThemeBubble = memo(({ theme, index, onClick }: any) => {
 
 	return (
 		<div
-			key={theme._id}
+			key={theme ? theme._id : index}
 			onClick={onClick}
 			className={clsx(
-				index === 0
-					? "sm:hover:-translate-y-5"
-					: index === 1
-					? "sm:hover:translate-x-5"
-					: index === 2
-					? "sm:hover:translate-y-5"
-					: index === 3
-					? "sm:hover:-translate-x-5"
-					: "",
+				theme
+					? index === 0
+						? "sm:hover:-translate-y-5"
+						: index === 1
+						? "sm:hover:translate-x-5"
+						: index === 2
+						? "sm:hover:translate-y-5"
+						: index === 3
+						? "sm:hover:-translate-x-5"
+						: ""
+					: "cursor-wait",
 				`${
 					positions[index % positions.length]
-				} flex justify-center items-center aspect-1 ring-2 ring-cohesion/30 hover:ring-cohesion cursor-pointer rounded-full shadow-2xl p-2 hover:transform hover:scale-110 duration-500`
+				} flex justify-center items-center aspect-1 ring-2 ring-cohesion/30  cursor-pointer rounded-full shadow-2xl p-2 ${
+					theme ? "hover:ring-cohesion hover:transform hover:scale-110" : ""
+				} duration-500`
 			)}
 		>
-			<h2 className="text-univers text-xs sm:text-base font-semibold text-center">{theme.title}</h2>
+			{theme ? (
+				<h2 className="text-univers text-xs sm:text-base font-semibold text-center">{theme.title}</h2>
+			) : (
+				<div className="col-start-2 row-start-2 flex justify-center items-center w-full">
+					<Spin indicator={<LoadingOutlined spin />} size="large" className="text-cohesion" />
+				</div>
+			)}
 		</div>
 	);
 });
@@ -47,6 +57,7 @@ const BubbleContainer = ({ children }: { children: React.ReactNode }) => (
 export default function CatalogueClient() {
 	const router = useRouter();
 	const [themesLoading, setThemesLoading] = useState(true);
+	const [routingLoading, setRoutingLoading] = useState<string | null>(null);
 	const [themes, setThemes] = useState<any[]>([]);
 	const [catalogue, setCatalogue] = useState<any[]>([]);
 	const [selectedTheme, setSelectedTheme] = useState("");
@@ -70,6 +81,7 @@ export default function CatalogueClient() {
 			setCatalogue([]);
 			setSelectedTheme("");
 			setCatalogueModalOpen(false);
+			setRoutingLoading(null);
 		};
 	}, [fetchThemes]);
 
@@ -97,38 +109,34 @@ export default function CatalogueClient() {
 		setCatalogueModalOpen(false);
 		setSelectedTheme("");
 		setCatalogue([]);
+		setRoutingLoading(null);
 	};
 
 	const handleRouting = (trainingId: string) => {
+		setRoutingLoading(trainingId);
 		router.push(`/catalogue/formation/${trainingId}`);
 	};
 
 	return (
 		<>
 			<div className="mx-auto max-w-7xl px-6 lg:px-8 flex flex-col items-center mt-10">
-				{!themesLoading ? (
-					<BubbleContainer>
-						<div className="col-start-2 row-start-2 flex justify-center items-center w-full">
-							<Image
-								src={starOrange}
-								alt="Logo Ipseis"
-								title="Logo Ipseis"
-								height={200}
-								width={200}
-								className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 xl:w-56 xl:h-56"
-							/>
-						</div>
-						{themes.map((theme: any, index: number) => (
-							<ThemeBubble key={theme._id} theme={theme} index={index} onClick={() => fetchCatalogue(theme._id, theme.title)} />
-						))}
-					</BubbleContainer>
-				) : (
-					<BubbleContainer>
-						<div className="col-start-2 row-start-2 flex justify-center items-center w-full">
-							<Spin indicator={<LoadingOutlined spin />} size="large" className="text-cohesion" />
-						</div>
-					</BubbleContainer>
-				)}
+				<BubbleContainer>
+					<div className="col-start-2 row-start-2 flex justify-center items-center w-full">
+						<Image
+							src={starOrange}
+							alt="Logo Ipseis"
+							title="Logo Ipseis"
+							height={200}
+							width={200}
+							className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 xl:w-56 xl:h-56"
+						/>
+					</div>
+					{themesLoading
+						? [1, 2, 3, 4].map((theme: any, index: number) => <ThemeBubble index={index} />)
+						: themes.map((theme: any, index: number) => (
+								<ThemeBubble key={theme._id} theme={theme} index={index} onClick={() => fetchCatalogue(theme._id, theme.title)} />
+						  ))}
+				</BubbleContainer>
 			</div>
 			<ConfigProvider
 				theme={{
@@ -145,15 +153,28 @@ export default function CatalogueClient() {
 			>
 				<Modal title={`Thématique : ${selectedTheme}`} centered open={catalogueModalOpen} footer={null} width={600} onCancel={handleModalClose}>
 					<div className="grid grid-cols-2 grid-rows-2 gap-5 items-center justify-center max-w-[500px] mx-auto py-5">
-						{catalogue.map((training: any) => (
-							<div
-								key={training._id}
-								onClick={() => handleRouting(training._id)}
-								className="flex justify-center items-center aspect-1 ring-2 ring-cohesion/30 hover:ring-cohesion cursor-pointer rounded-xl shadow-2xl p-2 hover:transform hover:scale-105 duration-500"
-							>
-								<p className="text-wrap text-center text-univers text-xs sm:text-base font-semibold">{training.title}</p>
-							</div>
-						))}
+						{catalogue.map((training: any) => {
+							const isLoadingThis = routingLoading === training._id;
+							return (
+								<div
+									key={training._id}
+									onClick={!isLoadingThis ? () => handleRouting(training._id) : undefined}
+									className={clsx(
+										"relative flex justify-center items-center aspect-1 ring-2 ring-cohesion/30 rounded-xl shadow-2xl p-2 duration-500",
+										isLoadingThis ? "cursor-wait" : "hover:ring-cohesion cursor-pointer hover:transform hover:scale-105"
+									)}
+								>
+									<p className={clsx("text-wrap text-center text-univers text-xs sm:text-base font-semibold", isLoadingThis ? "opacity-30" : "")}>
+										{training.title}
+									</p>
+									{isLoadingThis && (
+										<div className="absolute inset-0 flex justify-center items-center">
+											<Spin indicator={<LoadingOutlined spin />} size="default" className="text-cohesion" />
+										</div>
+									)}
+								</div>
+							);
+						})}
 					</div>
 				</Modal>
 			</ConfigProvider>
