@@ -9,10 +9,21 @@ import { Spin, notification, ConfigProvider } from "antd";
 
 type NotificationType = "success" | "info" | "warning" | "error";
 
-const InputWrapper = ({ label, children, className }: { label: string; children: React.ReactNode; className?: string }) => (
+const InputWrapper = ({
+	label,
+	children,
+	className,
+	required = false,
+}: {
+	label: string;
+	children: React.ReactNode;
+	className?: string;
+	required?: boolean;
+}) => (
 	<div className={className}>
 		<label htmlFor={label} className="text-lg sm:text-xl leading-7 text-support font-bold mb-1 block">
 			{label}
+			{required && <span className="text-cohesion ml-1">*</span>}
 		</label>
 		<div className="mt-3">{children}</div>
 	</div>
@@ -32,12 +43,78 @@ const TextInput = ({ onChange, value, id, name, type, autoComplete, placeholder,
 	/>
 );
 
+const MultiSelectDropdown = ({
+	options,
+	selectedValues,
+	onChange,
+	disabled,
+}: {
+	options: string[];
+	selectedValues: string[];
+	onChange: (values: string[]) => void;
+	disabled: boolean;
+}) => {
+	const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+		const value = e.target.value;
+		if (value && !selectedValues.includes(value)) {
+			onChange([...selectedValues, value]);
+		}
+	};
+
+	const removeSelection = (valueToRemove: string) => {
+		onChange(selectedValues.filter((value) => value !== valueToRemove));
+	};
+
+	return (
+		<div className="space-y-3">
+			<select
+				onChange={handleSelectChange}
+				disabled={disabled}
+				value=""
+				className="block w-full rounded-lg px-4 py-3 sm:py-4 text-univers bg-white border-2 border-support/20 focus:border-cohesion focus:ring-2 focus:ring-cohesion/20 shadow-sm text-base sm:text-lg font-medium transition-all duration-200"
+			>
+				<option value="">Sélectionnez une ou plusieurs formations</option>
+				{options.map((option) => (
+					<option key={option} value={option} disabled={selectedValues.includes(option)}>
+						{option} {selectedValues.includes(option) ? "(déjà sélectionné)" : ""}
+					</option>
+				))}
+			</select>
+
+			{selectedValues.length > 0 && (
+				<div className="space-y-2">
+					<p className="text-sm text-support/70 font-medium">Formations sélectionnées :</p>
+					<div className="flex flex-wrap gap-2">
+						{selectedValues.map((value) => (
+							<span
+								key={value}
+								className="inline-flex items-center gap-2 px-3 py-1 bg-cohesion/10 text-support border border-cohesion/30 rounded-full text-sm font-medium"
+							>
+								{value}
+								<button
+									type="button"
+									onClick={() => removeSelection(value)}
+									disabled={disabled}
+									className="text-cohesion hover:text-cohesion/70 font-bold text-lg leading-none disabled:opacity-50"
+								>
+									×
+								</button>
+							</span>
+						))}
+					</div>
+				</div>
+			)}
+		</div>
+	);
+};
+
 export default function CatalogueDownloadForm() {
 	const [api, contextHolder] = notification.useNotification();
 
 	const [firstName, setFirstName] = useState("");
 	const [lastName, setLastName] = useState("");
 	const [email, setEmail] = useState("");
+	const [interestedFormations, setInterestedFormations] = useState<string[]>([]);
 
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -57,10 +134,10 @@ export default function CatalogueDownloadForm() {
 	const handleSubmit = async () => {
 		setIsLoading(true);
 
-		const payload = { firstName, lastName, email };
+		const payload = { firstName, lastName, email, interestedFormations };
 
-		if (Object.values(payload).some((value) => value.length === 0)) {
-			openNotification("error", "Zut...", "Veuillez remplir tous les champs.");
+		if ([firstName, lastName, email].some((value) => value.length === 0)) {
+			openNotification("error", "Zut...", "Veuillez remplir tous les champs obligatoires.");
 			setIsLoading(false);
 			return;
 		}
@@ -83,6 +160,7 @@ export default function CatalogueDownloadForm() {
 				setFirstName("");
 				setLastName("");
 				setEmail("");
+				setInterestedFormations([]);
 			} else {
 				openNotification("error", "Zut...", response.data.error || "Une erreur est survenue.");
 			}
@@ -127,7 +205,7 @@ export default function CatalogueDownloadForm() {
 				<div className="flex flex-col gap-16 sm:gap-y-20 lg:flex-row">
 					<div className="lg:flex-auto">
 						<div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:gap-y-8 sm:grid-cols-2">
-							<InputWrapper label="Prénom">
+							<InputWrapper label="Prénom" required>
 								<TextInput
 									onChange={(e: any) => setFirstName(e.target.value)}
 									value={firstName}
@@ -139,7 +217,7 @@ export default function CatalogueDownloadForm() {
 									placeholder="ex. Jean"
 								/>
 							</InputWrapper>
-							<InputWrapper label="Nom de famille">
+							<InputWrapper label="Nom de famille" required>
 								<TextInput
 									onChange={(e: any) => setLastName(e.target.value)}
 									value={lastName}
@@ -151,7 +229,7 @@ export default function CatalogueDownloadForm() {
 									placeholder="ex. Dupont"
 								/>
 							</InputWrapper>
-							<InputWrapper label="Email" className="col-span-full sm:col-span-2">
+							<InputWrapper label="Email" className="col-span-full sm:col-span-2" required>
 								<TextInput
 									onChange={(e: any) => setEmail(e.target.value)}
 									value={email}
@@ -161,6 +239,25 @@ export default function CatalogueDownloadForm() {
 									type="email"
 									autoComplete="email"
 									placeholder="ex. jean.dupont@test.fr"
+								/>
+							</InputWrapper>
+							<InputWrapper label="Formations d'intérêt (optionnel)" className="col-span-full sm:col-span-2">
+								<MultiSelectDropdown
+									options={[
+										"Accueil, communication",
+										"Gérontologie, gériatrie, personnes âgées",
+										"Personnes en situation de handicap",
+										"Soins palliatifs et fin de vie",
+										"Management et leadership",
+										"Prévention des risques",
+										"Bien-être au travail",
+										"Formation des formateurs",
+										"Réflexologie",
+										"Autre",
+									]}
+									selectedValues={interestedFormations}
+									onChange={setInterestedFormations}
+									disabled={isLoading}
 								/>
 							</InputWrapper>
 						</div>
