@@ -1,9 +1,7 @@
 "use client";
 import React, { useState, useEffect, useCallback } from "react";
-import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { TitleSection } from "@/components/TitleSection";
-import Divider from "@/components/global/Divider";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
 import {
@@ -21,17 +19,14 @@ import {
 	faCalendarClock,
 	faCircleEuro,
 } from "@fortawesome/pro-regular-svg-icons";
-import Link from "next/link";
 import Image from "next/image";
 import axios from "axios";
 import starOrange from "@/_images/logo/star_orange.svg";
 import CatalogueCtaSection from "@/components/sections/CatalogueCtaSection";
 
 export default function TrainingClient({ id }: { id: string }) {
-	const router = useRouter();
 	const trainingId = id ?? "";
 	const [trainingData, setTrainingData] = useState<any>(null);
-	const [catalogue, setCatalogue] = useState<any>([]);
 
 	const fetchtrainingData = useCallback(async () => {
 		try {
@@ -46,25 +41,6 @@ export default function TrainingClient({ id }: { id: string }) {
 		fetchtrainingData();
 		return () => setTrainingData(null);
 	}, [fetchtrainingData]);
-
-	const fetchCatalogue = async () => {
-		try {
-			const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/trainings/by-theme/${trainingData?.themeId}`);
-			if (response.status === 200) {
-				setCatalogue(response.data.filter((el: any) => el._id !== trainingData?._id));
-			}
-		} catch (error) {
-			console.error("Erreur lors de la récupération du catalogue :", error);
-		}
-	};
-
-	useEffect(() => {
-		if (trainingData) fetchCatalogue();
-	}, [trainingData]);
-
-	const handleRouting = (trainingId: string) => {
-		router.replace(`/catalogue/formation/${trainingId}`);
-	};
 
 	return (
 		<div className="bg-support px-6 pt-8 lg:px-8 text-sm sm:text-base text-pretty min-h-full">
@@ -208,30 +184,6 @@ export default function TrainingClient({ id }: { id: string }) {
 							description="Téléchargez notre catalogue PDF complet avec toutes les formations détaillées, les modalités et les tarifs."
 						/>
 					</div>
-					{/* <Divider />
-					<div className="mx-auto max-w-3xl text-univers">
-						<TitleSection
-							tag="Nos autres formations"
-							titleNode={
-								<p className="text-2xl sm:text-4xl tracking-wider font-semibold text-univers">
-									Découvrez nos autres formations portant sur le thème : <span className="font-semibold text-cohesion">{trainingData?.theme}</span>
-								</p>
-							}
-							paddingSide={false}
-							noPaddingTop
-						/>
-						<div className="grid grid-cols-2 sm:grid-cols-3 gap-3 items-center justify-center mx-auto py-3">
-							{catalogue.map((training: any) => (
-								<div
-									key={training._id}
-									onClick={() => handleRouting(training._id)}
-									className="flex justify-center items-center aspect-1 ring-2 ring-cohesion/30 hover:ring-cohesion cursor-pointer rounded-xl shadow-2xl p-2 hover:transform hover:scale-105 duration-500"
-								>
-									<p className="text-wrap text-center text-univers text-xs sm:text-base font-semibold">{training.title}</p>
-								</div>
-							))}
-						</div>
-					</div> */}
 				</>
 			)}
 		</div>
