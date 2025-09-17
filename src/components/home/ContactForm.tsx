@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import clsx from "clsx";
 import axios from "axios";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -57,11 +57,13 @@ const TextAreaInput = ({ onChange, value, id, name, rows, placeholder, disabled 
 
 const MultiSelectDropdown = ({
 	options,
+	themes,
 	selectedValues,
 	onChange,
 	disabled,
 }: {
-	options: string[];
+	options?: string[];
+	themes?: Array<{ _id: string; title: string; trainings: Array<{ _id: string; title: string }> }>;
 	selectedValues: string[];
 	onChange: (values: string[]) => void;
 	disabled: boolean;
@@ -86,11 +88,21 @@ const MultiSelectDropdown = ({
 				className="block w-full rounded-lg px-4 py-3 sm:py-4 text-univers bg-white border-2 border-support/20 focus:border-cohesion focus:ring-2 focus:ring-cohesion/20 shadow-sm text-base sm:text-lg font-medium transition-all duration-200"
 			>
 				<option value="">Sélectionnez une ou plusieurs formations</option>
-				{options.map((option) => (
-					<option key={option} value={option} disabled={selectedValues.includes(option)}>
-						{option} {selectedValues.includes(option) ? "(déjà sélectionné)" : ""}
-					</option>
-				))}
+				{themes && themes.length > 0
+					? themes.map((theme) => (
+							<optgroup key={theme._id} label={theme.title}>
+								{theme.trainings.map((training) => (
+									<option key={training._id} value={training.title} disabled={selectedValues.includes(training.title)}>
+										{training.title} {selectedValues.includes(training.title) ? "(déjà sélectionné)" : ""}
+									</option>
+								))}
+							</optgroup>
+					  ))
+					: options?.map((option) => (
+							<option key={option} value={option} disabled={selectedValues.includes(option)}>
+								{option} {selectedValues.includes(option) ? "(déjà sélectionné)" : ""}
+							</option>
+					  ))}
 			</select>
 
 			{selectedValues.length > 0 && (
@@ -127,9 +139,23 @@ export default function ContactForm() {
 	const [lastName, setLastName] = useState("");
 	const [email, setEmail] = useState("");
 	const [message, setMessage] = useState("");
+	const [allFormations, setAllFormations] = useState<Array<{ _id: string; title: string; trainings: Array<{ _id: string; title: string }> }>>([]);
 	const [interestedFormations, setInterestedFormations] = useState<string[]>([]);
 
 	const [isLoading, setIsLoading] = useState(false);
+
+	useEffect(() => {
+		(async () => {
+			try {
+				const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/trainings/all`);
+				const themes = response.data.themes;
+
+				setAllFormations(themes);
+			} catch (error) {
+				console.error("Erreur lors de la récupération des formations :", error);
+			}
+		})();
+	}, []);
 
 	const openNotification = (type: NotificationType, title: string, message: string) => {
 		api[type]({
@@ -257,18 +283,7 @@ export default function ContactForm() {
 							</InputWrapper>
 							<InputWrapper label="Formations d'intérêt (optionnel)" className="col-span-full sm:col-span-2">
 								<MultiSelectDropdown
-									options={[
-										"Accueil, communication",
-										"Gérontologie, gériatrie, personnes âgées",
-										"Personnes en situation de handicap",
-										"Soins palliatifs et fin de vie",
-										"Management et leadership",
-										"Prévention des risques",
-										"Bien-être au travail",
-										"Formation des formateurs",
-										"Réflexologie",
-										"Autre",
-									]}
+									themes={allFormations}
 									selectedValues={interestedFormations}
 									onChange={setInterestedFormations}
 									disabled={isLoading}
