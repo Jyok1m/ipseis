@@ -95,19 +95,19 @@ const MultiSelectDropdown = ({
 
 			{selectedValues.length > 0 && (
 				<div className="space-y-2">
-					<p className="text-sm text-support/70 font-medium">Formations sélectionnées :</p>
+					<p className="text-base text-support/70 font-medium">Formations sélectionnées :</p>
 					<div className="flex flex-wrap gap-2">
 						{selectedValues.map((value) => (
 							<span
 								key={value}
-								className="inline-flex items-center gap-2 px-3 py-1 bg-cohesion/10 text-support border border-cohesion/30 rounded-full text-sm font-medium"
+								className="inline-flex items-center gap-2 px-3 py-2 bg-cohesion/10 text-support border border-cohesion/30 rounded-full text-base font-medium"
 							>
 								{value}
 								<button
 									type="button"
 									onClick={() => removeSelection(value)}
 									disabled={disabled}
-									className="text-cohesion hover:text-cohesion/70 font-bold text-lg leading-none disabled:opacity-50"
+									className="text-cohesion hover:text-cohesion/70 font-bold text-xl leading-none disabled:opacity-50"
 								>
 									×
 								</button>
