@@ -63,6 +63,7 @@ export default function Pedagogie() {
 				<CatalogueCtaSection
 					title="Découvrez nos formations innovantes"
 					description="Explorez notre pédagogie active appliquée à travers plus de 30 formations conçues pour transformer durablement vos pratiques professionnelles."
+					className="mx-6 lg:mx-8"
 				/>
 			</div>
 

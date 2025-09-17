@@ -73,6 +73,7 @@ export default function SecteurSante() {
 				<CatalogueCtaSection
 					title="Explorez nos formations spécialisées santé"
 					description="Découvrez notre offre complète de formations dédiées aux professionnels de santé et aux établissements sanitaires et médico-sociaux."
+					className="mx-6 lg:mx-8"
 				/>
 			</div>
 
