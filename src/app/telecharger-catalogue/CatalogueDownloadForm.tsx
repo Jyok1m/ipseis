@@ -135,7 +135,7 @@ export default function CatalogueDownloadForm() {
 	useEffect(() => {
 		const fetchFormations = async () => {
 			try {
-				const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/trainings/all`);
+				const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/trainings/all`);
 				if (response.data && response.data.themes) {
 					setAllFormations(response.data.themes);
 				}
