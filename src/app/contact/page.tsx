@@ -1,7 +1,5 @@
 import React from "react";
 import Footer from "@/components/global/Footer";
-import { PageWrapper } from "@/components/global/Wrappers";
-import SectionTitle from "@/components/global/SectionTitle";
 import TitlePage from "@/components/global/TitlePage";
 import ContactForm from "@/components/home/ContactForm";
 import type { Metadata } from "next";
