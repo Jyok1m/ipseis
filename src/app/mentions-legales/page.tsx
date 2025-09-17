@@ -182,8 +182,8 @@ export default function MentionsLegalesPage() {
 							<h3 className="text-lg font-semibold text-maitrise mb-2">6.1. Responsable de traitement</h3>
 							<p>
 								IPSEIS est responsable des traitements de données effectués via le site. Contact :{" "}
-								<a href="mailto:dpo@ipseis.fr" className="text-cohesion hover:underline hover:underline-offset-4">
-									dpo@ipseis.fr
+								<a href="mailto:helenedm@ipseis.fr" className="text-cohesion hover:underline hover:underline-offset-4">
+									helenedm@ipseis.fr
 								</a>{" "}
 								(ou le contact officiel désigné).
 							</p>
