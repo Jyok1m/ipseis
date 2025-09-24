@@ -37,7 +37,7 @@ export const TitleSection = ({
 					</div>
 				)}
 				{titleNode ? titleNode : <p className="text-2xl sm:text-4xl tracking-wider font-semibold text-univers">{title}</p>}
-				{description && <p className="mt-6 leading-6 text-base sm:text-lg">{description}</p>}
+				{description && <p className="mt-10 sm:mt-6 leading-6 text-base sm:text-lg">{description}</p>}
 			</div>
 		</div>
 	);
