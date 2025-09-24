@@ -7,6 +7,11 @@ import clsx from "clsx";
 import Image from "next/image";
 import axios from "axios";
 import starOrange from "@/_images/logo/star_orange.svg";
+import type { Theme } from "@/lib/api";
+
+interface CatalogueClientProps {
+	initialThemes?: Theme[];
+}
 
 const ThemeBubble = memo(({ theme, index, onClick }: any) => {
 	const positions = [
@@ -54,16 +59,19 @@ const BubbleContainer = ({ children }: { children: React.ReactNode }) => (
 	<div className="grid grid-cols-3 grid-rows-3 gap-2 items-center justify-center max-w-2xl mb-10">{children}</div>
 );
 
-export default function CatalogueClient() {
+export default function CatalogueClient({ initialThemes = [] }: CatalogueClientProps) {
 	const router = useRouter();
-	const [themesLoading, setThemesLoading] = useState(true);
+	const [themesLoading, setThemesLoading] = useState(!initialThemes.length);
 	const [routingLoading, setRoutingLoading] = useState<string | null>(null);
-	const [themes, setThemes] = useState<any[]>([]);
+	const [themes, setThemes] = useState<Theme[]>(initialThemes);
 	const [catalogue, setCatalogue] = useState<any[]>([]);
 	const [selectedTheme, setSelectedTheme] = useState("");
 	const [catalogueModalOpen, setCatalogueModalOpen] = useState(false);
 
+	// Fetch themes seulement si pas déjà chargés (fallback)
 	const fetchThemes = useCallback(async () => {
+		if (initialThemes.length > 0) return; // Pas besoin de fetch si données déjà présentes
+
 		try {
 			const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/themes/list`);
 			if (response.status === 200) {
@@ -72,9 +80,15 @@ export default function CatalogueClient() {
 		} catch (error) {
 			console.error("Erreur lors de la récupération des thématiques :", error);
 		}
-	}, []);
+	}, [initialThemes.length]);
 
 	useEffect(() => {
+		// Si on a des themes initiaux, pas besoin de fetch
+		if (initialThemes.length > 0) {
+			setThemesLoading(false);
+			return;
+		}
+
 		fetchThemes();
 		return () => {
 			setThemes([]);
@@ -83,7 +97,7 @@ export default function CatalogueClient() {
 			setCatalogueModalOpen(false);
 			setRoutingLoading(null);
 		};
-	}, [fetchThemes]);
+	}, [fetchThemes, initialThemes.length]);
 
 	useEffect(() => {
 		if (themes.length > 0) setThemesLoading(false);

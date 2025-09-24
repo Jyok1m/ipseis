@@ -23,29 +23,50 @@ import Image from "next/image";
 import axios from "axios";
 import starOrange from "@/_images/logo/star_orange.svg";
 import CatalogueCtaSection from "@/components/sections/CatalogueCtaSection";
+import type { Training } from "@/lib/api";
 
-export default function TrainingClient({ id }: { id: string }) {
-	const trainingId = id ?? "";
-	const [trainingData, setTrainingData] = useState<any>(null);
+interface TrainingClientProps {
+	id?: string;
+	initialTraining?: Training | null;
+}
 
+export default function TrainingClient({ id = "", initialTraining = null }: TrainingClientProps) {
+	const trainingId = id;
+	const [trainingData, setTrainingData] = useState<Training | null>(initialTraining);
+	const [isLoading, setIsLoading] = useState(!initialTraining);
+
+	// Fetch training seulement si pas déjà chargée (fallback pour pages non pré-générées)
 	const fetchtrainingData = useCallback(async () => {
+		if (initialTraining || !trainingId) return; // Pas besoin de fetch si données déjà présentes
+
+		setIsLoading(true);
 		try {
 			const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/trainings/by-id/${trainingId}`);
-			if (response.status === 200) setTrainingData(response.data);
+			if (response.status === 200) {
+				setTrainingData(response.data);
+			}
 		} catch (error) {
-			console.error("Erreur lors de la récupération des thématiques :", error);
+			console.error("Erreur lors de la récupération de la formation :", error);
+		} finally {
+			setIsLoading(false);
 		}
-	}, [trainingId]);
+	}, [trainingId, initialTraining]);
 
 	useEffect(() => {
+		// Si on a des données initiales, pas besoin de fetch
+		if (initialTraining) {
+			setIsLoading(false);
+			return;
+		}
+
 		fetchtrainingData();
 		return () => setTrainingData(null);
-	}, [fetchtrainingData]);
+	}, [fetchtrainingData, initialTraining]);
 
 	return (
 		<div className="bg-support px-6 pt-8 lg:px-8 text-sm sm:text-base text-pretty min-h-full">
-			{!trainingData ? (
-				<div className="col-start-2 row-start-2 flex justify-center items-center w-full">
+			{isLoading || !trainingData ? (
+				<div className="col-start-2 row-start-2 flex justify-center items-center w-full min-h-[400px]">
 					<Spin indicator={<LoadingOutlined spin />} size="large" className="text-cohesion" />
 				</div>
 			) : (

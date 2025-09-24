@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { DocumentArrowDownIcon, AcademicCapIcon } from "@heroicons/react/24/outline";
+import { TitleSection } from "@/components/TitleSection";
 
 interface CatalogueCtaSectionProps {
 	variant?: "default" | "compact";
@@ -24,12 +25,12 @@ export default function CatalogueCtaSection({ variant = "default", title, descri
 						</div>
 						<div>
 							<h3 className="text-lg font-bold text-univers">{title || "Catalogue 2025"}</h3>
-							<p className="text-sm text-univers/80">Plus de 30 formations disponibles</p>
+							<p className="text-base text-univers/80">Plus de 30 formations disponibles</p>
 						</div>
 					</div>
 					<Link
 						href="/telecharger-catalogue"
-						className="inline-flex items-center gap-2 px-4 py-2 bg-cohesion hover:bg-cohesion/90 text-white rounded-lg font-medium transition-colors duration-200 text-sm"
+						className="inline-flex items-center gap-2 px-4 py-2 bg-cohesion hover:bg-cohesion/90 text-white rounded-lg font-medium transition-colors duration-200 text-base"
 					>
 						<DocumentArrowDownIcon className="w-4 h-4" />
 						Télécharger
@@ -49,29 +50,27 @@ export default function CatalogueCtaSection({ variant = "default", title, descri
 						</div>
 					</div>
 
-					<h2 className="text-3xl font-bold tracking-tight text-univers sm:text-4xl mb-6">{title || defaultTitle}</h2>
-
-					<p className="text-lg leading-8 text-univers/80 mb-8">{description || defaultDescription}</p>
+					<TitleSection noPaddingTop centered title={title || defaultTitle} description={description || defaultDescription} />
 
 					{/* Options d'action avec descriptions */}
 					<div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-4xl mx-auto mb-8">
 						{/* Option Téléchargement */}
-						<div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 border border-cohesion/20 hover:border-cohesion/40 transition-colors flex flex-col justify-between">
+						<div className="bg-white/60 text-lg backdrop-blur-sm rounded-xl p-6 border border-cohesion/20 hover:border-cohesion/40 transition-colors flex flex-col justify-between">
 							<div>
 								<div className="flex items-center gap-3 mb-3">
-									<div className="w-10 h-10 bg-cohesion/20 rounded-full flex items-center justify-center">
-										<DocumentArrowDownIcon className="w-5 h-5 text-cohesion" />
+									<div className="w-10 h-10 bg-maitrise/20 rounded-full flex items-center justify-center">
+										<DocumentArrowDownIcon className="w-5 h-5 text-maitrise" />
 									</div>
 									<h3 className="text-xl font-bold text-univers">Catalogue complet</h3>
 								</div>
-								<p className="text-sm text-univers/70 mb-4">
+								<p className="text-base text-univers/70 mb-4">
 									Téléchargez gratuitement notre catalogue PDF avec tous les détails : programmes, modalités, tarifs et calendrier des formations.
 								</p>
 							</div>
 
 							<Link
 								href="/telecharger-catalogue"
-								className="inline-flex items-center gap-2 px-4 py-2 bg-cohesion hover:bg-cohesion/90 text-support rounded-lg font-semibold transition-all duration-200 w-full justify-center"
+								className="inline-flex items-center gap-2 px-4 py-2 bg-maitrise hover:bg-maitrise/90 text-support rounded-lg font-semibold transition-all duration-200 w-full justify-center"
 							>
 								<DocumentArrowDownIcon className="w-4 h-4" />
 								Télécharger gratuitement
@@ -79,7 +78,7 @@ export default function CatalogueCtaSection({ variant = "default", title, descri
 						</div>
 
 						{/* Option Contact */}
-						<div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 border border-maitrise/20 hover:border-maitrise/40 transition-colors flex flex-col justify-between">
+						<div className="bg-white/60 text-lg backdrop-blur-sm rounded-xl p-6 border border-cohesion/20 hover:border-cohesion/40 transition-colors flex flex-col justify-between">
 							<div>
 								<div className="flex items-center gap-3 mb-3">
 									<div className="w-10 h-10 bg-maitrise/20 rounded-full flex items-center justify-center">
@@ -94,7 +93,7 @@ export default function CatalogueCtaSection({ variant = "default", title, descri
 									</div>
 									<h3 className="text-xl font-bold text-univers">Conseil personnalisé</h3>
 								</div>
-								<p className="text-sm text-univers/70 mb-4">
+								<p className="text-base text-univers/70 mb-4">
 									Échangez directement avec nos experts pour un accompagnement sur mesure, des devis personnalisés et des conseils adaptés à vos
 									besoins.
 								</p>
@@ -118,17 +117,18 @@ export default function CatalogueCtaSection({ variant = "default", title, descri
 					</div>
 
 					{/* Call-to-action secondaire */}
-					<div className="text-center">
-						<p className="text-sm text-univers/60 mb-2">Ou parcourez directement nos formations en ligne</p>
+					<div className="text-center text-lg">
+						<p className="text-lg leading-8 text-univers/80 mb-8">Ou parcourez directement nos formations en ligne</p>
 						<Link
-							href="/catalogue"
-							className="inline-flex items-center gap-2 px-4 py-2 border border-univers/30 hover:border-univers text-univers hover:bg-univers/10 rounded-lg font-medium transition-all duration-200 text-sm"
+							href="/telecharger-catalogue"
+							className="inline-flex items-center gap-2 px-4 py-2 bg-cohesion hover:bg-cohesion/90 text-support rounded-lg font-semibold transition-all duration-200 w-full justify-center"
 						>
+							<DocumentArrowDownIcon className="w-4 h-4" />
 							Explorer le catalogue interactif
 						</Link>
 					</div>
 
-					<div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-6 text-sm text-univers/70">
+					<div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-6 text-base text-univers/70">
 						<div className="flex items-center gap-2">
 							<div className="w-2 h-2 bg-cohesion rounded-full"></div>
 							<span>Catalogue PDF complet</span>
@@ -136,10 +136,6 @@ export default function CatalogueCtaSection({ variant = "default", title, descri
 						<div className="flex items-center gap-2">
 							<div className="w-2 h-2 bg-cohesion rounded-full"></div>
 							<span>Envoi immédiat par email</span>
-						</div>
-						<div className="flex items-center gap-2">
-							<div className="w-2 h-2 bg-cohesion rounded-full"></div>
-							<span>Formations certifiantes</span>
 						</div>
 					</div>
 				</div>
