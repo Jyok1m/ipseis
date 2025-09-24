@@ -137,10 +137,6 @@ export default function CatalogueCtaSection({ variant = "default", title, descri
 							<div className="w-2 h-2 bg-cohesion rounded-full"></div>
 							<span>Envoi immédiat par email</span>
 						</div>
-						<div className="flex items-center gap-2">
-							<div className="w-2 h-2 bg-cohesion rounded-full"></div>
-							<span>Formations certifiantes</span>
-						</div>
 					</div>
 				</div>
 			</div>
