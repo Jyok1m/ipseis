@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import TitlePage from "@/components/global/TitlePage";
 import Footer from "@/components/global/Footer";
 import { buildMetadata } from "@/components/utils/seo";
+import { getThemes } from "@/lib/api";
 import CatalogueClient from "./CatalogueClient";
+import CatalogueSkeleton from "./CatalogueSkeleton";
 
 export const metadata: Metadata = buildMetadata({
 	title: "Catalogue de formations - Thématiques professionnelles",
@@ -10,6 +13,13 @@ export const metadata: Metadata = buildMetadata({
 		"Explorez le catalogue IPSEIS : formations innovantes, actives et sur mesure pour les équipes des établissements sanitaires, sociaux et médico-sociaux.",
 	path: "/catalogue",
 });
+
+// Server Component pour les données pré-chargées
+async function CatalogueServer() {
+	const themes = await getThemes();
+
+	return <CatalogueClient initialThemes={themes} />;
+}
 
 export default function CataloguePage() {
 	return (
@@ -22,7 +32,9 @@ export default function CataloguePage() {
 					</>
 				}
 			/>
-			<CatalogueClient />
+			<Suspense fallback={<CatalogueSkeleton />}>
+				<CatalogueServer />
+			</Suspense>
 			<Footer />
 		</div>
 	);
