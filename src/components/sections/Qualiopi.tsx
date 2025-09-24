@@ -27,7 +27,7 @@ export const QualiopiSection = () => {
 
 					<Button href="/catalogue">
 						<span className="flex items-center gap-x-2 font-semibold text-center">
-							<span className="hover:underline hover:underline-offset-8">Nos formations santé</span>
+							<span className="hover:underline hover:underline-offset-8">Catalogue intéractif</span>
 							<span className="mt-1">→</span>
 						</span>
 					</Button>
