@@ -298,7 +298,7 @@ export default function CatalogueDownloadForm() {
 								disabled={isLoading}
 								className={clsx(
 									isLoading ? "cursor-not-allowed opacity-70" : "cursor-pointer hover:bg-univers/90 hover:shadow-lg transform hover:scale-105",
-									"w-full rounded-xl bg-univers px-6 py-4 sm:py-5 text-lg sm:text-xl text-support font-bold shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-univers transition-all duration-200"
+									"w-full rounded-xl bg-univers px-6 py-4 sm:py-5 sm:text-lg text-support font-bold shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-univers transition-all duration-200"
 								)}
 							>
 								<span className="flex justify-center items-center gap-3 text-support">
