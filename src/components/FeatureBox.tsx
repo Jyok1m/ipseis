@@ -4,16 +4,18 @@ export function FeatureBox({
 	bgColor,
 	className,
 	centered,
+	lighter,
 }: {
 	title?: string;
 	description: React.ReactNode;
 	bgColor: "support" | "maitrise";
 	className?: string;
 	centered?: boolean;
+	lighter?: boolean;
 }) {
 	return (
 		<div
-			className={`p-4 bg-${bgColor} rounded-3xl shadow-lg border-[1px] border-maitrise text-${
+			className={`p-4 bg-${bgColor} rounded-3xl shadow-lg border-[1px] ${lighter ? "border-maitrise/30" : "border-maitrise"}  text-${
 				bgColor === "support" ? "maitrise" : "support"
 			} h-full text-center flex flex-col justify-center ${className || ""}`}
 		>
