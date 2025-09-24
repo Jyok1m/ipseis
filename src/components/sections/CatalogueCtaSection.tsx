@@ -55,7 +55,7 @@ export default function CatalogueCtaSection({ variant = "default", title, descri
 					{/* Options d'action avec descriptions */}
 					<div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-4xl mx-auto mb-8">
 						{/* Option Téléchargement */}
-						<div className="bg-white/60 text-lg backdrop-blur-sm rounded-xl p-6 border border-cohesion/20 hover:border-cohesion/40 transition-colors flex flex-col justify-between">
+						<div className="bg-white/60 sm:text-lg backdrop-blur-sm rounded-xl p-6 border border-cohesion/20 hover:border-cohesion/40 transition-colors flex flex-col justify-between">
 							<div>
 								<div className="flex items-center gap-3 mb-3">
 									<div className="w-10 h-10 bg-maitrise/20 rounded-full flex items-center justify-center">
@@ -78,7 +78,7 @@ export default function CatalogueCtaSection({ variant = "default", title, descri
 						</div>
 
 						{/* Option Contact */}
-						<div className="bg-white/60 text-lg backdrop-blur-sm rounded-xl p-6 border border-cohesion/20 hover:border-cohesion/40 transition-colors flex flex-col justify-between">
+						<div className="bg-white/60 sm:text-lg backdrop-blur-sm rounded-xl p-6 border border-cohesion/20 hover:border-cohesion/40 transition-colors flex flex-col justify-between">
 							<div>
 								<div className="flex items-center gap-3 mb-3">
 									<div className="w-10 h-10 bg-maitrise/20 rounded-full flex items-center justify-center">
@@ -117,7 +117,7 @@ export default function CatalogueCtaSection({ variant = "default", title, descri
 					</div>
 
 					{/* Call-to-action secondaire */}
-					<div className="text-center text-lg">
+					<div className="text-center sm:text-lg">
 						<p className="text-lg leading-8 text-univers/80 mb-8">Ou parcourez directement nos formations en ligne</p>
 						<Link
 							href="/telecharger-catalogue"
