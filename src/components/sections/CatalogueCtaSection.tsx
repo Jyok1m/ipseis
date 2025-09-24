@@ -120,7 +120,7 @@ export default function CatalogueCtaSection({ variant = "default", title, descri
 					<div className="text-center sm:text-lg">
 						<p className="text-lg leading-8 text-univers/80 mb-8">Ou parcourez directement nos formations en ligne</p>
 						<Link
-							href="/telecharger-catalogue"
+							href="/catalogue"
 							className="inline-flex items-center gap-2 px-4 py-2 bg-cohesion hover:bg-cohesion/90 text-support rounded-lg font-semibold transition-all duration-200 w-full justify-center"
 						>
 							<DocumentArrowDownIcon className="w-4 h-4" />
