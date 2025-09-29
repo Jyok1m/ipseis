@@ -1,34 +1,60 @@
 import type { Metadata } from "next";
 import "./globals.css";
-
+import { Analytics } from "@vercel/analytics/react";
 import Header from "@/components/global/Header";
-import Footer from "@/components/global/Footer";
+import { defaultOpenGraph, defaultTwitter } from "@/components/utils/seo";
 
 export const metadata: Metadata = {
-	title: "Ipseis",
+	metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://www.ipseis.fr"),
+	title: {
+		default: "IPSEIS - Formations innovantes santé & accompagnement",
+		template: "%s | IPSEIS",
+	},
 	description:
-		"Ipseis est un organisme de formation spécialisé dans l'accompagnement des professionnels de la santé dans le domaine de la réflexologie et de l'accompagnement des personnes agées.",
+		"IPSEIS est un organisme de formation innovant dédié aux professionnels du secteur sanitaire, social et médico-social : pédagogie active, immersive et sur mesure.",
+	keywords: ["formation santé", "organisme de formation", "pédagogie active", "innovation pédagogique", "secteur médico-social", "réflexologie"],
+	authors: [{ name: "IPSEIS" }],
+	creator: "IPSEIS",
+	publisher: "IPSEIS",
+	alternates: {
+		canonical: "/",
+	},
+	robots: {
+		index: true,
+		follow: true,
+	},
+	openGraph: {
+		...defaultOpenGraph,
+		title: "IPSEIS - Formations innovantes santé & accompagnement",
+		description:
+			"Organisme de formation certifié proposant des parcours sur mesure, actifs et immersifs pour les professionnels de santé et du médico-social.",
+		url: "/",
+	},
+	twitter: {
+		...defaultTwitter,
+		title: "IPSEIS - Formations innovantes santé & accompagnement",
+		description: "Parcours de formation actifs, immersifs et sur mesure pour les professionnels de santé et du médico-social.",
+	},
 	icons: {
 		apple: [
-			{ url: "/apple-icon-57x57.png", sizes: "57x57" },
-			{ url: "/apple-icon-60x60.png", sizes: "60x60" },
-			{ url: "/apple-icon-72x72.png", sizes: "72x72" },
-			{ url: "/apple-icon-76x76.png", sizes: "76x76" },
-			{ url: "/apple-icon-114x114.png", sizes: "114x114" },
-			{ url: "/apple-icon-120x120.png", sizes: "120x120" },
-			{ url: "/apple-icon-144x144.png", sizes: "144x144" },
-			{ url: "/apple-icon-152x152.png", sizes: "152x152" },
-			{ url: "/apple-icon-180x180.png", sizes: "180x180" },
+			{ url: "/icons/apple-icon-57x57.png", sizes: "57x57" },
+			{ url: "/icons/apple-icon-60x60.png", sizes: "60x60" },
+			{ url: "/icons/apple-icon-72x72.png", sizes: "72x72" },
+			{ url: "/icons/apple-icon-76x76.png", sizes: "76x76" },
+			{ url: "/icons/apple-icon-114x114.png", sizes: "114x114" },
+			{ url: "/icons/apple-icon-120x120.png", sizes: "120x120" },
+			{ url: "/icons/apple-icon-144x144.png", sizes: "144x144" },
+			{ url: "/icons/apple-icon-152x152.png", sizes: "152x152" },
+			{ url: "/icons/apple-icon-180x180.png", sizes: "180x180" },
 		],
 		icon: [
-			{ url: "/android-icon-192x192.png", sizes: "192x192", type: "image/png" },
-			{ url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-			{ url: "/favicon-96x96.png", sizes: "96x96", type: "image/png" },
-			{ url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+			{ url: "/icons/android-icon-192x192.png", sizes: "192x192", type: "image/png" },
+			{ url: "/icons/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+			{ url: "/icons/favicon-96x96.png", sizes: "96x96", type: "image/png" },
+			{ url: "/icons/favicon-16x16.png", sizes: "16x16", type: "image/png" },
 		],
 	},
 	manifest: "/manifest.json",
-	themeColor: "#ffffff",
 };
 
 export default function RootLayout({
@@ -37,11 +63,11 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="fr" className="font-serif ">
-			<body className="flex flex-col justify-between h-screen bg-support overflow-hidden">
+		<html lang="fr" className="font-serif">
+			<Analytics />
+			<body className="flex flex-col justify-between min-h-screen max-w-screen bg-support overflow-x-hidden">
 				<Header />
-				{children}
-				<Footer />
+				<div className="bg-support">{children}</div>
 			</body>
 		</html>
 	);

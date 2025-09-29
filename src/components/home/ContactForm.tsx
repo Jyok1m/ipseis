@@ -1,58 +1,201 @@
 "use client";
 
-import React, { useState } from "react";
-import Image from "next/image";
-
+import React, { useState, useEffect } from "react";
+import clsx from "clsx";
+import axios from "axios";
 import { LoadingOutlined } from "@ant-design/icons";
-import { Spin } from "antd";
+import { CheckCircleIcon, XCircleIcon, ChatBubbleLeftRightIcon } from "@heroicons/react/24/outline";
+import { Spin, notification, ConfigProvider } from "antd";
+type NotificationType = "success" | "info" | "warning" | "error";
 
-import Notification from "@/components/utils/Notification";
+const InputWrapper = ({
+	label,
+	children,
+	className,
+	required = false,
+}: {
+	label: string;
+	children: React.ReactNode;
+	className?: string;
+	required?: boolean;
+}) => (
+	<div className={className}>
+		<label htmlFor={label} className="text-lg sm:text-xl leading-7 text-support font-bold mb-1 block">
+			{label}
+			{required && <span className="text-cohesion ml-1">*</span>}
+		</label>
+		<div className="mt-3">{children}</div>
+	</div>
+);
+
+const TextInput = ({ onChange, value, id, name, type, autoComplete, placeholder, disabled }: any) => (
+	<input
+		onChange={onChange}
+		value={value}
+		disabled={disabled}
+		id={id}
+		name={name}
+		type={type}
+		autoComplete={autoComplete}
+		placeholder={placeholder}
+		className="block w-full rounded-lg px-4 py-3 sm:py-4 text-univers bg-white border-2 border-support/20 focus:border-cohesion focus:ring-2 focus:ring-cohesion/20 shadow-sm placeholder:text-univers/50 text-base sm:text-lg font-medium transition-all duration-200"
+	/>
+);
+
+const TextAreaInput = ({ onChange, value, id, name, rows, placeholder, disabled }: any) => (
+	<textarea
+		onChange={onChange}
+		value={value}
+		disabled={disabled}
+		id={id}
+		name={name}
+		rows={rows}
+		placeholder={placeholder}
+		className="block w-full rounded-lg px-4 py-3 text-univers bg-white border-2 border-support/20 focus:border-cohesion focus:ring-2 focus:ring-cohesion/20 shadow-sm placeholder:text-univers/50 text-base sm:text-lg font-medium transition-all duration-200 resize-vertical"
+	/>
+);
+
+const MultiSelectDropdown = ({
+	options,
+	themes,
+	selectedValues,
+	onChange,
+	disabled,
+}: {
+	options?: string[];
+	themes?: Array<{ _id: string; title: string; trainings: Array<{ _id: string; title: string }> }>;
+	selectedValues: string[];
+	onChange: (values: string[]) => void;
+	disabled: boolean;
+}) => {
+	const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+		const value = e.target.value;
+		if (value && !selectedValues.includes(value)) {
+			onChange([...selectedValues, value]);
+		}
+	};
+
+	const removeSelection = (valueToRemove: string) => {
+		onChange(selectedValues.filter((value) => value !== valueToRemove));
+	};
+
+	return (
+		<div className="space-y-3">
+			<select
+				onChange={handleSelectChange}
+				disabled={disabled}
+				value=""
+				className="block w-full rounded-lg px-4 py-3 sm:py-4 text-univers bg-white border-2 border-support/20 focus:border-cohesion focus:ring-2 focus:ring-cohesion/20 shadow-sm text-base sm:text-lg font-medium transition-all duration-200"
+			>
+				<option value="">Sélectionnez une ou plusieurs formations</option>
+				{themes && themes.length > 0
+					? themes.map((theme) => (
+							<optgroup key={theme._id} label={theme.title}>
+								{theme.trainings.map((training) => (
+									<option key={training._id} value={training.title} disabled={selectedValues.includes(training.title)}>
+										{training.title} {selectedValues.includes(training.title) ? "(déjà sélectionné)" : ""}
+									</option>
+								))}
+							</optgroup>
+					  ))
+					: options?.map((option) => (
+							<option key={option} value={option} disabled={selectedValues.includes(option)}>
+								{option} {selectedValues.includes(option) ? "(déjà sélectionné)" : ""}
+							</option>
+					  ))}
+			</select>
+
+			{selectedValues.length > 0 && (
+				<div className="space-y-2">
+					<p className="text-base text-support/70 font-medium">Formations sélectionnées :</p>
+					<div className="flex flex-wrap gap-2">
+						{selectedValues.map((value) => (
+							<span
+								key={value}
+								className="inline-flex items-center gap-2 px-3 py-2 bg-cohesion/10 text-support border border-cohesion/30 rounded-full text-base font-medium"
+							>
+								{value}
+								<button
+									type="button"
+									onClick={() => removeSelection(value)}
+									disabled={disabled}
+									className="text-cohesion hover:text-cohesion/70 font-bold text-xl leading-none disabled:opacity-50"
+								>
+									×
+								</button>
+							</span>
+						))}
+					</div>
+				</div>
+			)}
+		</div>
+	);
+};
 
 export default function ContactForm() {
+	const [api, contextHolder] = notification.useNotification();
+
 	const [firstName, setFirstName] = useState("");
 	const [lastName, setLastName] = useState("");
-	const [budget, setBudget] = useState("");
 	const [email, setEmail] = useState("");
 	const [message, setMessage] = useState("");
+	const [allFormations, setAllFormations] = useState<Array<{ _id: string; title: string; trainings: Array<{ _id: string; title: string }> }>>([]);
+	const [interestedFormations, setInterestedFormations] = useState<string[]>([]);
 
 	const [isLoading, setIsLoading] = useState(false);
-	const [error, setError] = useState("");
-	const [success, setSuccess] = useState("");
+
+	useEffect(() => {
+		(async () => {
+			try {
+				const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/trainings/all`);
+				const themes = response.data.themes;
+
+				setAllFormations(themes);
+			} catch (error) {
+				console.error("Erreur lors de la récupération des formations :", error);
+			}
+		})();
+	}, []);
+
+	const openNotification = (type: NotificationType, title: string, message: string) => {
+		api[type]({
+			message: title,
+			description: message,
+			icon:
+				type === "success" ? (
+					<CheckCircleIcon aria-hidden="true" className="h-6 w-6 text-green-400" />
+				) : (
+					<XCircleIcon aria-hidden="true" className="h-6 w-6 text-red-400" />
+				),
+		});
+	};
 
 	const handleSubmit = async () => {
 		setIsLoading(true);
 
-		const payload = { firstName, lastName, budget, email, message };
+		const payload = { firstName, lastName, email, message, interestedFormations };
 
-		if (Object.values(payload).some((value) => value.length === 0)) {
-			setError("Veuillez remplir tous les champs.");
+		if ([firstName, lastName, email, message].some((value) => value.length === 0)) {
+			openNotification("error", "Zut...", "Veuillez remplir tous les champs obligatoires.");
 			setIsLoading(false);
 			return;
 		}
 
 		try {
-			const res = await fetch("/api/message", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({ ...payload }),
-			});
+			const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/messages/new`, payload);
 
-			const data = await res.json();
-
-			if (res.ok) {
-				setSuccess(data.message);
+			if (response.status === 200) {
+				openNotification("success", "Merci !", response.data.message);
 				setFirstName("");
 				setLastName("");
-				setBudget("");
 				setEmail("");
 				setMessage("");
+				setInterestedFormations([]);
 			} else {
-				setError(data.error);
+				openNotification("error", "Zut...", response.data.error);
 			}
 		} catch (error: any) {
-			window.alert(error.message);
+			openNotification("error", "Oops...", error.message);
 			setIsLoading(false);
 		} finally {
 			setIsLoading(false);
@@ -60,146 +203,127 @@ export default function ContactForm() {
 	};
 
 	return (
-		<div className="relative isolate bg-white px-6 lg:px-8">
-			<Notification type="success" title="Merci !" message={success} isVisible={success.length > 0} onClose={() => setSuccess("")} />
-			<Notification type="error" title="Oh non..." message={error} isVisible={error.length > 0} onClose={() => setError("")} />
-			<svg
-				aria-hidden="true"
-				className="absolute inset-0 -z-10 h-full w-full stroke-gray-200 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
+		<div className="relative isolate bg-maitrise p-5 w-4/5 lg:max-w-3xl rounded-2xl">
+			<ConfigProvider
+				theme={{
+					token: {
+						colorBgElevated: "#fffce8",
+						colorTextHeading: "#263c27",
+						colorText: "#263c27",
+						fontFamily: "Halibut",
+					},
+				}}
 			>
-				<defs>
-					<pattern x="50%" y={-64} id="83fd4e5a-9d52-42fc-97b6-718e5d7ee527" width={200} height={200} patternUnits="userSpaceOnUse">
-						<path d="M100 200V.5M.5 .5H200" fill="none" />
-					</pattern>
-				</defs>
-				<svg x="50%" y={-64} className="overflow-visible fill-gray-50">
-					<path d="M-100.5 0h201v201h-201Z M699.5 0h201v201h-201Z M499.5 400h201v201h-201Z M299.5 800h201v201h-201Z" strokeWidth={0} />
-				</svg>
-				<rect fill="url(#83fd4e5a-9d52-42fc-97b6-718e5d7ee527)" width="100%" height="100%" strokeWidth={0} />
-			</svg>
-			<div className="mx-auto max-w-xl lg:max-w-4xl">
-				<div className="mt-16 flex flex-col gap-16 sm:gap-y-20 lg:flex-row">
-					<div className="lg:flex-auto">
-						<div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
-							<div>
-								<label htmlFor="first-name" className="block text-sm font-semibold leading-6 text-gray-900">
-									Prénom
-								</label>
-								<div className="mt-2.5">
-									<input
-										onChange={(e) => setFirstName(e.target.value)}
-										value={firstName}
-										id="first-name"
-										name="first-name"
-										type="text"
-										autoComplete="given-name"
-										placeholder="ex. Jean"
-										className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-									/>
-								</div>
-							</div>
-							<div>
-								<label htmlFor="last-name" className="block text-sm font-semibold leading-6 text-gray-900">
-									Nom de famille
-								</label>
-								<div className="mt-2.5">
-									<input
-										onChange={(e) => setLastName(e.target.value)}
-										value={lastName}
-										id="last-name"
-										name="last-name"
-										type="text"
-										autoComplete="family-name"
-										placeholder="ex. Dupont"
-										className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-									/>
-								</div>
-							</div>
-							<div>
-								<label htmlFor="budget" className="block text-sm font-semibold leading-6 text-gray-900">
-									Budget (€)
-								</label>
-								<div className="mt-2.5">
-									<input
-										onChange={(e) => setBudget(e.target.value)}
-										value={budget}
-										id="budget"
-										name="budget"
-										type="number"
-										placeholder="ex. 1500"
-										className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-									/>
-								</div>
-							</div>
-							<div>
-								<label htmlFor="email" className="block text-sm font-semibold leading-6 text-gray-900">
-									Email
-								</label>
-								<div className="mt-2.5">
-									<input
-										onChange={(e) => setEmail(e.target.value)}
-										value={email}
-										id="email"
-										name="email"
-										type="email"
-										autoComplete="email"
-										placeholder="ex. jean.dupont@jeandupont.fr"
-										className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-									/>
-								</div>
-							</div>
-							<div className="sm:col-span-2">
-								<label htmlFor="message" className="block text-sm font-semibold leading-6 text-gray-900">
-									Message
-								</label>
-								<div className="mt-2.5">
-									<textarea
-										onChange={(e) => setMessage(e.target.value)}
-										value={message}
-										id="message"
-										name="message"
-										rows={4}
-										placeholder="ex. Bonjour, je souhaiterais plus d'informations sur..."
-										className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-									/>
-								</div>
-							</div>
-						</div>
-						<div className="mt-10">
-							<button
-								onClick={handleSubmit}
-								disabled={isLoading}
-								className={`${
-									isLoading ? "cursor-not-allowed" : ""
-								} block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
-							>
-								{!isLoading ? <p>Envoyer</p> : <Spin indicator={<LoadingOutlined spin className="text-white" />} />}
-							</button>
+				{contextHolder}
+			</ConfigProvider>
+
+			<div className="mx-auto max-w-xl">
+				{/* Info Box */}
+				<div className="mb-8 p-5 sm:p-6 bg-support/15 border-2 border-support/30 rounded-xl">
+					<div className="flex items-start gap-4">
+						<ChatBubbleLeftRightIcon className="h-7 w-7 sm:h-8 sm:w-8 text-support mt-1 flex-shrink-0" />
+						<div>
+							<h3 className="text-support font-bold mb-3 text-lg sm:text-xl">Contactez-nous directement</h3>
+							<p className="text-support/90 text-base sm:text-lg leading-relaxed font-medium">
+								Une question sur nos formations ? Besoin d'un devis personnalisé ? Notre équipe vous répond dans les plus brefs délais.
+							</p>
 						</div>
 					</div>
-					<div className="lg:mt-6 lg:w-80 lg:flex-none">
-						<Image alt="" src="https://tailwindui.com/img/logos/workcation-logo-indigo-600.svg" width={48} height={48} className="h-12 w-auto" />
-						<figure className="mt-10">
-							<blockquote className="text-lg font-semibold leading-8 text-gray-900">
-								<p>
-									“Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo expedita voluptas culpa sapiente alias molestiae. Numquam corrupti in
-									laborum sed rerum et corporis.”
-								</p>
-							</blockquote>
-							<figcaption className="mt-10 flex gap-x-6">
-								<Image
-									alt=""
-									width={48}
-									height={48}
-									src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=96&h=96&q=80"
-									className="h-12 w-12 flex-none rounded-full bg-gray-50"
+				</div>
+
+				<div className="flex flex-col gap-16 sm:gap-y-20 lg:flex-row">
+					<div className="lg:flex-auto">
+						<div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:gap-y-8 sm:grid-cols-2">
+							<InputWrapper label="Prénom" required>
+								<TextInput
+									onChange={(e: any) => setFirstName(e.target.value)}
+									value={firstName}
+									disabled={isLoading}
+									id="first-name"
+									name="first-name"
+									type="text"
+									autoComplete="given-name"
+									placeholder="ex. Jean"
 								/>
-								<div>
-									<div className="text-base font-semibold text-gray-900">Brenna Goyette</div>
-									<div className="text-sm leading-6 text-gray-600">CEO of Workcation</div>
-								</div>
-							</figcaption>
-						</figure>
+							</InputWrapper>
+							<InputWrapper label="Nom de famille" required>
+								<TextInput
+									onChange={(e: any) => setLastName(e.target.value)}
+									value={lastName}
+									disabled={isLoading}
+									id="last-name"
+									name="last-name"
+									type="text"
+									autoComplete="family-name"
+									placeholder="ex. Dupont"
+								/>
+							</InputWrapper>
+							<InputWrapper label="Email" className="col-span-full sm:col-span-2" required>
+								<TextInput
+									onChange={(e: any) => setEmail(e.target.value)}
+									value={email}
+									disabled={isLoading}
+									id="email"
+									name="email"
+									type="email"
+									autoComplete="email"
+									placeholder="ex. jean.dupont@test.fr"
+								/>
+							</InputWrapper>
+							<InputWrapper label="Message" className="col-span-full sm:col-span-2" required>
+								<TextAreaInput
+									onChange={(e: any) => setMessage(e.target.value)}
+									value={message}
+									disabled={isLoading}
+									id="message"
+									name="message"
+									rows={5}
+									placeholder="ex. Bonjour, je souhaiterais plus d'informations sur vos formations..."
+								/>
+							</InputWrapper>
+							<InputWrapper label="Formations d'intérêt (optionnel)" className="col-span-full sm:col-span-2">
+								<MultiSelectDropdown
+									themes={allFormations}
+									selectedValues={interestedFormations}
+									onChange={setInterestedFormations}
+									disabled={isLoading}
+								/>
+							</InputWrapper>
+						</div>
+
+						{/* RGPD Notice */}
+						<div className="mt-8 p-4 sm:p-5 bg-support/10 border-2 border-support/15 rounded-lg">
+							<p className="text-support/80 text-sm sm:text-base leading-relaxed font-medium">
+								En soumettant ce formulaire, vous acceptez que vos données personnelles soient utilisées pour traiter votre demande et vous
+								recontacter. Vos données sont traitées conformément à notre{" "}
+								<a href="/mentions-legales" className="text-cohesion hover:underline font-semibold">
+									politique de confidentialité
+								</a>
+								.
+							</p>
+						</div>
+
+						<div className="mt-10">
+							<button
+								onClick={() => handleSubmit()}
+								disabled={isLoading}
+								className={clsx(
+									isLoading ? "cursor-not-allowed opacity-70" : "cursor-pointer hover:bg-univers/90 hover:shadow-lg transform hover:scale-105",
+									"w-full rounded-xl bg-univers px-6 py-4 sm:py-5 sm:text-lg text-support font-bold shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-univers transition-all duration-200"
+								)}
+							>
+								<span className="flex justify-center items-center gap-3 text-support">
+									{!isLoading ? (
+										<>
+											<ChatBubbleLeftRightIcon className="h-6 w-6 sm:h-7 sm:w-7" />
+											<span className="font-bold">Envoyer le message</span>
+										</>
+									) : (
+										<Spin indicator={<LoadingOutlined spin className="text-xl" />} />
+									)}
+								</span>
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>

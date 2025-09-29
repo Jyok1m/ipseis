@@ -1,29 +1,31 @@
-"use client";
-
-import React, { useEffect } from "react";
-import { useRouter } from "next/navigation";
-
-import SectionTitle from "@/components/global/SectionTitle";
+import React from "react";
+import Footer from "@/components/global/Footer";
+import TitlePage from "@/components/global/TitlePage";
 import ContactForm from "@/components/home/ContactForm";
+import type { Metadata } from "next";
+import { buildMetadata } from "@/components/utils/seo";
+
+export const metadata: Metadata = buildMetadata({
+	title: "Contact IPSEIS - Demande d'information & devis",
+	description: "Contactez IPSEIS pour toute question sur nos formations santé et médico-social : informations, devis, accompagnement personnalisé.",
+	path: "/contact",
+});
 
 export default function Contact() {
-	const router = useRouter();
-
-	useEffect(() => {
-		router.push("/");
-	}, []);
-
 	return (
-		<div className="bg-white py-8">
-			<div className="mx-auto max-w-7xl px-6 lg:px-8">
-				<SectionTitle
-					tag="100% personnalisé"
-					title="Parlons de vos besoins"
-					description="Quis tellus eget adipiscing convallis sit sit eget aliquet quis. Suspendisse eget egestas a elementum pulvinar et feugiat blandit at. In
-							mi viverra elit nunc."
-				/>
-				<ContactForm />
-			</div>
+		<div className="bg-support min-h-full flex flex-col items-center justify-between">
+			<TitlePage
+				title="Formulaire de contact"
+				descriptionNode={
+					<>
+						Si vous souhaitez en savoir plus sur nos formations, nos tarifs ou nos disponibilités, n'hésitez pas à nous contacter via le formulaire
+						ci-dessous.
+					</>
+				}
+			/>
+			<ContactForm />
+
+			<Footer />
 		</div>
 	);
 }
