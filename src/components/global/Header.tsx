@@ -12,6 +12,7 @@ const navigation = [
 	{ name: "Nous connaître", href: "/a-propos", ready: true },
 	{ name: "Pédagogie", href: "/pedagogie", ready: true },
 	{ name: "Secteur santé", href: "/secteur-sante", ready: true },
+	{ name: "Qualité", href: "/qualite", ready: true },
 	{ name: "Autres secteurs", href: "/", ready: false },
 ];
 
