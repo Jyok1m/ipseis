@@ -1,36 +1,91 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
-import { useState } from "react";
-import { createActivationCode, getActivationCodes, getUsers } from "@/lib/authApi";
-import { notification, ConfigProvider, Spin } from "antd";
+import { useState, useEffect, useCallback } from "react";
+import { getDashboardStats, getProspects, contactProspect, convertProspect, updateProspectStatus } from "@/lib/authApi";
+import { notification, ConfigProvider, Spin, Modal } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
-import { CheckCircleIcon, XCircleIcon, KeyIcon, UsersIcon } from "@heroicons/react/24/outline";
+import {
+	CheckCircleIcon,
+	XCircleIcon,
+	UsersIcon,
+	AcademicCapIcon,
+	EnvelopeIcon,
+	ArrowDownTrayIcon,
+	MagnifyingGlassIcon,
+	PaperAirplaneIcon,
+	KeyIcon,
+	CheckIcon,
+	XMarkIcon,
+} from "@heroicons/react/24/outline";
 import clsx from "clsx";
 
 type NotificationType = "success" | "error";
+
+interface Stats {
+	totalProspects: number;
+	prospectsThisMonth: number;
+	totalUsers: number;
+	totalTrainings: number;
+	totalMessages: number;
+	totalCatalogueDownloads: number;
+	sourceBreakdown: { _id: string; count: number }[];
+}
+
+interface Prospect {
+	_id: string;
+	firstName: string;
+	lastName: string;
+	email: string;
+	source: string;
+	status: string;
+	lastInteractionDate: string;
+	interactionCount: number;
+	hasCatalogueDownload: boolean;
+	hasContactMessage: boolean;
+	interactions: any[];
+	createdAt: string;
+}
+
+const statusConfig: Record<string, { label: string; className: string }> = {
+	nouveau: { label: "Nouveau", className: "bg-gray-100 text-gray-700" },
+	contacte: { label: "Contacté", className: "bg-blue-50 text-blue-700" },
+	converti: { label: "Converti", className: "bg-green-50 text-green-700" },
+	archive: { label: "Archivé", className: "bg-gray-200 text-gray-600" },
+};
+
+const sourceLabels: Record<string, string> = {
+	contact: "Contact",
+	catalogue: "Catalogue",
+	mixed: "Mixte",
+};
 
 export default function AdminDashboard() {
 	const { user } = useAuth();
 	const [api, contextHolder] = notification.useNotification();
 
-	// Activation code form
-	const [targetEmail, setTargetEmail] = useState("");
-	const [role, setRole] = useState("apprenant");
-	const [isCreating, setIsCreating] = useState(false);
+	// Stats
+	const [stats, setStats] = useState<Stats | null>(null);
+	const [statsLoading, setStatsLoading] = useState(true);
 
-	// Codes list
-	const [codes, setCodes] = useState<any[]>([]);
-	const [codesLoaded, setCodesLoaded] = useState(false);
-	const [codesLoading, setCodesLoading] = useState(false);
-	const [codesPagination, setCodesPagination] = useState<any>(null);
+	// Prospects
+	const [prospects, setProspects] = useState<Prospect[]>([]);
+	const [prospectsLoading, setProspectsLoading] = useState(true);
+	const [prospectsPagination, setProspectsPagination] = useState<any>(null);
+	const [search, setSearch] = useState("");
+	const [searchInput, setSearchInput] = useState("");
+	const [sourceFilter, setSourceFilter] = useState("");
 
-	// Users list
-	const [users, setUsers] = useState<any[]>([]);
-	const [usersLoaded, setUsersLoaded] = useState(false);
-	const [usersLoading, setUsersLoading] = useState(false);
-	const [usersPagination, setUsersPagination] = useState<any>(null);
-	const [usersRoleFilter, setUsersRoleFilter] = useState("");
+	// Contact modal
+	const [contactModal, setContactModal] = useState<Prospect | null>(null);
+	const [contactSubject, setContactSubject] = useState("");
+	const [contactMessage, setContactMessage] = useState("");
+	const [contacting, setContacting] = useState(false);
+
+	// Convert modal
+	const [convertModal, setConvertModal] = useState<Prospect | null>(null);
+	const [convertRole, setConvertRole] = useState("apprenant");
+	const [converting, setConverting] = useState(false);
 
 	const openNotification = (type: NotificationType, title: string, message: string) => {
 		api[type]({
@@ -45,52 +100,97 @@ export default function AdminDashboard() {
 		});
 	};
 
-	const handleCreateCode = async (e: React.FormEvent) => {
+	const loadStats = useCallback(async () => {
+		try {
+			const response = await getDashboardStats();
+			setStats(response.data);
+		} catch {
+			openNotification("error", "Erreur", "Impossible de charger les statistiques.");
+		} finally {
+			setStatsLoading(false);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	const loadProspects = useCallback(async (page: number = 1, source?: string, searchQuery?: string) => {
+		setProspectsLoading(true);
+		try {
+			const response = await getProspects(page, source || undefined, searchQuery || undefined);
+			setProspects(response.data.prospects);
+			setProspectsPagination(response.data.pagination);
+		} catch {
+			openNotification("error", "Erreur", "Impossible de charger les prospects.");
+		} finally {
+			setProspectsLoading(false);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	useEffect(() => {
+		loadStats();
+		loadProspects(1);
+	}, [loadStats, loadProspects]);
+
+	const handleSearch = (e: React.FormEvent) => {
 		e.preventDefault();
-		if (!targetEmail) {
-			openNotification("error", "Erreur", "Veuillez saisir l'adresse email.");
+		setSearch(searchInput);
+		loadProspects(1, sourceFilter, searchInput);
+	};
+
+	const handleSourceFilter = (value: string) => {
+		setSourceFilter(value);
+		loadProspects(1, value, search);
+	};
+
+	const handleContact = async (e: React.FormEvent) => {
+		e.preventDefault();
+		if (!contactModal || !contactSubject || !contactMessage) {
+			openNotification("error", "Erreur", "Veuillez remplir tous les champs.");
 			return;
 		}
-		setIsCreating(true);
+		setContacting(true);
 		try {
-			const response = await createActivationCode(targetEmail, role);
-			openNotification("success", "Code créé", response.data.message);
-			setTargetEmail("");
-			if (codesLoaded) loadCodes(1);
+			await contactProspect(contactModal._id, { subject: contactSubject, message: contactMessage });
+			openNotification("success", "Email envoyé", "Le prospect a été contacté avec succès.");
+			setContactModal(null);
+			setContactSubject("");
+			setContactMessage("");
+			loadProspects(prospectsPagination?.page || 1, sourceFilter, search);
 		} catch (error: any) {
-			openNotification("error", "Erreur", error.response?.data?.error || "Erreur lors de la création.");
+			openNotification("error", "Erreur", error.response?.data?.error || "Erreur lors de l'envoi.");
 		} finally {
-			setIsCreating(false);
+			setContacting(false);
 		}
 	};
 
-	const loadCodes = async (page: number) => {
-		setCodesLoading(true);
+	const handleConvert = async (e: React.FormEvent) => {
+		e.preventDefault();
+		if (!convertModal) return;
+		setConverting(true);
 		try {
-			const response = await getActivationCodes(page);
-			setCodes(response.data.codes);
-			setCodesPagination(response.data.pagination);
-			setCodesLoaded(true);
+			await convertProspect(convertModal._id, convertRole);
+			openNotification("success", "Code créé", "Le code d'activation a été envoyé au prospect.");
+			setConvertModal(null);
+			setConvertRole("apprenant");
+			loadProspects(prospectsPagination?.page || 1, sourceFilter, search);
 		} catch (error: any) {
-			openNotification("error", "Erreur", "Impossible de charger les codes.");
+			openNotification("error", "Erreur", error.response?.data?.error || "Erreur lors de la conversion.");
 		} finally {
-			setCodesLoading(false);
+			setConverting(false);
 		}
 	};
 
-	const loadUsers = async (page: number, roleFilter?: string) => {
-		setUsersLoading(true);
+	const handleStatusChange = async (prospect: Prospect, newStatus: string) => {
 		try {
-			const response = await getUsers(page, roleFilter);
-			setUsers(response.data.users);
-			setUsersPagination(response.data.pagination);
-			setUsersLoaded(true);
+			await updateProspectStatus(prospect._id, newStatus);
+			loadProspects(prospectsPagination?.page || 1, sourceFilter, search);
 		} catch (error: any) {
-			openNotification("error", "Erreur", "Impossible de charger les utilisateurs.");
-		} finally {
-			setUsersLoading(false);
+			openNotification("error", "Erreur", error.response?.data?.error || "Erreur lors de la mise à jour.");
 		}
 	};
+
+	const inputClass =
+		"block w-full rounded-lg px-4 py-2.5 text-gray-900 bg-white border border-gray-300 focus:border-univers focus:ring-2 focus:ring-univers/20 shadow-sm placeholder:text-gray-400 text-sm font-medium transition-all duration-200";
 
 	return (
 		<div>
@@ -102,212 +202,366 @@ export default function AdminDashboard() {
 						colorText: "#374151",
 						fontFamily: "Halibut",
 					},
+					components: {
+						Modal: {
+							titleFontSize: 18,
+							titleColor: "#1a1a1a",
+							headerBg: "#ffffff",
+							contentBg: "#ffffff",
+						},
+					},
 				}}
 			>
 				{contextHolder}
+
+				<h1 className="text-2xl font-bold text-gray-900 mb-2">Tableau de bord</h1>
+				<p className="text-gray-500 mb-8">
+					Bienvenue, {user?.firstName}. Vue d&apos;ensemble de votre activité.
+				</p>
+
+				{/* KPI Cards */}
+				{statsLoading ? (
+					<div className="flex justify-center py-8">
+						<Spin indicator={<LoadingOutlined spin className="text-2xl text-gray-400" />} />
+					</div>
+				) : stats ? (
+					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+						<div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+							<div className="flex items-center gap-3 mb-2">
+								<div className="p-2 rounded-lg bg-univers/10">
+									<UsersIcon className="h-5 w-5 text-univers" />
+								</div>
+								<span className="text-sm font-medium text-gray-500">Prospects</span>
+							</div>
+							<p className="text-2xl font-bold text-gray-900">{stats.totalProspects}</p>
+							<p className="text-xs text-maitrise font-medium mt-1">+{stats.prospectsThisMonth} ce mois</p>
+						</div>
+
+						<div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+							<div className="flex items-center gap-3 mb-2">
+								<div className="p-2 rounded-lg bg-maitrise/10">
+									<UsersIcon className="h-5 w-5 text-maitrise" />
+								</div>
+								<span className="text-sm font-medium text-gray-500">Utilisateurs</span>
+							</div>
+							<p className="text-2xl font-bold text-gray-900">{stats.totalUsers}</p>
+						</div>
+
+						<div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+							<div className="flex items-center gap-3 mb-2">
+								<div className="p-2 rounded-lg bg-cohesion/10">
+									<AcademicCapIcon className="h-5 w-5 text-cohesion" />
+								</div>
+								<span className="text-sm font-medium text-gray-500">Formations</span>
+							</div>
+							<p className="text-2xl font-bold text-gray-900">{stats.totalTrainings}</p>
+						</div>
+
+						<div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+							<div className="flex items-center gap-3 mb-2">
+								<div className="p-2 rounded-lg bg-gray-100">
+									<EnvelopeIcon className="h-5 w-5 text-gray-500" />
+								</div>
+								<span className="text-sm font-medium text-gray-500">Messages</span>
+							</div>
+							<p className="text-2xl font-bold text-gray-900">{stats.totalMessages}</p>
+						</div>
+					</div>
+				) : null}
+
+				{/* Prospects */}
+				<div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+					<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+						<h2 className="text-lg font-bold text-gray-900">Prospects</h2>
+						<div className="flex flex-col sm:flex-row gap-3">
+							<form onSubmit={handleSearch} className="flex gap-2">
+								<div className="relative flex-1">
+									<MagnifyingGlassIcon className="h-4 w-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+									<input
+										type="text"
+										value={searchInput}
+										onChange={(e) => setSearchInput(e.target.value)}
+										placeholder="Rechercher..."
+										className="pl-9 pr-4 py-2 rounded-lg text-sm text-gray-900 bg-white border border-gray-300 focus:border-univers focus:ring-2 focus:ring-univers/20 w-full"
+									/>
+								</div>
+								<button
+									type="submit"
+									className="px-3 py-2 rounded-lg bg-univers text-white text-sm font-medium hover:bg-univers/90 transition-colors"
+								>
+									Rechercher
+								</button>
+							</form>
+							<select
+								value={sourceFilter}
+								onChange={(e) => handleSourceFilter(e.target.value)}
+								className="rounded-lg px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 focus:border-univers"
+							>
+								<option value="">Toutes les sources</option>
+								<option value="contact">Contact</option>
+								<option value="catalogue">Catalogue</option>
+								<option value="mixed">Mixte</option>
+							</select>
+						</div>
+					</div>
+
+					{prospectsLoading ? (
+						<div className="flex justify-center py-8">
+							<Spin indicator={<LoadingOutlined spin className="text-2xl text-gray-400" />} />
+						</div>
+					) : prospects.length === 0 ? (
+						<p className="text-gray-500 text-center py-8">Aucun prospect trouvé.</p>
+					) : (
+						<>
+							<div className="overflow-x-auto">
+								<table className="w-full text-left text-sm">
+									<thead>
+										<tr className="border-b border-gray-200">
+											<th className="py-3 px-2 font-semibold text-gray-600 text-xs uppercase tracking-wide">Nom</th>
+											<th className="py-3 px-2 font-semibold text-gray-600 text-xs uppercase tracking-wide">Email</th>
+											<th className="py-3 px-2 font-semibold text-gray-600 text-xs uppercase tracking-wide">Source</th>
+											<th className="py-3 px-2 font-semibold text-gray-600 text-xs uppercase tracking-wide">Interactions</th>
+											<th className="py-3 px-2 font-semibold text-gray-600 text-xs uppercase tracking-wide">Dernière</th>
+											<th className="py-3 px-2 font-semibold text-gray-600 text-xs uppercase tracking-wide text-center">
+												<ArrowDownTrayIcon className="h-4 w-4 inline" title="Catalogue" />
+											</th>
+											<th className="py-3 px-2 font-semibold text-gray-600 text-xs uppercase tracking-wide text-center">
+												<EnvelopeIcon className="h-4 w-4 inline" title="Message" />
+											</th>
+											<th className="py-3 px-2 font-semibold text-gray-600 text-xs uppercase tracking-wide">Statut</th>
+											<th className="py-3 px-2 font-semibold text-gray-600 text-xs uppercase tracking-wide">Actions</th>
+										</tr>
+									</thead>
+									<tbody>
+										{prospects.map((prospect) => {
+											const st = statusConfig[prospect.status] || statusConfig.nouveau;
+											return (
+												<tr key={prospect._id} className="border-b border-gray-100">
+													<td className="py-3 px-2 font-medium text-gray-900 whitespace-nowrap">
+														{prospect.firstName} {prospect.lastName}
+													</td>
+													<td className="py-3 px-2 text-gray-700">{prospect.email}</td>
+													<td className="py-3 px-2">
+														<span className="px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 text-xs font-semibold">
+															{sourceLabels[prospect.source] || prospect.source}
+														</span>
+													</td>
+													<td className="py-3 px-2 text-gray-700 text-center">{prospect.interactionCount || 0}</td>
+													<td className="py-3 px-2 text-gray-500 whitespace-nowrap">
+														{prospect.lastInteractionDate
+															? new Date(prospect.lastInteractionDate).toLocaleDateString("fr-FR")
+															: "-"}
+													</td>
+													<td className="py-3 px-2 text-center">
+														{prospect.hasCatalogueDownload ? (
+															<CheckIcon className="h-4 w-4 text-green-500 inline" />
+														) : (
+															<XMarkIcon className="h-4 w-4 text-gray-300 inline" />
+														)}
+													</td>
+													<td className="py-3 px-2 text-center">
+														{prospect.hasContactMessage ? (
+															<CheckIcon className="h-4 w-4 text-green-500 inline" />
+														) : (
+															<XMarkIcon className="h-4 w-4 text-gray-300 inline" />
+														)}
+													</td>
+													<td className="py-3 px-2">
+														<select
+															value={prospect.status || "nouveau"}
+															onChange={(e) => handleStatusChange(prospect, e.target.value)}
+															className={clsx(
+																"px-2 py-1 rounded-full text-xs font-semibold border-0 cursor-pointer",
+																st.className
+															)}
+														>
+															<option value="nouveau">Nouveau</option>
+															<option value="contacte">Contacté</option>
+															<option value="converti">Converti</option>
+															<option value="archive">Archivé</option>
+														</select>
+													</td>
+													<td className="py-3 px-2">
+														<div className="flex items-center gap-1">
+															<button
+																onClick={() => setContactModal(prospect)}
+																title="Contacter"
+																className="p-1.5 rounded-lg text-gray-500 hover:text-univers hover:bg-gray-100 transition-colors"
+															>
+																<PaperAirplaneIcon className="h-4 w-4" />
+															</button>
+															<button
+																onClick={() => setConvertModal(prospect)}
+																title="Créer un code"
+																className="p-1.5 rounded-lg text-gray-500 hover:text-cohesion hover:bg-gray-100 transition-colors"
+															>
+																<KeyIcon className="h-4 w-4" />
+															</button>
+														</div>
+													</td>
+												</tr>
+											);
+										})}
+									</tbody>
+								</table>
+							</div>
+
+							{prospectsPagination && prospectsPagination.pages > 1 && (
+								<div className="flex justify-center gap-2 mt-4">
+									{Array.from({ length: prospectsPagination.pages }, (_, i) => (
+										<button
+											key={i + 1}
+											onClick={() => loadProspects(i + 1, sourceFilter, search)}
+											className={clsx(
+												"px-3 py-1 rounded text-sm font-medium",
+												prospectsPagination.page === i + 1
+													? "bg-univers text-white"
+													: "bg-gray-100 text-gray-700 hover:bg-gray-200"
+											)}
+										>
+											{i + 1}
+										</button>
+									))}
+								</div>
+							)}
+						</>
+					)}
+				</div>
+
+				{/* Contact Modal */}
+				<Modal
+					title={`Contacter ${contactModal?.firstName} ${contactModal?.lastName}`}
+					open={!!contactModal}
+					onCancel={() => !contacting && setContactModal(null)}
+					footer={null}
+					width={600}
+					centered
+					destroyOnClose
+				>
+					<form onSubmit={handleContact} className="space-y-4 mt-4">
+						<div>
+							<label className="text-sm font-semibold text-gray-700 mb-1 block">
+								Destinataire
+							</label>
+							<p className="text-sm text-gray-500">{contactModal?.email}</p>
+						</div>
+						<div>
+							<label className="text-sm font-semibold text-gray-700 mb-1 block">
+								Sujet<span className="text-red-400 ml-1">*</span>
+							</label>
+							<input
+								type="text"
+								value={contactSubject}
+								onChange={(e) => setContactSubject(e.target.value)}
+								placeholder="Sujet de l'email"
+								disabled={contacting}
+								className={inputClass}
+							/>
+						</div>
+						<div>
+							<label className="text-sm font-semibold text-gray-700 mb-1 block">
+								Message<span className="text-red-400 ml-1">*</span>
+							</label>
+							<textarea
+								value={contactMessage}
+								onChange={(e) => setContactMessage(e.target.value)}
+								placeholder="Votre message..."
+								rows={6}
+								disabled={contacting}
+								className={clsx(inputClass, "resize-none")}
+							/>
+						</div>
+						<div className="flex justify-end gap-3 pt-2">
+							<button
+								type="button"
+								onClick={() => setContactModal(null)}
+								disabled={contacting}
+								className="px-5 py-2.5 rounded-lg text-sm font-medium text-gray-700 bg-gray-50 hover:bg-gray-100 transition-colors"
+							>
+								Annuler
+							</button>
+							<button
+								type="submit"
+								disabled={contacting}
+								className={clsx(
+									contacting ? "cursor-not-allowed opacity-70" : "cursor-pointer hover:bg-univers/90",
+									"px-5 py-2.5 rounded-lg text-sm font-bold text-white bg-univers shadow-sm transition-all duration-200 flex items-center gap-2"
+								)}
+							>
+								{contacting ? (
+									<Spin indicator={<LoadingOutlined spin className="text-base text-white" />} />
+								) : (
+									<>
+										<PaperAirplaneIcon className="h-4 w-4" />
+										Envoyer
+									</>
+								)}
+							</button>
+						</div>
+					</form>
+				</Modal>
+
+				{/* Convert Modal */}
+				<Modal
+					title={`Créer un code pour ${convertModal?.firstName} ${convertModal?.lastName}`}
+					open={!!convertModal}
+					onCancel={() => !converting && setConvertModal(null)}
+					footer={null}
+					width={480}
+					centered
+					destroyOnClose
+				>
+					<form onSubmit={handleConvert} className="space-y-4 mt-4">
+						<div>
+							<label className="text-sm font-semibold text-gray-700 mb-1 block">
+								Email du prospect
+							</label>
+							<p className="text-sm text-gray-500">{convertModal?.email}</p>
+						</div>
+						<div>
+							<label className="text-sm font-semibold text-gray-700 mb-1 block">
+								Rôle<span className="text-red-400 ml-1">*</span>
+							</label>
+							<select
+								value={convertRole}
+								onChange={(e) => setConvertRole(e.target.value)}
+								disabled={converting}
+								className={inputClass}
+							>
+								<option value="apprenant">Apprenant</option>
+								<option value="professionnel">Professionnel</option>
+							</select>
+						</div>
+						<div className="flex justify-end gap-3 pt-2">
+							<button
+								type="button"
+								onClick={() => setConvertModal(null)}
+								disabled={converting}
+								className="px-5 py-2.5 rounded-lg text-sm font-medium text-gray-700 bg-gray-50 hover:bg-gray-100 transition-colors"
+							>
+								Annuler
+							</button>
+							<button
+								type="submit"
+								disabled={converting}
+								className={clsx(
+									converting ? "cursor-not-allowed opacity-70" : "cursor-pointer hover:bg-univers/90",
+									"px-5 py-2.5 rounded-lg text-sm font-bold text-white bg-univers shadow-sm transition-all duration-200 flex items-center gap-2"
+								)}
+							>
+								{converting ? (
+									<Spin indicator={<LoadingOutlined spin className="text-base text-white" />} />
+								) : (
+									<>
+										<KeyIcon className="h-4 w-4" />
+										Créer et envoyer
+									</>
+								)}
+							</button>
+						</div>
+					</form>
+				</Modal>
 			</ConfigProvider>
-
-			<h1 className="text-2xl font-bold text-gray-900 mb-2">Tableau de bord</h1>
-			<p className="text-gray-500 mb-8">
-				Bienvenue, {user?.firstName}. Gérez les codes d'activation et les utilisateurs depuis cette page.
-			</p>
-
-			{/* Créer un code d'activation */}
-			<div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
-				<h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-					<KeyIcon className="h-5 w-5 text-univers" />
-					Créer un code d'activation
-				</h2>
-				<form onSubmit={handleCreateCode} className="flex flex-col sm:flex-row gap-3">
-					<input
-						type="email"
-						value={targetEmail}
-						onChange={(e) => setTargetEmail(e.target.value)}
-						placeholder="Email du destinataire"
-						disabled={isCreating}
-						className="flex-1 rounded-lg px-4 py-2.5 text-gray-900 bg-white border border-gray-300 focus:border-univers focus:ring-2 focus:ring-univers/20 shadow-sm placeholder:text-gray-400 text-sm font-medium transition-all duration-200"
-					/>
-					<select
-						value={role}
-						onChange={(e) => setRole(e.target.value)}
-						disabled={isCreating}
-						className="rounded-lg px-4 py-2.5 text-gray-900 bg-white border border-gray-300 focus:border-univers focus:ring-2 focus:ring-univers/20 shadow-sm text-sm font-medium transition-all duration-200"
-					>
-						<option value="apprenant">Apprenant</option>
-						<option value="professionnel">Professionnel</option>
-					</select>
-					<button
-						type="submit"
-						disabled={isCreating}
-						className={clsx(
-							isCreating ? "cursor-not-allowed opacity-70" : "cursor-pointer hover:bg-univers/90",
-							"rounded-lg bg-univers px-5 py-2.5 text-white font-semibold shadow-sm transition-all duration-200 whitespace-nowrap text-sm"
-						)}
-					>
-						{isCreating ? <Spin indicator={<LoadingOutlined spin className="text-base text-white" />} /> : "Envoyer le code"}
-					</button>
-				</form>
-			</div>
-
-			{/* Codes d'activation */}
-			<div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
-				<div className="flex items-center justify-between mb-4">
-					<h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-						<KeyIcon className="h-5 w-5 text-maitrise" />
-						Codes d'activation
-					</h2>
-					<button
-						onClick={() => loadCodes(1)}
-						disabled={codesLoading}
-						className="text-sm text-univers hover:underline font-semibold"
-					>
-						{codesLoaded ? "Rafraichir" : "Charger"}
-					</button>
-				</div>
-
-				{codesLoading ? (
-					<div className="flex justify-center py-8">
-						<Spin indicator={<LoadingOutlined spin className="text-2xl text-gray-400" />} />
-					</div>
-				) : codesLoaded && codes.length > 0 ? (
-					<>
-						<div className="overflow-x-auto">
-							<table className="w-full text-left text-sm">
-								<thead>
-									<tr className="border-b border-gray-200">
-										<th className="py-3 px-2 font-semibold text-gray-600 text-xs uppercase tracking-wide">Code</th>
-										<th className="py-3 px-2 font-semibold text-gray-600 text-xs uppercase tracking-wide">Email</th>
-										<th className="py-3 px-2 font-semibold text-gray-600 text-xs uppercase tracking-wide">Rôle</th>
-										<th className="py-3 px-2 font-semibold text-gray-600 text-xs uppercase tracking-wide">Statut</th>
-										<th className="py-3 px-2 font-semibold text-gray-600 text-xs uppercase tracking-wide">Expire</th>
-									</tr>
-								</thead>
-								<tbody>
-									{codes.map((code: any) => (
-										<tr key={code._id} className="border-b border-gray-100">
-											<td className="py-3 px-2 font-mono text-sm text-gray-900">{code.code}</td>
-											<td className="py-3 px-2 text-gray-700">{code.targetEmail}</td>
-											<td className="py-3 px-2 text-gray-700 capitalize">{code.role}</td>
-											<td className="py-3 px-2">
-												<span
-													className={clsx(
-														"px-2 py-1 rounded-full text-xs font-semibold",
-														code.isUsed ? "bg-green-50 text-green-700" : "bg-amber-50 text-amber-700"
-													)}
-												>
-													{code.isUsed ? "Utilisé" : "En attente"}
-												</span>
-											</td>
-											<td className="py-3 px-2 text-gray-500">{new Date(code.expiresAt).toLocaleDateString("fr-FR")}</td>
-										</tr>
-									))}
-								</tbody>
-							</table>
-						</div>
-						{codesPagination && codesPagination.pages > 1 && (
-							<div className="flex justify-center gap-2 mt-4">
-								{Array.from({ length: codesPagination.pages }, (_, i) => (
-									<button
-										key={i + 1}
-										onClick={() => loadCodes(i + 1)}
-										className={clsx(
-											"px-3 py-1 rounded text-sm font-medium",
-											codesPagination.page === i + 1 ? "bg-univers text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-										)}
-									>
-										{i + 1}
-									</button>
-								))}
-							</div>
-						)}
-					</>
-				) : codesLoaded ? (
-					<p className="text-gray-500 text-center py-4">Aucun code d'activation.</p>
-				) : null}
-			</div>
-
-			{/* Utilisateurs */}
-			<div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-				<div className="flex items-center justify-between mb-4">
-					<h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-						<UsersIcon className="h-5 w-5 text-maitrise" />
-						Utilisateurs
-					</h2>
-					<div className="flex items-center gap-3">
-						<select
-							value={usersRoleFilter}
-							onChange={(e) => {
-								setUsersRoleFilter(e.target.value);
-								if (usersLoaded) loadUsers(1, e.target.value);
-							}}
-							className="rounded-lg px-3 py-1.5 text-sm text-gray-700 bg-white border border-gray-300 focus:border-univers"
-						>
-							<option value="">Tous les rôles</option>
-							<option value="administrateur">Administrateur</option>
-							<option value="apprenant">Apprenant</option>
-							<option value="professionnel">Professionnel</option>
-						</select>
-						<button
-							onClick={() => loadUsers(1, usersRoleFilter)}
-							disabled={usersLoading}
-							className="text-sm text-univers hover:underline font-semibold"
-						>
-							{usersLoaded ? "Rafraichir" : "Charger"}
-						</button>
-					</div>
-				</div>
-
-				{usersLoading ? (
-					<div className="flex justify-center py-8">
-						<Spin indicator={<LoadingOutlined spin className="text-2xl text-gray-400" />} />
-					</div>
-				) : usersLoaded && users.length > 0 ? (
-					<>
-						<div className="overflow-x-auto">
-							<table className="w-full text-left text-sm">
-								<thead>
-									<tr className="border-b border-gray-200">
-										<th className="py-3 px-2 font-semibold text-gray-600 text-xs uppercase tracking-wide">Nom</th>
-										<th className="py-3 px-2 font-semibold text-gray-600 text-xs uppercase tracking-wide">Email</th>
-										<th className="py-3 px-2 font-semibold text-gray-600 text-xs uppercase tracking-wide">Rôle</th>
-										<th className="py-3 px-2 font-semibold text-gray-600 text-xs uppercase tracking-wide">Entreprise</th>
-										<th className="py-3 px-2 font-semibold text-gray-600 text-xs uppercase tracking-wide">Inscrit le</th>
-									</tr>
-								</thead>
-								<tbody>
-									{users.map((u: any) => (
-										<tr key={u._id} className="border-b border-gray-100">
-											<td className="py-3 px-2 font-medium text-gray-900">{u.firstName} {u.lastName}</td>
-											<td className="py-3 px-2 text-gray-700">{u.email}</td>
-											<td className="py-3 px-2 text-gray-700 capitalize">{u.role}</td>
-											<td className="py-3 px-2 text-gray-700">{u.company}</td>
-											<td className="py-3 px-2 text-gray-500">{new Date(u.createdAt).toLocaleDateString("fr-FR")}</td>
-										</tr>
-									))}
-								</tbody>
-							</table>
-						</div>
-						{usersPagination && usersPagination.pages > 1 && (
-							<div className="flex justify-center gap-2 mt-4">
-								{Array.from({ length: usersPagination.pages }, (_, i) => (
-									<button
-										key={i + 1}
-										onClick={() => loadUsers(i + 1, usersRoleFilter)}
-										className={clsx(
-											"px-3 py-1 rounded text-sm font-medium",
-											usersPagination.page === i + 1 ? "bg-univers text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-										)}
-									>
-										{i + 1}
-									</button>
-								))}
-							</div>
-						)}
-					</>
-				) : usersLoaded ? (
-					<p className="text-gray-500 text-center py-4">Aucun utilisateur trouvé.</p>
-				) : null}
-			</div>
 		</div>
 	);
 }
