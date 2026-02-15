@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { getAdminTrainings, getAdminThemes, createTraining, updateTraining, deleteTraining } from "@/lib/authApi";
+import { getAdminTrainings, getAdminThemes, createTraining, updateTraining, deleteTraining, toggleTrainingVisibility } from "@/lib/authApi";
 import { notification, ConfigProvider, Spin, Modal } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
-import { CheckCircleIcon, XCircleIcon, PlusIcon, PencilSquareIcon, TrashIcon, AcademicCapIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { CheckCircleIcon, XCircleIcon, PlusIcon, PencilSquareIcon, TrashIcon, AcademicCapIcon, XMarkIcon, EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 
 type NotificationType = "success" | "error";
@@ -28,6 +28,7 @@ interface Training {
 	number_of_trainees: string;
 	duration: string;
 	quote: string;
+	isVisible: boolean;
 	themeId: string;
 	themeName: string;
 }
@@ -139,6 +140,7 @@ export default function FormationsPage() {
 	// Search / filter
 	const [search, setSearch] = useState("");
 	const [themeFilter, setThemeFilter] = useState("");
+	const [showHidden, setShowHidden] = useState(true);
 
 	const openNotification = (type: NotificationType, title: string, message: string) => {
 		api[type]({
@@ -246,10 +248,22 @@ export default function FormationsPage() {
 		}
 	};
 
+	const handleToggleVisibility = async (training: Training) => {
+		try {
+			const newValue = training.isVisible === false ? true : false;
+			await toggleTrainingVisibility(training._id, newValue);
+			openNotification("success", "Succès", `Formation ${newValue ? "visible" : "masquée"}.`);
+			await loadData();
+		} catch (error: any) {
+			openNotification("error", "Erreur", error.response?.data?.error || "Erreur lors de la mise à jour.");
+		}
+	};
+
 	const filteredTrainings = trainings.filter((t) => {
 		const matchSearch = !search || t.title.toLowerCase().includes(search.toLowerCase()) || t.trainer.toLowerCase().includes(search.toLowerCase());
 		const matchTheme = !themeFilter || t.themeId === themeFilter;
-		return matchSearch && matchTheme;
+		const matchVisibility = showHidden || t.isVisible !== false;
+		return matchSearch && matchTheme && matchVisibility;
 	});
 
 	const trainingToDelete = deleteId ? trainings.find((t) => t._id === deleteId) : null;
@@ -296,7 +310,7 @@ export default function FormationsPage() {
 				</div>
 
 				{/* Filters */}
-				<div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6 flex flex-col sm:flex-row gap-4">
+				<div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6 flex flex-col sm:flex-row gap-4 items-center">
 					<input
 						type="text"
 						value={search}
@@ -316,6 +330,15 @@ export default function FormationsPage() {
 							</option>
 						))}
 					</select>
+					<label className="flex items-center gap-2 text-sm text-gray-600 whitespace-nowrap cursor-pointer">
+						<input
+							type="checkbox"
+							checked={showHidden}
+							onChange={(e) => setShowHidden(e.target.checked)}
+							className="rounded border-gray-300 text-univers focus:ring-univers"
+						/>
+						Afficher les masquées
+					</label>
 				</div>
 
 				{/* List */}
@@ -330,37 +353,59 @@ export default function FormationsPage() {
 					</div>
 				) : (
 					<div className="space-y-3">
-						{filteredTrainings.map((training) => (
-							<div key={training._id} className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 flex flex-col sm:flex-row sm:items-center gap-4">
-								<div className="flex-1 min-w-0">
-									<h3 className="font-bold text-gray-900 truncate">{training.title}</h3>
-									<div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-1 text-sm text-gray-500">
-										<span className="inline-flex items-center gap-1">
-											<span className="px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 text-xs font-semibold">{training.themeName}</span>
-										</span>
-										<span>Formateur : {training.trainer}</span>
-										<span>Durée : {training.duration}</span>
-										<span>{training.number_of_trainees} stagiaires</span>
+						{filteredTrainings.map((training) => {
+							const isHidden = training.isVisible === false;
+							return (
+								<div
+									key={training._id}
+									className={clsx(
+										"bg-white rounded-xl shadow-sm p-5 flex flex-col sm:flex-row sm:items-center gap-4",
+										isHidden ? "opacity-50 border-2 border-dashed border-gray-300" : "border border-gray-200"
+									)}
+								>
+									<div className="flex-1 min-w-0">
+										<h3 className="font-bold text-gray-900 truncate">{training.title}</h3>
+										<div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-1 text-sm text-gray-500">
+											<span className="inline-flex items-center gap-1">
+												<span className="px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 text-xs font-semibold">{training.themeName}</span>
+											</span>
+											<span>Formateur : {training.trainer}</span>
+											<span>Durée : {training.duration}</span>
+											<span>{training.number_of_trainees} stagiaires</span>
+											{isHidden && (
+												<span className="px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 text-xs font-semibold">Masquée</span>
+											)}
+										</div>
+									</div>
+									<div className="flex items-center gap-2 flex-shrink-0">
+										<button
+											onClick={() => handleToggleVisibility(training)}
+											title={isHidden ? "Rendre visible" : "Masquer"}
+											className={clsx(
+												"flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+												isHidden ? "text-amber-600 bg-amber-50 hover:bg-amber-100" : "text-gray-500 bg-gray-50 hover:bg-gray-100"
+											)}
+										>
+											{isHidden ? <EyeIcon className="h-4 w-4" /> : <EyeSlashIcon className="h-4 w-4" />}
+										</button>
+										<button
+											onClick={() => openEditModal(training)}
+											className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-gray-700 bg-gray-50 hover:bg-gray-100 transition-colors"
+										>
+											<PencilSquareIcon className="h-4 w-4" />
+											Modifier
+										</button>
+										<button
+											onClick={() => setDeleteId(training._id)}
+											className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 transition-colors"
+										>
+											<TrashIcon className="h-4 w-4" />
+											Supprimer
+										</button>
 									</div>
 								</div>
-								<div className="flex items-center gap-2 flex-shrink-0">
-									<button
-										onClick={() => openEditModal(training)}
-										className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-gray-700 bg-gray-50 hover:bg-gray-100 transition-colors"
-									>
-										<PencilSquareIcon className="h-4 w-4" />
-										Modifier
-									</button>
-									<button
-										onClick={() => setDeleteId(training._id)}
-										className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 transition-colors"
-									>
-										<TrashIcon className="h-4 w-4" />
-										Supprimer
-									</button>
-								</div>
-							</div>
-						))}
+							);
+						})}
 					</div>
 				)}
 
