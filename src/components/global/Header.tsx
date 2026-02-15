@@ -3,17 +3,17 @@
 import React, { useState } from "react";
 import Button from "@/components/global/Button";
 import { Dialog, DialogPanel } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon, EnvelopeIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon, EnvelopeIcon, UserCircleIcon } from "@heroicons/react/24/outline";
 import { Modal, ConfigProvider, Spin } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 
 const navigation = [
-	{ name: "Nous connaître", href: "/a-propos", ready: true },
-	{ name: "Pédagogie", href: "/pedagogie", ready: true },
-	{ name: "Secteur santé", href: "/secteur-sante", ready: true },
-	{ name: "Qualité", href: "/qualite", ready: true },
-	{ name: "Autres secteurs", href: "/", ready: false },
+	{ name: "Nous connaître", href: "/a-propos", ready: true, desktopOnly: false },
+	{ name: "Pédagogie", href: "/pedagogie", ready: true, desktopOnly: false },
+	{ name: "Secteur santé", href: "/secteur-sante", ready: true, desktopOnly: false },
+	{ name: "Qualité", href: "/qualite", ready: true, desktopOnly: false },
+	{ name: "Autres secteurs", href: "/", ready: false, desktopOnly: true },
 ];
 
 const Header = () => {
@@ -24,46 +24,53 @@ const Header = () => {
 		<header className="bg-univers z-20 w-screen">
 			{/* Desktop */}
 
-			<nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between gap-x-6 p-6 lg:px-8">
-				<div className="flex lg:flex-1">
+			<nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between gap-x-4 lg:gap-x-6 px-6 py-3 lg:px-8">
+				<div className="flex-shrink-0">
 					<Link href="/" className="-m-1.5 p-1.5">
 						<span className="sr-only">Ipseis</span>
-						<Image src={require("/src/_images/logo/logo_beige.svg")} alt="Logo Ipseis" title="Logo Ipseis" height={60} />
+						<Image src={require("/src/_images/logo/logo_beige.svg")} alt="Logo Ipseis" title="Logo Ipseis" height={40} />
 					</Link>
 				</div>
-				<div className="hidden md:flex md:gap-x-12">
-					{navigation.map((item) =>
+				<div className="hidden md:flex md:gap-x-6 lg:gap-x-10">
+					{navigation.filter((item) => !item.desktopOnly).map((item) =>
 						item.ready ? (
-							<Link key={item.name} href={item.href} className="text-lg font-normal text-support hover:underline hover:underline-offset-8">
+							<Link key={item.name} href={item.href} className="text-base lg:text-lg font-normal text-support whitespace-nowrap hover:underline hover:underline-offset-8">
 								{item.name}
 							</Link>
 						) : (
 							<button
 								key={item.name}
 								onClick={() => setShowModal(true)}
-								className="text-lg font-normal text-support hover:underline hover:underline-offset-8"
+								className="text-base lg:text-lg font-normal text-support whitespace-nowrap hover:underline hover:underline-offset-8"
 							>
 								{item.name}
 							</button>
 						)
 					)}
 				</div>
-				<div className="flex flex-1 items-center justify-end gap-x-6">
+				<div className="flex items-center gap-x-3 flex-shrink-0">
 					<Link
-						href="/contact"
-						className="rounded-md bg-maitrise px-3 py-1 text-base md:text-lg text-support font-normal shadow-sm hover:bg-maitrise/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maitrise"
+						href="/espace-personnel"
+						className="hidden md:block rounded-md bg-support/15 border border-support/30 px-3 py-1 text-base text-support font-normal shadow-sm hover:bg-support/25 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-support transition-colors whitespace-nowrap"
 					>
 						<span className="flex items-center gap-x-2">
-							<EnvelopeIcon aria-hidden="true" className="size-3 md:size-6" />
+							<UserCircleIcon aria-hidden="true" className="size-5" />
+							<span className="hidden lg:inline">Espace Personnel</span>
+						</span>
+					</Link>
+					<Link
+						href="/contact"
+						className="rounded-md bg-maitrise px-3 py-1 text-base lg:text-lg text-support font-normal shadow-sm hover:bg-maitrise/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maitrise whitespace-nowrap"
+					>
+						<span className="flex items-center gap-x-2">
+							<EnvelopeIcon aria-hidden="true" className="size-4 lg:size-6" />
 							Contact
 						</span>
 					</Link>
-				</div>
-				<div className="flex md:hidden">
 					<button
 						type="button"
 						onClick={() => setMobileMenuOpen(true)}
-						className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-support"
+						className="md:hidden -m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-support"
 					>
 						<span className="sr-only">Ouvrir le menu</span>
 						<Bars3Icon aria-hidden="true" className="size-6" />
@@ -121,6 +128,14 @@ const Header = () => {
 										</button>
 									)
 								)}
+								<Link
+									href="/espace-personnel"
+									onClick={() => setMobileMenuOpen(false)}
+									className="-mx-3 flex items-center gap-2 rounded-lg px-3 py-2 text-base font-semibold text-univers hover:bg-support"
+								>
+									<UserCircleIcon aria-hidden="true" className="size-5" />
+									Espace Personnel
+								</Link>
 							</div>
 						</div>
 					</div>

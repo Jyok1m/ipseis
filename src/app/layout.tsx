@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
-import Header from "@/components/global/Header";
+import ConditionalHeader from "@/components/global/ConditionalHeader";
 import { defaultOpenGraph, defaultTwitter } from "@/components/utils/seo";
 
 export const metadata: Metadata = {
@@ -66,7 +66,7 @@ export default function RootLayout({
 		<html lang="fr" className="font-serif">
 			<Analytics />
 			<body className="flex flex-col justify-between min-h-screen max-w-screen bg-support overflow-x-hidden">
-				<Header />
+				<ConditionalHeader />
 				<div className="bg-support">{children}</div>
 			</body>
 		</html>
