@@ -49,3 +49,35 @@ export const createTraining = (data: any) => authApi.post("/admin/trainings", da
 export const updateTraining = (id: string, data: any) => authApi.put(`/admin/trainings/${id}`, data);
 
 export const deleteTraining = (id: string) => authApi.delete(`/admin/trainings/${id}`);
+
+// Admin - Dashboard
+export const getDashboardStats = () => authApi.get("/admin/dashboard/stats");
+
+// Admin - Prospects
+export const getProspects = (page: number = 1, source?: string, search?: string) =>
+	authApi.get(`/admin/prospects?page=${page}${source ? `&source=${source}` : ""}${search ? `&search=${encodeURIComponent(search)}` : ""}`);
+
+export const contactProspect = (id: string, data: { subject: string; message: string }) =>
+	authApi.post(`/admin/prospects/${id}/contact`, data);
+
+export const convertProspect = (id: string, role: string) =>
+	authApi.post(`/admin/prospects/${id}/convert`, { role });
+
+export const updateProspectStatus = (id: string, status: string) =>
+	authApi.patch(`/admin/prospects/${id}/status`, { status });
+
+// Admin - Training visibility
+export const toggleTrainingVisibility = (id: string, isVisible: boolean) =>
+	authApi.patch(`/admin/trainings/${id}/visibility`, { isVisible });
+
+// Admin - Checklists
+export const getChecklists = (page: number = 1) => authApi.get(`/admin/checklists?page=${page}`);
+
+export const createChecklist = (data: any) => authApi.post("/admin/checklists", data);
+
+export const updateChecklist = (id: string, data: any) => authApi.put(`/admin/checklists/${id}`, data);
+
+export const toggleChecklistItem = (checklistId: string, itemId: string, data: { isChecked?: boolean; notes?: string }) =>
+	authApi.patch(`/admin/checklists/${checklistId}/items/${itemId}`, data);
+
+export const deleteChecklist = (id: string) => authApi.delete(`/admin/checklists/${id}`);
