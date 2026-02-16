@@ -1,10 +1,27 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { getAdminTrainings, getAdminThemes, createTraining, updateTraining, deleteTraining, toggleTrainingVisibility } from "@/lib/authApi";
+import {
+	getAdminTrainings,
+	getAdminThemes,
+	createTraining,
+	updateTraining,
+	deleteTraining,
+	toggleTrainingVisibility,
+} from "@/lib/authApi";
 import { notification, ConfigProvider, Spin, Modal } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
-import { CheckCircleIcon, XCircleIcon, PlusIcon, PencilSquareIcon, TrashIcon, AcademicCapIcon, XMarkIcon, EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import {
+	CheckCircleIcon,
+	XCircleIcon,
+	PlusIcon,
+	PencilSquareIcon,
+	TrashIcon,
+	AcademicCapIcon,
+	XMarkIcon,
+	EyeIcon,
+	EyeSlashIcon,
+} from "@heroicons/react/24/outline";
 import clsx from "clsx";
 
 type NotificationType = "success" | "error";
@@ -49,8 +66,12 @@ const emptyForm = {
 };
 
 // Input styling constants
-const inputClass =
-	"block w-full rounded-lg px-4 py-2.5 text-gray-900 bg-white border border-gray-300 focus:border-univers focus:ring-2 focus:ring-univers/20 shadow-sm placeholder:text-gray-400 text-sm font-medium transition-all duration-200";
+const inputBase =
+	"block w-full rounded-lg px-4 py-2.5 text-gray-900 bg-white border shadow-sm placeholder:text-gray-400 text-sm font-medium transition-all duration-200";
+const inputClass = inputBase + " border-gray-300 focus:border-univers focus:ring-2 focus:ring-univers/20";
+const inputErrorClass = inputBase + " border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-200";
+const selectClass = inputClass + " pr-10";
+const selectErrorClass = inputErrorClass + " pr-10";
 const labelClass = "text-sm font-semibold text-gray-700 mb-1 block";
 
 function ArrayField({
@@ -132,6 +153,7 @@ export default function FormationsPage() {
 	const [modalOpen, setModalOpen] = useState(false);
 	const [editingId, setEditingId] = useState<string | null>(null);
 	const [form, setForm] = useState(emptyForm);
+	const [formErrors, setFormErrors] = useState<Set<string>>(new Set());
 
 	// Delete confirmation
 	const [deleteId, setDeleteId] = useState<string | null>(null);
@@ -176,13 +198,15 @@ export default function FormationsPage() {
 	const openCreateModal = () => {
 		setEditingId(null);
 		setForm({ ...emptyForm, themeId: themes.length > 0 ? themes[0]._id : "" });
+		setFormErrors(new Set());
 		setModalOpen(true);
 	};
 
 	const openEditModal = (training: Training) => {
 		setEditingId(training._id);
+		setFormErrors(new Set());
 		setForm({
-			themeId: training.themeId,
+			themeId: training.themeId || "",
 			title: training.title,
 			pedagogical_objectives: training.pedagogical_objectives.length > 0 ? [...training.pedagogical_objectives] : [""],
 			program: training.program.length > 0 ? [...training.program] : [""],
@@ -200,14 +224,20 @@ export default function FormationsPage() {
 
 	const handleSave = async (e: React.FormEvent) => {
 		e.preventDefault();
-		if (!form.title || !form.themeId || !form.audience || !form.prerequisites || !form.trainer || !form.number_of_trainees || !form.duration || !form.quote) {
+		const requiredFields = ["themeId", "title", "audience", "prerequisites", "trainer", "number_of_trainees", "duration", "quote"] as const;
+		const errors = new Set<string>();
+		for (const field of requiredFields) {
+			if (!form[field]) errors.add(field);
+		}
+		if (errors.size > 0) {
+			setFormErrors(errors);
 			openNotification("error", "Erreur", "Veuillez remplir tous les champs obligatoires.");
 			return;
 		}
+		setFormErrors(new Set());
 
 		setSaving(true);
 		try {
-			// Nettoyer les tableaux (supprimer les lignes vides)
 			const payload = {
 				...form,
 				pedagogical_objectives: form.pedagogical_objectives.filter((v) => v.trim()),
@@ -261,7 +291,7 @@ export default function FormationsPage() {
 
 	const filteredTrainings = trainings.filter((t) => {
 		const matchSearch = !search || t.title.toLowerCase().includes(search.toLowerCase()) || t.trainer.toLowerCase().includes(search.toLowerCase());
-		const matchTheme = !themeFilter || t.themeId === themeFilter;
+		const matchTheme = !themeFilter || (themeFilter === "none" ? !t.themeId : t.themeId === themeFilter);
 		const matchVisibility = showHidden || t.isVisible !== false;
 		return matchSearch && matchTheme && matchVisibility;
 	});
@@ -310,7 +340,7 @@ export default function FormationsPage() {
 				</div>
 
 				{/* Filters */}
-				<div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6 flex flex-col sm:flex-row gap-4 items-center">
+				<div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6 flex flex-col sm:flex-row gap-4 items-center sticky top-0 z-10">
 					<input
 						type="text"
 						value={search}
@@ -321,9 +351,10 @@ export default function FormationsPage() {
 					<select
 						value={themeFilter}
 						onChange={(e) => setThemeFilter(e.target.value)}
-						className={clsx(inputClass, "sm:w-64")}
+						className={clsx(selectClass, "sm:w-64")}
 					>
 						<option value="">Tous les thèmes</option>
+						<option value="none">Sans thème</option>
 						{themes.map((theme) => (
 							<option key={theme._id} value={theme._id}>
 								{theme.title}
@@ -367,7 +398,7 @@ export default function FormationsPage() {
 										<h3 className="font-bold text-gray-900 truncate">{training.title}</h3>
 										<div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-1 text-sm text-gray-500">
 											<span className="inline-flex items-center gap-1">
-												<span className="px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 text-xs font-semibold">{training.themeName}</span>
+												<span className={clsx("px-2 py-0.5 rounded-full text-xs font-semibold", training.themeId ? "bg-gray-100 text-gray-700" : "bg-amber-100 text-amber-700")}>{training.themeName}</span>
 											</span>
 											<span>Formateur : {training.trainer}</span>
 											<span>Durée : {training.duration}</span>
@@ -409,7 +440,7 @@ export default function FormationsPage() {
 					</div>
 				)}
 
-				{/* Create/Edit Modal */}
+				{/* Training Create/Edit Modal */}
 				<Modal
 					title={editingId ? "Modifier la formation" : "Nouvelle formation"}
 					open={modalOpen}
@@ -428,9 +459,12 @@ export default function FormationsPage() {
 								</label>
 								<select
 									value={form.themeId}
-									onChange={(e) => setForm((prev) => ({ ...prev, themeId: e.target.value }))}
+									onChange={(e) => {
+										setForm((prev) => ({ ...prev, themeId: e.target.value }));
+										setFormErrors((prev) => { const next = new Set(prev); next.delete("themeId"); return next; });
+									}}
 									disabled={saving}
-									className={inputClass}
+									className={formErrors.has("themeId") ? selectErrorClass : selectClass}
 								>
 									<option value="">Sélectionner un thème</option>
 									{themes.map((theme) => (
@@ -447,10 +481,13 @@ export default function FormationsPage() {
 								<input
 									type="text"
 									value={form.title}
-									onChange={(e) => setForm((prev) => ({ ...prev, title: e.target.value }))}
+									onChange={(e) => {
+										setForm((prev) => ({ ...prev, title: e.target.value }));
+										setFormErrors((prev) => { const next = new Set(prev); next.delete("title"); return next; });
+									}}
 									placeholder="Titre de la formation"
 									disabled={saving}
-									className={inputClass}
+									className={formErrors.has("title") ? inputErrorClass : inputClass}
 								/>
 							</div>
 						</div>
@@ -464,10 +501,13 @@ export default function FormationsPage() {
 								<input
 									type="text"
 									value={form.audience}
-									onChange={(e) => setForm((prev) => ({ ...prev, audience: e.target.value }))}
+									onChange={(e) => {
+										setForm((prev) => ({ ...prev, audience: e.target.value }));
+										setFormErrors((prev) => { const next = new Set(prev); next.delete("audience"); return next; });
+									}}
 									placeholder="ex. Infirmiers, aides-soignants"
 									disabled={saving}
-									className={inputClass}
+									className={formErrors.has("audience") ? inputErrorClass : inputClass}
 								/>
 							</div>
 							<div>
@@ -477,10 +517,13 @@ export default function FormationsPage() {
 								<input
 									type="text"
 									value={form.prerequisites}
-									onChange={(e) => setForm((prev) => ({ ...prev, prerequisites: e.target.value }))}
+									onChange={(e) => {
+										setForm((prev) => ({ ...prev, prerequisites: e.target.value }));
+										setFormErrors((prev) => { const next = new Set(prev); next.delete("prerequisites"); return next; });
+									}}
 									placeholder="ex. Aucun prérequis"
 									disabled={saving}
-									className={inputClass}
+									className={formErrors.has("prerequisites") ? inputErrorClass : inputClass}
 								/>
 							</div>
 							<div>
@@ -490,10 +533,13 @@ export default function FormationsPage() {
 								<input
 									type="text"
 									value={form.trainer}
-									onChange={(e) => setForm((prev) => ({ ...prev, trainer: e.target.value }))}
+									onChange={(e) => {
+										setForm((prev) => ({ ...prev, trainer: e.target.value }));
+										setFormErrors((prev) => { const next = new Set(prev); next.delete("trainer"); return next; });
+									}}
 									placeholder="Nom du formateur"
 									disabled={saving}
-									className={inputClass}
+									className={formErrors.has("trainer") ? inputErrorClass : inputClass}
 								/>
 							</div>
 							<div>
@@ -503,10 +549,13 @@ export default function FormationsPage() {
 								<input
 									type="text"
 									value={form.number_of_trainees}
-									onChange={(e) => setForm((prev) => ({ ...prev, number_of_trainees: e.target.value }))}
+									onChange={(e) => {
+										setForm((prev) => ({ ...prev, number_of_trainees: e.target.value }));
+										setFormErrors((prev) => { const next = new Set(prev); next.delete("number_of_trainees"); return next; });
+									}}
 									placeholder="ex. 6 à 12"
 									disabled={saving}
-									className={inputClass}
+									className={formErrors.has("number_of_trainees") ? inputErrorClass : inputClass}
 								/>
 							</div>
 							<div>
@@ -516,10 +565,13 @@ export default function FormationsPage() {
 								<input
 									type="text"
 									value={form.duration}
-									onChange={(e) => setForm((prev) => ({ ...prev, duration: e.target.value }))}
+									onChange={(e) => {
+										setForm((prev) => ({ ...prev, duration: e.target.value }));
+										setFormErrors((prev) => { const next = new Set(prev); next.delete("duration"); return next; });
+									}}
 									placeholder="ex. 2 jours (14h)"
 									disabled={saving}
-									className={inputClass}
+									className={formErrors.has("duration") ? inputErrorClass : inputClass}
 								/>
 							</div>
 							<div>
@@ -529,10 +581,13 @@ export default function FormationsPage() {
 								<input
 									type="text"
 									value={form.quote}
-									onChange={(e) => setForm((prev) => ({ ...prev, quote: e.target.value }))}
+									onChange={(e) => {
+										setForm((prev) => ({ ...prev, quote: e.target.value }));
+										setFormErrors((prev) => { const next = new Set(prev); next.delete("quote"); return next; });
+									}}
 									placeholder="ex. Sur devis"
 									disabled={saving}
-									className={inputClass}
+									className={formErrors.has("quote") ? inputErrorClass : inputClass}
 								/>
 							</div>
 						</div>
@@ -574,7 +629,7 @@ export default function FormationsPage() {
 								onClick={() => setModalOpen(false)}
 								disabled={saving}
 								className="px-5 py-2.5 rounded-lg text-sm font-medium text-gray-700 bg-gray-50 hover:bg-gray-100 transition-colors"
->
+							>
 								Annuler
 							</button>
 							<button

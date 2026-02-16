@@ -51,6 +51,7 @@ const emptyForm = {
 
 const inputClass =
 	"block w-full rounded-lg px-4 py-2.5 text-gray-900 bg-white border border-gray-300 focus:border-univers focus:ring-2 focus:ring-univers/20 shadow-sm placeholder:text-gray-400 text-sm font-medium transition-all duration-200";
+const selectClass = inputClass + " pr-10";
 const labelClass = "text-sm font-semibold text-gray-700 mb-1 block";
 
 export default function ChecklistsPage() {
@@ -440,7 +441,7 @@ export default function ChecklistsPage() {
 									value={form.linkedUserId}
 									onChange={(e) => setForm((prev) => ({ ...prev, linkedUserId: e.target.value }))}
 									disabled={saving}
-									className={inputClass}
+									className={selectClass}
 								>
 									<option value="">Aucun</option>
 									{allUsers.map((u: any) => (
@@ -456,7 +457,7 @@ export default function ChecklistsPage() {
 									value={form.linkedProspectId}
 									onChange={(e) => setForm((prev) => ({ ...prev, linkedProspectId: e.target.value }))}
 									disabled={saving}
-									className={inputClass}
+									className={selectClass}
 								>
 									<option value="">Aucun</option>
 									{allProspects.map((p: any) => (

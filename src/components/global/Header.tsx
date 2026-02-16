@@ -83,27 +83,29 @@ const Header = () => {
 			<Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="md:hidden">
 				<div className="fixed inset-0 z-20" />
 				<DialogPanel className="fixed inset-y-0 right-0 z-20 w-full overflow-y-auto bg-maitrise px-6 py-6 sm:max-w-sm">
-					<div className="flex items-center gap-x-6">
-						<Link href="/" className="-m-1.5 p-1.5" tabIndex={-1}>
+					<div className="flex items-center justify-between">
+						<Link href="/" className="-m-1.5 p-1.5" onClick={() => setMobileMenuOpen(false)} tabIndex={-1}>
 							<span className="sr-only">Ipseis</span>
-							<Image src={require("/src/_images/logo/logo_beige.svg")} alt="Logo Ipseis" title="Logo Ipseis" height={60} />
+							<Image src={require("/src/_images/logo/logo_beige.svg")} alt="Logo Ipseis" title="Logo Ipseis" height={40} />
 						</Link>
 
-						<Link
-							href="/contact"
-							onClick={() => setMobileMenuOpen(false)}
-							className="ml-auto rounded-md bg-univers px-3 py-1 text-base md:text-lg font-normal text-support shadow-sm hover:bg-univers/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-						>
-							<span className="flex items-center gap-x-2">
-								<EnvelopeIcon aria-hidden="true" className="size-3 md:size-6" />
-								Contact
-							</span>
-						</Link>
+						<div className="flex items-center gap-x-3">
+							<Link
+								href="/contact"
+								onClick={() => setMobileMenuOpen(false)}
+								className="rounded-md bg-univers px-3 py-1 text-base font-normal text-support shadow-sm hover:bg-univers/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+							>
+								<span className="flex items-center gap-x-2">
+									<EnvelopeIcon aria-hidden="true" className="size-4" />
+									Contact
+								</span>
+							</Link>
 
-						<button type="button" onClick={() => setMobileMenuOpen(false)} className="-m-2.5 rounded-md p-2.5 text-univers">
-							<span className="sr-only">Fermer le menu</span>
-							<XMarkIcon aria-hidden="true" className="size-6" />
-						</button>
+							<button type="button" onClick={() => setMobileMenuOpen(false)} className="-m-2.5 rounded-md p-2.5 text-univers">
+								<span className="sr-only">Fermer le menu</span>
+								<XMarkIcon aria-hidden="true" className="size-6" />
+							</button>
+						</div>
 					</div>
 					<div className="mt-6 flow-root">
 						<div className="-my-6 divide-y divide-gray-500/10">

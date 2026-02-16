@@ -31,9 +31,10 @@ const InputWrapper = ({
 	</div>
 );
 
-const TextInput = ({ onChange, value, id, name, type, autoComplete, placeholder, disabled }: any) => (
+const TextInput = ({ onChange, onBlur, value, id, name, type, autoComplete, placeholder, disabled }: any) => (
 	<input
 		onChange={onChange}
+		onBlur={onBlur}
 		value={value}
 		disabled={disabled}
 		id={id}
@@ -78,6 +79,18 @@ export default function RegisterForm() {
 
 	const updateField = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
 		setFormData((prev) => ({ ...prev, [field]: e.target.value }));
+	};
+
+	const formatFirstName = (name: string) =>
+		name.trim().replace(/[a-zA-ZÀ-ÿ]+/g, (w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
+	const formatLastName = (name: string) => name.trim().toUpperCase();
+
+	const handleBlur = (field: string) => () => {
+		setFormData((prev) => {
+			if (field === "firstName") return { ...prev, firstName: formatFirstName(prev.firstName) };
+			if (field === "lastName") return { ...prev, lastName: formatLastName(prev.lastName) };
+			return prev;
+		});
 	};
 
 	const handleSubmit = async (e: React.FormEvent) => {
@@ -143,26 +156,28 @@ export default function RegisterForm() {
 						<InputWrapper label="Prénom" required>
 							<TextInput
 								onChange={updateField("firstName")}
+								onBlur={handleBlur("firstName")}
 								value={formData.firstName}
 								disabled={isLoading}
 								id="firstName"
 								name="firstName"
 								type="text"
 								autoComplete="given-name"
-								placeholder="ex. Jean"
+								placeholder="ex. Jean-Pierre"
 							/>
 						</InputWrapper>
 
 						<InputWrapper label="Nom" required>
 							<TextInput
 								onChange={updateField("lastName")}
+								onBlur={handleBlur("lastName")}
 								value={formData.lastName}
 								disabled={isLoading}
 								id="lastName"
 								name="lastName"
 								type="text"
 								autoComplete="family-name"
-								placeholder="ex. Dupont"
+								placeholder="ex. DUPONT"
 							/>
 						</InputWrapper>
 
@@ -254,6 +269,7 @@ export default function RegisterForm() {
 								type="text"
 								autoComplete="street-address"
 								placeholder="ex. 21 Rue de la Nation, 35400 Saint-Malo"
+								title="Format : Numéro Rue, CP Ville"
 							/>
 						</InputWrapper>
 

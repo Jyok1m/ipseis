@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import DashboardSidebar from "./DashboardSidebar";
 import DashboardHeader from "./DashboardHeader";
 
@@ -15,11 +16,13 @@ interface DashboardLayoutProps {
 }
 
 export default function DashboardLayout({ children, navItems }: DashboardLayoutProps) {
+	const [mobileOpen, setMobileOpen] = useState(false);
+
 	return (
 		<div className="min-h-screen bg-gray-50">
-			<DashboardSidebar navItems={navItems} />
+			<DashboardSidebar navItems={navItems} mobileOpen={mobileOpen} onMobileClose={() => setMobileOpen(false)} />
 			<div className="md:ml-72 flex flex-col min-h-screen">
-				<DashboardHeader />
+				<DashboardHeader onMobileMenuOpen={() => setMobileOpen(true)} />
 				<main className="flex-1 p-6">{children}</main>
 			</div>
 		</div>
