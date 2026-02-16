@@ -2,566 +2,327 @@
 
 import { useAuth } from "@/context/AuthContext";
 import { useState, useEffect, useCallback } from "react";
-import { getDashboardStats, getProspects, contactProspect, convertProspect, updateProspectStatus } from "@/lib/authApi";
-import { notification, ConfigProvider, Spin, Modal } from "antd";
+import { getDashboardStats } from "@/lib/authApi";
+import { useSocket } from "@/context/SocketContext";
+import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
+import Link from "next/link";
 import {
-	CheckCircleIcon,
-	XCircleIcon,
 	UsersIcon,
 	AcademicCapIcon,
-	EnvelopeIcon,
-	ArrowDownTrayIcon,
-	MagnifyingGlassIcon,
-	PaperAirplaneIcon,
-	KeyIcon,
-	CheckIcon,
-	XMarkIcon,
+	DocumentTextIcon,
+	ClockIcon,
+	CheckCircleIcon,
+	UserGroupIcon,
+	PlusIcon,
+	ChatBubbleLeftRightIcon,
 } from "@heroicons/react/24/outline";
 import clsx from "clsx";
-
-type NotificationType = "success" | "error";
+import InfoTooltip from "@/components/espace-personnel/InfoTooltip";
 
 interface Stats {
 	totalProspects: number;
 	prospectsThisMonth: number;
 	totalUsers: number;
 	totalTrainings: number;
-	totalMessages: number;
-	totalCatalogueDownloads: number;
-	sourceBreakdown: { _id: string; count: number }[];
+	totalContracts: number;
+	contractsByStatus: { draft: number; sent: number; signed: number; cancelled: number; rejected: number };
+	recentContracts: { _id: string; title: string; recipientName: string; status: string; createdAt: string }[];
+	recentUsers: { _id: string; firstName: string; lastName: string; role: string; createdAt: string }[];
+	checklistsInProgress: number;
 }
 
-interface Prospect {
-	_id: string;
-	firstName: string;
-	lastName: string;
-	email: string;
-	source: string;
-	status: string;
-	lastInteractionDate: string;
-	interactionCount: number;
-	hasCatalogueDownload: boolean;
-	hasContactMessage: boolean;
-	interactions: any[];
-	createdAt: string;
-}
-
-const statusConfig: Record<string, { label: string; className: string }> = {
-	nouveau: { label: "Nouveau", className: "bg-gray-100 text-gray-700" },
-	contacte: { label: "Contacté", className: "bg-blue-50 text-blue-700" },
-	converti: { label: "Converti", className: "bg-green-50 text-green-700" },
-	archive: { label: "Archivé", className: "bg-gray-200 text-gray-600" },
+const contractStatusLabels: Record<string, string> = {
+	draft: "Brouillon",
+	sent: "Envoyé",
+	signed: "Signé",
+	cancelled: "Annulé",
+	rejected: "Refusé",
 };
 
-const sourceLabels: Record<string, string> = {
-	contact: "Contact",
-	catalogue: "Catalogue",
-	mixed: "Mixte",
+const contractStatusColors: Record<string, string> = {
+	draft: "bg-gray-100 text-gray-700",
+	sent: "bg-amber-50 text-amber-700",
+	signed: "bg-green-50 text-green-700",
+	cancelled: "bg-red-50 text-red-700",
+	rejected: "bg-red-100 text-red-800",
+};
+
+const roleLabels: Record<string, string> = {
+	administrateur: "Admin",
+	apprenant: "Apprenant",
+	professionnel: "Professionnel",
+};
+
+const roleColors: Record<string, string> = {
+	administrateur: "bg-univers/10 text-univers",
+	apprenant: "bg-maitrise/10 text-maitrise",
+	professionnel: "bg-cohesion/10 text-cohesion",
 };
 
 export default function AdminDashboard() {
 	const { user } = useAuth();
-	const [api, contextHolder] = notification.useNotification();
-
-	// Stats
+	const { unreadCount: unreadMessages } = useSocket();
 	const [stats, setStats] = useState<Stats | null>(null);
-	const [statsLoading, setStatsLoading] = useState(true);
-
-	// Prospects
-	const [prospects, setProspects] = useState<Prospect[]>([]);
-	const [prospectsLoading, setProspectsLoading] = useState(true);
-	const [prospectsPagination, setProspectsPagination] = useState<any>(null);
-	const [search, setSearch] = useState("");
-	const [searchInput, setSearchInput] = useState("");
-	const [sourceFilter, setSourceFilter] = useState("");
-
-	// Contact modal
-	const [contactModal, setContactModal] = useState<Prospect | null>(null);
-	const [contactSubject, setContactSubject] = useState("");
-	const [contactMessage, setContactMessage] = useState("");
-	const [contacting, setContacting] = useState(false);
-
-	// Convert modal
-	const [convertModal, setConvertModal] = useState<Prospect | null>(null);
-	const [convertRole, setConvertRole] = useState("apprenant");
-	const [converting, setConverting] = useState(false);
-
-	const openNotification = (type: NotificationType, title: string, message: string) => {
-		api[type]({
-			message: title,
-			description: message,
-			icon:
-				type === "success" ? (
-					<CheckCircleIcon aria-hidden="true" className="h-6 w-6 text-green-400" />
-				) : (
-					<XCircleIcon aria-hidden="true" className="h-6 w-6 text-red-400" />
-				),
-		});
-	};
+	const [loading, setLoading] = useState(true);
 
 	const loadStats = useCallback(async () => {
 		try {
 			const response = await getDashboardStats();
 			setStats(response.data);
 		} catch {
-			openNotification("error", "Erreur", "Impossible de charger les statistiques.");
+			// silent
 		} finally {
-			setStatsLoading(false);
+			setLoading(false);
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
-
-	const loadProspects = useCallback(async (page: number = 1, source?: string, searchQuery?: string) => {
-		setProspectsLoading(true);
-		try {
-			const response = await getProspects(page, source || undefined, searchQuery || undefined);
-			setProspects(response.data.prospects);
-			setProspectsPagination(response.data.pagination);
-		} catch {
-			openNotification("error", "Erreur", "Impossible de charger les prospects.");
-		} finally {
-			setProspectsLoading(false);
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	useEffect(() => {
 		loadStats();
-		loadProspects(1);
-	}, [loadStats, loadProspects]);
+	}, [loadStats]);
 
-	const handleSearch = (e: React.FormEvent) => {
-		e.preventDefault();
-		setSearch(searchInput);
-		loadProspects(1, sourceFilter, searchInput);
-	};
-
-	const handleSourceFilter = (value: string) => {
-		setSourceFilter(value);
-		loadProspects(1, value, search);
-	};
-
-	const handleContact = async (e: React.FormEvent) => {
-		e.preventDefault();
-		if (!contactModal || !contactSubject || !contactMessage) {
-			openNotification("error", "Erreur", "Veuillez remplir tous les champs.");
-			return;
-		}
-		setContacting(true);
-		try {
-			await contactProspect(contactModal._id, { subject: contactSubject, message: contactMessage });
-			openNotification("success", "Email envoyé", "Le prospect a été contacté avec succès.");
-			setContactModal(null);
-			setContactSubject("");
-			setContactMessage("");
-			loadProspects(prospectsPagination?.page || 1, sourceFilter, search);
-		} catch (error: any) {
-			openNotification("error", "Erreur", error.response?.data?.error || "Erreur lors de l'envoi.");
-		} finally {
-			setContacting(false);
-		}
-	};
-
-	const handleConvert = async (e: React.FormEvent) => {
-		e.preventDefault();
-		if (!convertModal) return;
-		setConverting(true);
-		try {
-			await convertProspect(convertModal._id, convertRole);
-			openNotification("success", "Code créé", "Le code d'activation a été envoyé au prospect.");
-			setConvertModal(null);
-			setConvertRole("apprenant");
-			loadProspects(prospectsPagination?.page || 1, sourceFilter, search);
-		} catch (error: any) {
-			openNotification("error", "Erreur", error.response?.data?.error || "Erreur lors de la conversion.");
-		} finally {
-			setConverting(false);
-		}
-	};
-
-	const handleStatusChange = async (prospect: Prospect, newStatus: string) => {
-		try {
-			await updateProspectStatus(prospect._id, newStatus);
-			loadProspects(prospectsPagination?.page || 1, sourceFilter, search);
-		} catch (error: any) {
-			openNotification("error", "Erreur", error.response?.data?.error || "Erreur lors de la mise à jour.");
-		}
-	};
-
-	const inputClass =
-		"block w-full rounded-lg px-4 py-2.5 text-gray-900 bg-white border border-gray-300 focus:border-univers focus:ring-2 focus:ring-univers/20 shadow-sm placeholder:text-gray-400 text-sm font-medium transition-all duration-200";
+	if (loading) {
+		return (
+			<div className="flex justify-center py-20">
+				<Spin indicator={<LoadingOutlined spin className="text-3xl text-gray-400" />} />
+			</div>
+		);
+	}
 
 	return (
 		<div>
-			<ConfigProvider
-				theme={{
-					token: {
-						colorBgElevated: "#ffffff",
-						colorTextHeading: "#1a1a1a",
-						colorText: "#374151",
-						fontFamily: "Halibut",
-					},
-					components: {
-						Modal: {
-							titleFontSize: 18,
-							titleColor: "#1a1a1a",
-							headerBg: "#ffffff",
-							contentBg: "#ffffff",
-						},
-					},
-				}}
-			>
-				{contextHolder}
+			<h1 className="text-2xl font-bold text-gray-900 mb-2">Tableau de bord</h1>
+			<p className="text-gray-500 mb-8">
+				Bienvenue, {user?.firstName}. Vue d&apos;ensemble.
+			</p>
 
-				<h1 className="text-2xl font-bold text-gray-900 mb-2">Tableau de bord</h1>
-				<p className="text-gray-500 mb-8">
-					Bienvenue, {user?.firstName}. Vue d&apos;ensemble de votre activité.
-				</p>
-
-				{/* KPI Cards */}
-				{statsLoading ? (
-					<div className="flex justify-center py-8">
-						<Spin indicator={<LoadingOutlined spin className="text-2xl text-gray-400" />} />
+			{/* Bannière messages non lus */}
+			{unreadMessages > 0 && (
+				<div className="bg-univers/5 border border-univers/20 rounded-xl p-4 mb-6 flex items-center justify-between gap-4">
+					<div className="flex items-center gap-3">
+						<ChatBubbleLeftRightIcon className="h-6 w-6 text-univers flex-shrink-0" />
+						<p className="text-sm font-medium text-univers">
+							Vous avez {unreadMessages} nouveau{unreadMessages > 1 ? "x" : ""} message{unreadMessages > 1 ? "s" : ""}.
+						</p>
 					</div>
-				) : stats ? (
-					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-						<div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
-							<div className="flex items-center gap-3 mb-2">
-								<div className="p-2 rounded-lg bg-univers/10">
-									<UsersIcon className="h-5 w-5 text-univers" />
-								</div>
-								<span className="text-sm font-medium text-gray-500">Prospects</span>
-							</div>
-							<p className="text-2xl font-bold text-gray-900">{stats.totalProspects}</p>
-							<p className="text-xs text-maitrise font-medium mt-1">+{stats.prospectsThisMonth} ce mois</p>
-						</div>
-
-						<div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
-							<div className="flex items-center gap-3 mb-2">
-								<div className="p-2 rounded-lg bg-maitrise/10">
-									<UsersIcon className="h-5 w-5 text-maitrise" />
-								</div>
-								<span className="text-sm font-medium text-gray-500">Utilisateurs</span>
-							</div>
-							<p className="text-2xl font-bold text-gray-900">{stats.totalUsers}</p>
-						</div>
-
-						<div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
-							<div className="flex items-center gap-3 mb-2">
-								<div className="p-2 rounded-lg bg-cohesion/10">
-									<AcademicCapIcon className="h-5 w-5 text-cohesion" />
-								</div>
-								<span className="text-sm font-medium text-gray-500">Formations</span>
-							</div>
-							<p className="text-2xl font-bold text-gray-900">{stats.totalTrainings}</p>
-						</div>
-
-						<div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
-							<div className="flex items-center gap-3 mb-2">
-								<div className="p-2 rounded-lg bg-gray-100">
-									<EnvelopeIcon className="h-5 w-5 text-gray-500" />
-								</div>
-								<span className="text-sm font-medium text-gray-500">Messages</span>
-							</div>
-							<p className="text-2xl font-bold text-gray-900">{stats.totalMessages}</p>
-						</div>
-					</div>
-				) : null}
-
-				{/* Prospects */}
-				<div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-					<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-						<h2 className="text-lg font-bold text-gray-900">Prospects</h2>
-						<div className="flex flex-col sm:flex-row gap-3">
-							<form onSubmit={handleSearch} className="flex gap-2">
-								<div className="relative flex-1">
-									<MagnifyingGlassIcon className="h-4 w-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
-									<input
-										type="text"
-										value={searchInput}
-										onChange={(e) => setSearchInput(e.target.value)}
-										placeholder="Rechercher..."
-										className="pl-9 pr-4 py-2 rounded-lg text-sm text-gray-900 bg-white border border-gray-300 focus:border-univers focus:ring-2 focus:ring-univers/20 w-full"
-									/>
-								</div>
-								<button
-									type="submit"
-									className="px-3 py-2 rounded-lg bg-univers text-white text-sm font-medium hover:bg-univers/90 transition-colors"
-								>
-									Rechercher
-								</button>
-							</form>
-							<select
-								value={sourceFilter}
-								onChange={(e) => handleSourceFilter(e.target.value)}
-								className="rounded-lg px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 focus:border-univers"
-							>
-								<option value="">Toutes les sources</option>
-								<option value="contact">Contact</option>
-								<option value="catalogue">Catalogue</option>
-								<option value="mixed">Mixte</option>
-							</select>
-						</div>
-					</div>
-
-					{prospectsLoading ? (
-						<div className="flex justify-center py-8">
-							<Spin indicator={<LoadingOutlined spin className="text-2xl text-gray-400" />} />
-						</div>
-					) : prospects.length === 0 ? (
-						<p className="text-gray-500 text-center py-8">Aucun prospect trouvé.</p>
-					) : (
-						<>
-							<div className="overflow-x-auto">
-								<table className="w-full text-left text-sm">
-									<thead>
-										<tr className="border-b border-gray-200">
-											<th className="py-3 px-2 font-semibold text-gray-600 text-xs uppercase tracking-wide">Nom</th>
-											<th className="py-3 px-2 font-semibold text-gray-600 text-xs uppercase tracking-wide">Email</th>
-											<th className="py-3 px-2 font-semibold text-gray-600 text-xs uppercase tracking-wide">Source</th>
-											<th className="py-3 px-2 font-semibold text-gray-600 text-xs uppercase tracking-wide">Interactions</th>
-											<th className="py-3 px-2 font-semibold text-gray-600 text-xs uppercase tracking-wide">Dernière</th>
-											<th className="py-3 px-2 font-semibold text-gray-600 text-xs uppercase tracking-wide text-center">
-												<ArrowDownTrayIcon className="h-4 w-4 inline" title="Catalogue" />
-											</th>
-											<th className="py-3 px-2 font-semibold text-gray-600 text-xs uppercase tracking-wide text-center">
-												<EnvelopeIcon className="h-4 w-4 inline" title="Message" />
-											</th>
-											<th className="py-3 px-2 font-semibold text-gray-600 text-xs uppercase tracking-wide">Statut</th>
-											<th className="py-3 px-2 font-semibold text-gray-600 text-xs uppercase tracking-wide">Actions</th>
-										</tr>
-									</thead>
-									<tbody>
-										{prospects.map((prospect) => {
-											const st = statusConfig[prospect.status] || statusConfig.nouveau;
-											return (
-												<tr key={prospect._id} className="border-b border-gray-100">
-													<td className="py-3 px-2 font-medium text-gray-900 whitespace-nowrap">
-														{prospect.firstName} {prospect.lastName}
-													</td>
-													<td className="py-3 px-2 text-gray-700">{prospect.email}</td>
-													<td className="py-3 px-2">
-														<span className="px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 text-xs font-semibold">
-															{sourceLabels[prospect.source] || prospect.source}
-														</span>
-													</td>
-													<td className="py-3 px-2 text-gray-700 text-center">{prospect.interactionCount || 0}</td>
-													<td className="py-3 px-2 text-gray-500 whitespace-nowrap">
-														{prospect.lastInteractionDate
-															? new Date(prospect.lastInteractionDate).toLocaleDateString("fr-FR")
-															: "-"}
-													</td>
-													<td className="py-3 px-2 text-center">
-														{prospect.hasCatalogueDownload ? (
-															<CheckIcon className="h-4 w-4 text-green-500 inline" />
-														) : (
-															<XMarkIcon className="h-4 w-4 text-gray-300 inline" />
-														)}
-													</td>
-													<td className="py-3 px-2 text-center">
-														{prospect.hasContactMessage ? (
-															<CheckIcon className="h-4 w-4 text-green-500 inline" />
-														) : (
-															<XMarkIcon className="h-4 w-4 text-gray-300 inline" />
-														)}
-													</td>
-													<td className="py-3 px-2">
-														<select
-															value={prospect.status || "nouveau"}
-															onChange={(e) => handleStatusChange(prospect, e.target.value)}
-															className={clsx(
-																"px-2 py-1 rounded-full text-xs font-semibold border-0 cursor-pointer",
-																st.className
-															)}
-														>
-															<option value="nouveau">Nouveau</option>
-															<option value="contacte">Contacté</option>
-															<option value="converti">Converti</option>
-															<option value="archive">Archivé</option>
-														</select>
-													</td>
-													<td className="py-3 px-2">
-														<div className="flex items-center gap-1">
-															<button
-																onClick={() => setContactModal(prospect)}
-																title="Contacter"
-																className="p-1.5 rounded-lg text-gray-500 hover:text-univers hover:bg-gray-100 transition-colors"
-															>
-																<PaperAirplaneIcon className="h-4 w-4" />
-															</button>
-															<button
-																onClick={() => setConvertModal(prospect)}
-																title="Créer un code"
-																className="p-1.5 rounded-lg text-gray-500 hover:text-cohesion hover:bg-gray-100 transition-colors"
-															>
-																<KeyIcon className="h-4 w-4" />
-															</button>
-														</div>
-													</td>
-												</tr>
-											);
-										})}
-									</tbody>
-								</table>
-							</div>
-
-							{prospectsPagination && prospectsPagination.pages > 1 && (
-								<div className="flex justify-center gap-2 mt-4">
-									{Array.from({ length: prospectsPagination.pages }, (_, i) => (
-										<button
-											key={i + 1}
-											onClick={() => loadProspects(i + 1, sourceFilter, search)}
-											className={clsx(
-												"px-3 py-1 rounded text-sm font-medium",
-												prospectsPagination.page === i + 1
-													? "bg-univers text-white"
-													: "bg-gray-100 text-gray-700 hover:bg-gray-200"
-											)}
-										>
-											{i + 1}
-										</button>
-									))}
-								</div>
-							)}
-						</>
-					)}
+					<Link
+						href="/espace-personnel/administrateur/messages"
+						className="px-4 py-2 rounded-lg bg-univers text-white text-sm font-semibold hover:bg-univers/90 transition-colors flex-shrink-0"
+					>
+						Voir mes messages
+					</Link>
 				</div>
+			)}
 
-				{/* Contact Modal */}
-				<Modal
-					title={`Contacter ${contactModal?.firstName} ${contactModal?.lastName}`}
-					open={!!contactModal}
-					onCancel={() => !contacting && setContactModal(null)}
-					footer={null}
-					width={600}
-					centered
-					destroyOnClose
-				>
-					<form onSubmit={handleContact} className="space-y-4 mt-4">
-						<div>
-							<label className="text-sm font-semibold text-gray-700 mb-1 block">
-								Destinataire
-							</label>
-							<p className="text-sm text-gray-500">{contactModal?.email}</p>
-						</div>
-						<div>
-							<label className="text-sm font-semibold text-gray-700 mb-1 block">
-								Sujet<span className="text-red-400 ml-1">*</span>
-							</label>
-							<input
-								type="text"
-								value={contactSubject}
-								onChange={(e) => setContactSubject(e.target.value)}
-								placeholder="Sujet de l'email"
-								disabled={contacting}
-								className={inputClass}
-							/>
-						</div>
-						<div>
-							<label className="text-sm font-semibold text-gray-700 mb-1 block">
-								Message<span className="text-red-400 ml-1">*</span>
-							</label>
-							<textarea
-								value={contactMessage}
-								onChange={(e) => setContactMessage(e.target.value)}
-								placeholder="Votre message..."
-								rows={6}
-								disabled={contacting}
-								className={clsx(inputClass, "resize-none")}
-							/>
-						</div>
-						<div className="flex justify-end gap-3 pt-2">
-							<button
-								type="button"
-								onClick={() => setContactModal(null)}
-								disabled={contacting}
-								className="px-5 py-2.5 rounded-lg text-sm font-medium text-gray-700 bg-gray-50 hover:bg-gray-100 transition-colors"
-							>
-								Annuler
-							</button>
-							<button
-								type="submit"
-								disabled={contacting}
-								className={clsx(
-									contacting ? "cursor-not-allowed opacity-70" : "cursor-pointer hover:bg-univers/90",
-									"px-5 py-2.5 rounded-lg text-sm font-bold text-white bg-univers shadow-sm transition-all duration-200 flex items-center gap-2"
-								)}
-							>
-								{contacting ? (
-									<Spin indicator={<LoadingOutlined spin className="text-base text-white" />} />
-								) : (
-									<>
-										<PaperAirplaneIcon className="h-4 w-4" />
-										Envoyer
-									</>
-								)}
-							</button>
-						</div>
-					</form>
-				</Modal>
+			{/* KPI Cards - Cliquables */}
+			{stats && (
+				<>
+					<div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 mb-8">
+						<InfoTooltip title="Prospects" description="Personnes ayant téléchargé le catalogue ou envoyé un message via le site. Cliquez pour gérer.">
+							<Link href="/espace-personnel/administrateur/prospects" className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 hover:border-univers hover:shadow-md transition-all">
+								<div className="flex items-center gap-3 mb-2">
+									<div className="p-2 rounded-lg bg-univers/10">
+										<UserGroupIcon className="h-5 w-5 text-univers" />
+									</div>
+									<span className="text-sm font-medium text-gray-500">Prospects</span>
+								</div>
+								<p className="text-2xl font-bold text-gray-900">{stats.totalProspects}</p>
+								<p className="text-xs text-maitrise font-medium mt-1">+{stats.prospectsThisMonth} ce mois</p>
+							</Link>
+						</InfoTooltip>
 
-				{/* Convert Modal */}
-				<Modal
-					title={`Créer un code pour ${convertModal?.firstName} ${convertModal?.lastName}`}
-					open={!!convertModal}
-					onCancel={() => !converting && setConvertModal(null)}
-					footer={null}
-					width={480}
-					centered
-					destroyOnClose
-				>
-					<form onSubmit={handleConvert} className="space-y-4 mt-4">
-						<div>
-							<label className="text-sm font-semibold text-gray-700 mb-1 block">
-								Email du prospect
-							</label>
-							<p className="text-sm text-gray-500">{convertModal?.email}</p>
+						<InfoTooltip title="Utilisateurs" description="Comptes inscrits sur la plateforme (admins, apprenants, professionnels). Cliquez pour gérer les comptes.">
+							<Link href="/espace-personnel/administrateur/utilisateurs" className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 hover:border-univers hover:shadow-md transition-all">
+								<div className="flex items-center gap-3 mb-2">
+									<div className="p-2 rounded-lg bg-maitrise/10">
+										<UsersIcon className="h-5 w-5 text-maitrise" />
+									</div>
+									<span className="text-sm font-medium text-gray-500">Utilisateurs</span>
+								</div>
+								<p className="text-2xl font-bold text-gray-900">{stats.totalUsers}</p>
+							</Link>
+						</InfoTooltip>
+
+						<InfoTooltip title="Formations" description="Formations publiées au catalogue. Cliquez pour ajouter, modifier ou masquer des formations.">
+							<Link href="/espace-personnel/administrateur/formations" className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 hover:border-univers hover:shadow-md transition-all">
+								<div className="flex items-center gap-3 mb-2">
+									<div className="p-2 rounded-lg bg-cohesion/10">
+										<AcademicCapIcon className="h-5 w-5 text-cohesion" />
+									</div>
+									<span className="text-sm font-medium text-gray-500">Formations</span>
+								</div>
+								<p className="text-2xl font-bold text-gray-900">{stats.totalTrainings}</p>
+							</Link>
+						</InfoTooltip>
+
+						<InfoTooltip title="Contrats" description="Nombre total de contrats (tous statuts confondus). Cliquez pour voir la liste complète.">
+							<Link href="/espace-personnel/administrateur/contrats" className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 hover:border-univers hover:shadow-md transition-all">
+								<div className="flex items-center gap-3 mb-2">
+									<div className="p-2 rounded-lg bg-gray-100">
+										<DocumentTextIcon className="h-5 w-5 text-gray-500" />
+									</div>
+									<span className="text-sm font-medium text-gray-500">Contrats</span>
+								</div>
+								<p className="text-2xl font-bold text-gray-900">{stats.totalContracts}</p>
+							</Link>
+						</InfoTooltip>
+
+						<InfoTooltip title="En attente" description="Contrats envoyés mais pas encore signés par le destinataire. Cliquez pour les filtrer.">
+							<Link href="/espace-personnel/administrateur/contrats?status=sent" className="bg-amber-50 rounded-xl shadow-sm border border-amber-200 p-5 hover:border-amber-400 hover:shadow-md transition-all">
+								<div className="flex items-center gap-3 mb-2">
+									<div className="p-2 rounded-lg bg-amber-100">
+										<ClockIcon className="h-5 w-5 text-amber-600" />
+									</div>
+									<span className="text-sm font-medium text-amber-700">En attente</span>
+								</div>
+								<p className="text-2xl font-bold text-amber-900">{stats.contractsByStatus.sent}</p>
+							</Link>
+						</InfoTooltip>
+
+						<InfoTooltip title="Signés" description="Contrats signés par les destinataires. Cliquez pour les filtrer.">
+							<Link href="/espace-personnel/administrateur/contrats?status=signed" className="bg-green-50 rounded-xl shadow-sm border border-green-200 p-5 hover:border-green-400 hover:shadow-md transition-all">
+								<div className="flex items-center gap-3 mb-2">
+									<div className="p-2 rounded-lg bg-green-100">
+										<CheckCircleIcon className="h-5 w-5 text-green-600" />
+									</div>
+									<span className="text-sm font-medium text-green-700">Signés</span>
+								</div>
+								<p className="text-2xl font-bold text-green-900">{stats.contractsByStatus.signed}</p>
+							</Link>
+						</InfoTooltip>
+					</div>
+
+					{/* Raccourcis rapides */}
+					<div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
+						<h2 className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wide">Raccourcis rapides</h2>
+						<div className="flex flex-wrap gap-3">
+							<InfoTooltip title="Formations" description="Accéder à la gestion des formations pour en ajouter ou modifier.">
+								<Link
+									href="/espace-personnel/administrateur/formations"
+									className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-univers hover:text-univers transition-colors"
+								>
+									<PlusIcon className="h-4 w-4" />
+									Formation
+								</Link>
+							</InfoTooltip>
+							<InfoTooltip title="Contrats" description="Accéder à la gestion des contrats pour en créer ou envoyer.">
+								<Link
+									href="/espace-personnel/administrateur/contrats"
+									className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-univers hover:text-univers transition-colors"
+								>
+									<PlusIcon className="h-4 w-4" />
+									Contrat
+								</Link>
+							</InfoTooltip>
+							<InfoTooltip title="Utilisateurs" description="Accéder à la gestion des utilisateurs inscrits.">
+								<Link
+									href="/espace-personnel/administrateur/utilisateurs"
+									className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-univers hover:text-univers transition-colors"
+								>
+									<PlusIcon className="h-4 w-4" />
+									Utilisateur
+								</Link>
+							</InfoTooltip>
+							<InfoTooltip title="Checklists" description="Accéder aux checklists de suivi en cours.">
+								<Link
+									href="/espace-personnel/administrateur/checklists"
+									className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-univers hover:text-univers transition-colors"
+								>
+									<PlusIcon className="h-4 w-4" />
+									Checklist
+								</Link>
+							</InfoTooltip>
 						</div>
-						<div>
-							<label className="text-sm font-semibold text-gray-700 mb-1 block">
-								Rôle<span className="text-red-400 ml-1">*</span>
-							</label>
-							<select
-								value={convertRole}
-								onChange={(e) => setConvertRole(e.target.value)}
-								disabled={converting}
-								className={inputClass}
-							>
-								<option value="apprenant">Apprenant</option>
-								<option value="professionnel">Professionnel</option>
-							</select>
+					</div>
+
+					{/* Panels: Contrats récents + Derniers inscrits */}
+					<div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+						{/* Contrats récents */}
+						<div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+							<div className="flex items-center justify-between mb-4">
+								<h3 className="font-bold text-gray-900">Contrats récents</h3>
+								<InfoTooltip title="Gestion des contrats" description="Voir, créer et envoyer tous les contrats depuis la page dédiée.">
+									<Link href="/espace-personnel/administrateur/contrats" className="text-sm text-univers hover:underline font-semibold">
+										Voir tous
+									</Link>
+								</InfoTooltip>
+							</div>
+							{stats.recentContracts.length > 0 ? (
+								<ul className="space-y-3">
+									{stats.recentContracts.map((c) => (
+										<li key={c._id}>
+											<Link
+												href="/espace-personnel/administrateur/contrats"
+												className="flex items-center justify-between gap-3 py-2 border-b border-gray-100 last:border-0 hover:bg-gray-50 -mx-2 px-2 rounded-lg transition-colors"
+											>
+												<div className="min-w-0">
+													<div className="flex items-center gap-2">
+														<DocumentTextIcon className="h-4 w-4 text-gray-400 flex-shrink-0" />
+														<span className="text-sm font-medium text-gray-900 truncate">{c.title}</span>
+													</div>
+													<p className="text-xs text-gray-500 ml-6">{c.recipientName}</p>
+												</div>
+												<div className="flex items-center gap-2 flex-shrink-0">
+													<span className={clsx("px-2 py-0.5 rounded-full text-xs font-semibold", contractStatusColors[c.status])}>
+														{contractStatusLabels[c.status] || c.status}
+													</span>
+													<span className="text-xs text-gray-400">
+														{new Date(c.createdAt).toLocaleDateString("fr-FR")}
+													</span>
+												</div>
+											</Link>
+										</li>
+									))}
+								</ul>
+							) : (
+								<p className="text-sm text-gray-500">Aucun contrat pour le moment.</p>
+							)}
 						</div>
-						<div className="flex justify-end gap-3 pt-2">
-							<button
-								type="button"
-								onClick={() => setConvertModal(null)}
-								disabled={converting}
-								className="px-5 py-2.5 rounded-lg text-sm font-medium text-gray-700 bg-gray-50 hover:bg-gray-100 transition-colors"
-							>
-								Annuler
-							</button>
-							<button
-								type="submit"
-								disabled={converting}
-								className={clsx(
-									converting ? "cursor-not-allowed opacity-70" : "cursor-pointer hover:bg-univers/90",
-									"px-5 py-2.5 rounded-lg text-sm font-bold text-white bg-univers shadow-sm transition-all duration-200 flex items-center gap-2"
-								)}
-							>
-								{converting ? (
-									<Spin indicator={<LoadingOutlined spin className="text-base text-white" />} />
-								) : (
-									<>
-										<KeyIcon className="h-4 w-4" />
-										Créer et envoyer
-									</>
-								)}
-							</button>
+
+						{/* Derniers inscrits */}
+						<div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+							<div className="flex items-center justify-between mb-4">
+								<h3 className="font-bold text-gray-900">Derniers inscrits</h3>
+								<InfoTooltip title="Gestion des utilisateurs" description="Voir et modifier tous les comptes utilisateurs depuis la page dédiée.">
+									<Link href="/espace-personnel/administrateur/utilisateurs" className="text-sm text-univers hover:underline font-semibold">
+										Voir tous
+									</Link>
+								</InfoTooltip>
+							</div>
+							{stats.recentUsers.length > 0 ? (
+								<ul className="space-y-3">
+									{stats.recentUsers.map((u) => (
+										<li key={u._id}>
+											<Link
+												href="/espace-personnel/administrateur/utilisateurs"
+												className="flex items-center justify-between gap-3 py-2 border-b border-gray-100 last:border-0 hover:bg-gray-50 -mx-2 px-2 rounded-lg transition-colors"
+											>
+												<div className="flex items-center gap-2">
+													<UsersIcon className="h-4 w-4 text-gray-400 flex-shrink-0" />
+													<span className="text-sm font-medium text-gray-900">
+														{u.firstName} {u.lastName}
+													</span>
+												</div>
+												<div className="flex items-center gap-2 flex-shrink-0">
+													<span className={clsx("px-2 py-0.5 rounded-full text-xs font-semibold", roleColors[u.role])}>
+														{roleLabels[u.role] || u.role}
+													</span>
+													<span className="text-xs text-gray-400">
+														{new Date(u.createdAt).toLocaleDateString("fr-FR")}
+													</span>
+												</div>
+											</Link>
+										</li>
+									))}
+								</ul>
+							) : (
+								<p className="text-sm text-gray-500">Aucun utilisateur pour le moment.</p>
+							)}
 						</div>
-					</form>
-				</Modal>
-			</ConfigProvider>
+					</div>
+
+				</>
+			)}
 		</div>
 	);
 }

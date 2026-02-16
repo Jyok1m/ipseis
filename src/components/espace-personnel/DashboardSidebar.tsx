@@ -4,8 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
-import { ArrowRightStartOnRectangleIcon, ArrowTopRightOnSquareIcon, Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
+import { useSocket } from "@/context/SocketContext";
+import { ArrowRightStartOnRectangleIcon, ArrowTopRightOnSquareIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 interface NavItem {
 	name: string;
@@ -15,35 +15,43 @@ interface NavItem {
 
 interface DashboardSidebarProps {
 	navItems: NavItem[];
+	mobileOpen: boolean;
+	onMobileClose: () => void;
 }
 
-export default function DashboardSidebar({ navItems }: DashboardSidebarProps) {
+export default function DashboardSidebar({ navItems, mobileOpen, onMobileClose }: DashboardSidebarProps) {
 	const pathname = usePathname();
 	const { logout } = useAuth();
-	const [mobileOpen, setMobileOpen] = useState(false);
+	const { unreadCount } = useSocket();
 
 	const sidebarContent = (
 		<>
 			<div className="p-6">
-				<Link href="/espace-personnel">
+				<Link href="/espace-personnel" onClick={onMobileClose}>
 					<Image src={require("/src/_images/logo/logo_beige.svg")} alt="Logo IPSEIS" height={50} />
 				</Link>
 			</div>
 
 			<nav className="flex-1 px-4 space-y-1">
-				{navItems.map((item) => {
-					const isActive = pathname === item.href;
+				{navItems.map((item, index) => {
+					const isActive = index === 0 ? pathname === item.href : pathname.startsWith(item.href);
+					const isMessages = item.name === "Mes messages";
 					return (
 						<Link
 							key={item.href}
 							href={item.href}
-							onClick={() => setMobileOpen(false)}
+							onClick={onMobileClose}
 							className={`flex items-center gap-3 px-4 py-3 rounded-lg text-base font-medium transition-colors ${
 								isActive ? "bg-maitrise text-white" : "text-support/80 hover:bg-white/10 hover:text-support"
 							}`}
 						>
 							{item.icon}
 							{item.name}
+							{isMessages && unreadCount > 0 && (
+								<span className="ml-auto min-w-[22px] h-[22px] flex items-center justify-center rounded-full bg-cohesion text-white text-xs font-bold px-1.5">
+									{unreadCount}
+								</span>
+							)}
 						</Link>
 					);
 				})}
@@ -52,7 +60,7 @@ export default function DashboardSidebar({ navItems }: DashboardSidebarProps) {
 			<div className="p-4 border-t border-white/20 space-y-1">
 				<Link
 					href="/"
-					onClick={() => setMobileOpen(false)}
+					onClick={onMobileClose}
 					className="flex items-center gap-3 w-full px-4 py-3 rounded-lg text-support/80 hover:bg-white/10 hover:text-support text-base font-medium transition-colors"
 				>
 					<ArrowTopRightOnSquareIcon className="h-5 w-5" />
@@ -71,21 +79,13 @@ export default function DashboardSidebar({ navItems }: DashboardSidebarProps) {
 
 	return (
 		<>
-			{/* Mobile toggle */}
-			<button
-				onClick={() => setMobileOpen(true)}
-				className="fixed top-4 left-4 z-50 md:hidden bg-univers text-support p-2 rounded-lg shadow-lg"
-			>
-				<Bars3Icon className="h-6 w-6" />
-			</button>
-
 			{/* Mobile overlay */}
 			{mobileOpen && (
 				<div className="fixed inset-0 z-40 md:hidden">
-					<div className="fixed inset-0 bg-black/50" onClick={() => setMobileOpen(false)} />
+					<div className="fixed inset-0 bg-black/50" onClick={onMobileClose} />
 					<div className="fixed inset-y-0 left-0 w-72 bg-univers flex flex-col z-50">
 						<button
-							onClick={() => setMobileOpen(false)}
+							onClick={onMobileClose}
 							className="absolute top-4 right-4 text-support/80 hover:text-support"
 						>
 							<XMarkIcon className="h-6 w-6" />
