@@ -25,6 +25,12 @@ export const logout = () => authApi.post("/auth/logout");
 
 export const getMe = () => authApi.get("/auth/me");
 
+export const updateMyProfile = (data: { firstName?: string; lastName?: string; phone?: string; company?: string; position?: string; address?: string }) =>
+	authApi.put("/auth/profile", data);
+
+export const changeMyPassword = (data: { currentPassword: string; newPassword: string; confirmNewPassword: string }) =>
+	authApi.put("/auth/change-password", data);
+
 export const forgotPassword = (email: string) => authApi.post("/auth/forgot-password", { email });
 
 export const resetPassword = (token: string, password: string, confirmPassword: string) =>
@@ -36,8 +42,13 @@ export const createActivationCode = (targetEmail: string, role: string) =>
 
 export const getActivationCodes = (page: number = 1) => authApi.get(`/admin/activation-codes?page=${page}`);
 
-export const getUsers = (page: number = 1, role?: string) =>
-	authApi.get(`/admin/users?page=${page}${role ? `&role=${role}` : ""}`);
+export const getUsers = (page: number = 1, role?: string, search?: string, excludeRole?: string) =>
+	authApi.get(`/admin/users?page=${page}${role ? `&role=${role}` : ""}${search ? `&search=${encodeURIComponent(search)}` : ""}${excludeRole ? `&excludeRole=${excludeRole}` : ""}`);
+
+export const adminUpdateUser = (id: string, data: { firstName?: string; lastName?: string; phone?: string; company?: string; position?: string; address?: string; role?: string; isActive?: boolean }) =>
+	authApi.put(`/admin/users/${id}`, data);
+
+export const adminDeleteUser = (id: string) => authApi.delete(`/admin/users/${id}`);
 
 // Admin - Formations
 export const getAdminThemes = () => authApi.get("/admin/themes");
@@ -81,3 +92,56 @@ export const toggleChecklistItem = (checklistId: string, itemId: string, data: {
 	authApi.patch(`/admin/checklists/${checklistId}/items/${itemId}`, data);
 
 export const deleteChecklist = (id: string) => authApi.delete(`/admin/checklists/${id}`);
+
+// Admin - Contracts
+export const getAdminContracts = (page: number = 1, status?: string) =>
+	authApi.get(`/contracts/admin?page=${page}${status ? `&status=${status}` : ""}`);
+
+export const createContract = (data: FormData) =>
+	authApi.post("/contracts/admin", data, { headers: { "Content-Type": "multipart/form-data" } });
+
+export const updateContract = (id: string, data: FormData) =>
+	authApi.put(`/contracts/admin/${id}`, data, { headers: { "Content-Type": "multipart/form-data" } });
+
+export const sendContract = (id: string) => authApi.patch(`/contracts/admin/${id}/send`);
+
+export const cancelContract = (id: string) => authApi.patch(`/contracts/admin/${id}/cancel`);
+
+export const deleteContract = (id: string) => authApi.delete(`/contracts/admin/${id}`);
+
+// User - Contracts
+export const getMyContracts = (page: number = 1) => authApi.get(`/contracts/my?page=${page}`);
+
+export const signContract = (id: string) => authApi.patch(`/contracts/my/${id}/sign`);
+
+export const rejectContract = (id: string) => authApi.patch(`/contracts/my/${id}/reject`);
+
+export const downloadContractPdf = (id: string) =>
+	authApi.get(`/contracts/download/${id}`, { responseType: "blob" });
+
+// Admin - Resources
+export const getAdminResources = (page: number = 1, trainingId?: string) =>
+	authApi.get(`/resources/admin?page=${page}${trainingId ? `&trainingId=${trainingId}` : ""}`);
+
+export const createResource = (data: FormData) =>
+	authApi.post("/resources/admin", data, { headers: { "Content-Type": "multipart/form-data" } });
+
+export const updateResource = (id: string, data: FormData) =>
+	authApi.put(`/resources/admin/${id}`, data, { headers: { "Content-Type": "multipart/form-data" } });
+
+export const deleteResource = (id: string) => authApi.delete(`/resources/admin/${id}`);
+
+// Internal Messages
+export const getInboxMessages = (page?: number) => authApi.get(`/internal-messages/inbox?page=${page || 1}`);
+export const getSentMessages = (page?: number) => authApi.get(`/internal-messages/sent?page=${page || 1}`);
+export const sendInternalMessage = (data: { recipientUser: string; subject: string; content: string; parentMessage?: string }) =>
+	authApi.post("/internal-messages/send", data);
+export const markMessageRead = (id: string) => authApi.patch(`/internal-messages/${id}/read`);
+export const getUnreadCount = () => authApi.get("/internal-messages/unread-count");
+export const getConversation = (conversationId: string) => authApi.get(`/internal-messages/conversation/${conversationId}`);
+
+// User - Resources
+export const getMyResources = () => authApi.get("/resources/my");
+
+export const downloadResourcePdf = (id: string) =>
+	authApi.get(`/resources/download/${id}`, { responseType: "blob" });
