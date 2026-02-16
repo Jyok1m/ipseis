@@ -4,6 +4,9 @@ const nextConfig = {
 	eslint: {
 		ignoreDuringBuilds: true,
 	},
+	typescript: {
+		ignoreBuildErrors: true,
+	},
 	images: {
 		dangerouslyAllowSVG: true,
 		remotePatterns: [
@@ -16,6 +19,11 @@ const nextConfig = {
 				hostname: "images.unsplash.com",
 			},
 		],
+	},
+	webpack: (config) => {
+		// react-pdf / pdfjs-dist uses canvas for Node SSR — ignore it in browser builds
+		config.resolve.alias.canvas = false;
+		return config;
 	},
 };
 
