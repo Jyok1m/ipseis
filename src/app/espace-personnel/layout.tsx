@@ -1,4 +1,5 @@
 import { AuthProvider } from "@/context/AuthContext";
+import { SocketProvider } from "@/context/SocketContext";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -8,5 +9,9 @@ export const metadata: Metadata = {
 };
 
 export default function EspacePersonnelLayout({ children }: { children: React.ReactNode }) {
-	return <AuthProvider>{children}</AuthProvider>;
+	return (
+		<AuthProvider>
+			<SocketProvider>{children}</SocketProvider>
+		</AuthProvider>
+	);
 }
