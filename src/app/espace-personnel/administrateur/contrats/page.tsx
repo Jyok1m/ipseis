@@ -278,7 +278,7 @@ export default function ContratsPage() {
 			if (watermark) {
 				const arrayBuffer = await blob.arrayBuffer();
 				const watermarkedBytes = await addWatermarkToPdf(arrayBuffer, watermark);
-				pdfBlob = new Blob([watermarkedBytes], { type: "application/pdf" });
+				pdfBlob = new Blob([watermarkedBytes as Uint8Array<ArrayBuffer>], { type: "application/pdf" });
 			} else {
 				pdfBlob = blob;
 			}
