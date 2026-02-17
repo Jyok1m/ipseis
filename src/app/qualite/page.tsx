@@ -19,7 +19,7 @@ export default function Qualite() {
 				<TitlePage title="Qualité" centered={true} paddingHorizontal={false} paddingBottom={false} />
 
 				<div className="mt-10 flex flex-col items-center gap-8">
-					<div className="max-w-3xl space-y-6 text-base sm:text-xl text-univers text-center">
+					<div className="max-w-3xl space-y-6 text-base sm:text-lg text-univers text-center">
 						<p>
 							IPSEIS est certifié Qualiopi depuis le 18/11/2024 dans la catégorie Action de Formation.
 						</p>
