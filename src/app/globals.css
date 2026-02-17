@@ -43,8 +43,26 @@ body {
 	background-color: white;
 }
 
+/* Hide scrollbar visually on homepage without disabling scroll */
+html:has(.scrollbar-hide),
+html:has(.scrollbar-hide) body {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+html:has(.scrollbar-hide)::-webkit-scrollbar,
+html:has(.scrollbar-hide) body::-webkit-scrollbar {
+	display: none;
+}
+
 @layer utilities {
 	.text-balance {
 		text-wrap: balance;
+	}
+	.scrollbar-hide {
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
+	.scrollbar-hide::-webkit-scrollbar {
+		display: none;
 	}
 }

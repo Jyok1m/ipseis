@@ -66,6 +66,7 @@ export default function RootLayout({
 	return (
 		<html lang="fr" className="font-serif">
 			<Analytics />
+			<SpeedInsights/>
 			<body className="flex flex-col justify-between min-h-screen max-w-screen bg-support overflow-x-hidden">
 				<ConditionalHeader />
 				<div className="bg-support">{children}</div>

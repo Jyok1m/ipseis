@@ -345,7 +345,7 @@ export default function ContratsPage() {
 				</div>
 				<button
 					onClick={openCreateModal}
-					className="flex items-center gap-2 rounded-lg bg-univers px-4 py-2.5 text-white font-semibold shadow-sm hover:bg-univers/90 transition-all duration-200 text-sm cursor-pointer"
+					className="flex items-center gap-2 rounded-lg bg-univers px-5 py-3 text-white font-bold shadow-sm hover:bg-univers/90 transition-all duration-200 whitespace-nowrap cursor-pointer"
 				>
 					<PlusIcon className="h-5 w-5" />
 					Nouveau contrat
