@@ -132,6 +132,7 @@ export const updateResource = (id: string, data: FormData) =>
 export const deleteResource = (id: string) => authApi.delete(`/resources/admin/${id}`);
 
 // Internal Messages
+export const getConversations = (page?: number) => authApi.get(`/internal-messages/conversations?page=${page || 1}`);
 export const getInboxMessages = (page?: number) => authApi.get(`/internal-messages/inbox?page=${page || 1}`);
 export const getSentMessages = (page?: number) => authApi.get(`/internal-messages/sent?page=${page || 1}`);
 export const sendInternalMessage = (data: { recipientUser: string; subject: string; content: string; parentMessage?: string }) =>
@@ -139,6 +140,16 @@ export const sendInternalMessage = (data: { recipientUser: string; subject: stri
 export const markMessageRead = (id: string) => authApi.patch(`/internal-messages/${id}/read`);
 export const getUnreadCount = () => authApi.get("/internal-messages/unread-count");
 export const getConversation = (conversationId: string) => authApi.get(`/internal-messages/conversation/${conversationId}`);
+export const archiveConversation = (id: string) => authApi.post(`/internal-messages/conversation/${id}/archive`);
+export const unarchiveConversation = (id: string) => authApi.delete(`/internal-messages/conversation/${id}/archive`);
+export const getArchivedConversations = (page?: number) => authApi.get(`/internal-messages/conversations/archived?page=${page || 1}`);
+
+// Contact Messages (admin)
+export const getContactMessages = (page?: number) => authApi.get(`/messages/admin?page=${page || 1}`);
+export const getContactMessage = (id: string) => authApi.get(`/messages/admin/${id}`);
+export const markContactMessageRead = (id: string) => authApi.patch(`/messages/admin/${id}/read`);
+export const replyToContactMessage = (id: string, content: string) => authApi.post(`/messages/admin/${id}/reply`, { content });
+export const getContactUnreadCount = () => authApi.get("/messages/admin/unread-count");
 
 // User - Resources
 export const getMyResources = () => authApi.get("/resources/my");

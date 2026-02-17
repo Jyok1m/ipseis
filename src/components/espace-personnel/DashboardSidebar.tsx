@@ -22,7 +22,8 @@ interface DashboardSidebarProps {
 export default function DashboardSidebar({ navItems, mobileOpen, onMobileClose }: DashboardSidebarProps) {
 	const pathname = usePathname();
 	const { logout } = useAuth();
-	const { unreadCount } = useSocket();
+	const { unreadCount, contactUnreadCount } = useSocket();
+	const totalUnread = unreadCount + contactUnreadCount;
 
 	const sidebarContent = (
 		<>
@@ -47,9 +48,9 @@ export default function DashboardSidebar({ navItems, mobileOpen, onMobileClose }
 						>
 							{item.icon}
 							{item.name}
-							{isMessages && unreadCount > 0 && (
+							{isMessages && totalUnread > 0 && (
 								<span className="ml-auto min-w-[22px] h-[22px] flex items-center justify-center rounded-full bg-cohesion text-white text-xs font-bold px-1.5">
-									{unreadCount}
+									{totalUnread}
 								</span>
 							)}
 						</Link>
@@ -83,7 +84,7 @@ export default function DashboardSidebar({ navItems, mobileOpen, onMobileClose }
 			{mobileOpen && (
 				<div className="fixed inset-0 z-40 md:hidden">
 					<div className="fixed inset-0 bg-black/50" onClick={onMobileClose} />
-					<div className="fixed inset-y-0 left-0 w-72 bg-univers flex flex-col z-50">
+					<div className="fixed inset-y-0 left-0 w-72 bg-univers flex flex-col z-50 overflow-y-auto">
 						<button
 							onClick={onMobileClose}
 							className="absolute top-4 right-4 text-support/80 hover:text-support"

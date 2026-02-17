@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import TitlePage from "@/components/global/TitlePage";
 import Footer from "@/components/global/Footer";
 import type { Metadata } from "next";
@@ -13,12 +14,12 @@ export const metadata: Metadata = buildMetadata({
 
 export default function Qualite() {
 	return (
-		<div className="bg-support min-h-full">
+		<div className="bg-support min-h-full overflow-x-hidden">
 			<div className="mx-auto max-w-7xl px-6 lg:px-8 pb-10">
 				<TitlePage title="Qualité" centered={true} paddingHorizontal={false} paddingBottom={false} />
 
 				<div className="mt-10 flex flex-col items-center gap-8">
-					<div className="max-w-3xl space-y-6 text-base sm:text-xl text-univers text-center">
+					<div className="max-w-3xl space-y-6 text-base sm:text-lg text-univers text-center">
 						<p>
 							IPSEIS est certifié Qualiopi depuis le 18/11/2024 dans la catégorie Action de Formation.
 						</p>
@@ -29,22 +30,17 @@ export default function Qualite() {
 						</p>
 					</div>
 
-					<div className="mt-6 w-full max-w-4xl">
-						<iframe
-							src="/pdf/certificat_qualiopi_ipseis.pdf"
-							title="Certificat Qualiopi IPSEIS"
-							className="w-full h-[600px] sm:h-[800px] rounded-lg border border-univers/20"
+					<div className="mt-6 w-full max-w-4xl relative select-none overflow-hidden">
+						<Image
+							src="/images/certificat_qualiopi.png"
+							alt="Certificat Qualiopi IPSEIS"
+							width={1772}
+							height={1254}
+							className="w-full h-auto rounded-lg border border-univers/20"
+							draggable={false}
 						/>
+						<div className="absolute inset-0 rounded-lg" />
 					</div>
-
-					<a
-						href="/pdf/certificat_qualiopi_ipseis.pdf"
-						target="_blank"
-						rel="noopener noreferrer"
-						className="inline-block rounded-md bg-maitrise px-5 py-2 text-base sm:text-lg text-support font-normal shadow-sm hover:bg-maitrise/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maitrise"
-					>
-						Ouvrir le certificat Qualiopi (PDF)
-					</a>
 				</div>
 			</div>
 			<Footer />

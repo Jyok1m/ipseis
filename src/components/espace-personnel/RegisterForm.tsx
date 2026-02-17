@@ -145,7 +145,7 @@ export default function RegisterForm() {
 				{contextHolder}
 			</ConfigProvider>
 
-			<div className="bg-white rounded-2xl shadow-lg p-8">
+			<div className="bg-white rounded-2xl shadow-lg p-5 sm:p-8">
 				<div className="text-center mb-8">
 					<h1 className="text-2xl sm:text-3xl font-bold text-univers">Inscription</h1>
 					<p className="text-univers/60 mt-2">Créez votre compte Espace Personnel</p>

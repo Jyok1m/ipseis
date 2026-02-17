@@ -14,8 +14,11 @@ import {
 	ClockIcon,
 	CheckCircleIcon,
 	UserGroupIcon,
-	PlusIcon,
 	ChatBubbleLeftRightIcon,
+	FolderIcon,
+	ClipboardDocumentCheckIcon,
+	EnvelopeIcon,
+	GlobeAltIcon,
 } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import InfoTooltip from "@/components/espace-personnel/InfoTooltip";
@@ -62,7 +65,7 @@ const roleColors: Record<string, string> = {
 
 export default function AdminDashboard() {
 	const { user } = useAuth();
-	const { unreadCount: unreadMessages } = useSocket();
+	const { unreadCount: unreadMessages, contactUnreadCount } = useSocket();
 	const [stats, setStats] = useState<Stats | null>(null);
 	const [loading, setLoading] = useState(true);
 
@@ -117,7 +120,7 @@ export default function AdminDashboard() {
 			{/* KPI Cards - Cliquables */}
 			{stats && (
 				<>
-					<div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 mb-8">
+					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 mb-8">
 						<InfoTooltip title="Prospects" description="Personnes ayant téléchargé le catalogue ou envoyé un message via le site. Cliquez pour gérer.">
 							<Link href="/espace-personnel/administrateur/prospects" className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 hover:border-univers hover:shadow-md transition-all">
 								<div className="flex items-center gap-3 mb-2">
@@ -192,46 +195,109 @@ export default function AdminDashboard() {
 						</InfoTooltip>
 					</div>
 
+					{/* Messages cards */}
+					<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+						<InfoTooltip title="Messages internes" description="Messages échangés avec les utilisateurs de la plateforme. Cliquez pour consulter.">
+							<Link href="/espace-personnel/administrateur/messages" className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 hover:border-univers hover:shadow-md transition-all flex items-center gap-4">
+								<div className="p-2 rounded-lg bg-univers/10">
+									<ChatBubbleLeftRightIcon className="h-5 w-5 text-univers" />
+								</div>
+								<div>
+									<span className="text-sm font-medium text-gray-500">Messages internes</span>
+									{unreadMessages > 0 ? (
+										<p className="text-lg font-bold text-gray-900">{unreadMessages} non lu{unreadMessages > 1 ? "s" : ""}</p>
+									) : (
+										<p className="text-lg font-bold text-gray-900">Aucun non lu</p>
+									)}
+								</div>
+								{unreadMessages > 0 && (
+									<span className="ml-auto min-w-[24px] h-6 flex items-center justify-center rounded-full bg-cohesion text-white text-xs font-bold px-2">
+										{unreadMessages}
+									</span>
+								)}
+							</Link>
+						</InfoTooltip>
+
+						<InfoTooltip title="Messages du site" description="Messages envoyés depuis le formulaire de contact du site. Cliquez pour consulter.">
+							<Link href="/espace-personnel/administrateur/messages" className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 hover:border-univers hover:shadow-md transition-all flex items-center gap-4">
+								<div className="p-2 rounded-lg bg-cohesion/10">
+									<GlobeAltIcon className="h-5 w-5 text-cohesion" />
+								</div>
+								<div>
+									<span className="text-sm font-medium text-gray-500">Messages du site</span>
+									{contactUnreadCount > 0 ? (
+										<p className="text-lg font-bold text-gray-900">{contactUnreadCount} non lu{contactUnreadCount > 1 ? "s" : ""}</p>
+									) : (
+										<p className="text-lg font-bold text-gray-900">Aucun non lu</p>
+									)}
+								</div>
+								{contactUnreadCount > 0 && (
+									<span className="ml-auto min-w-[24px] h-6 flex items-center justify-center rounded-full bg-cohesion text-white text-xs font-bold px-2">
+										{contactUnreadCount}
+									</span>
+								)}
+							</Link>
+						</InfoTooltip>
+					</div>
+
 					{/* Raccourcis rapides */}
 					<div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
 						<h2 className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wide">Raccourcis rapides</h2>
 						<div className="flex flex-wrap gap-3">
-							<InfoTooltip title="Formations" description="Accéder à la gestion des formations pour en ajouter ou modifier.">
-								<Link
-									href="/espace-personnel/administrateur/formations"
-									className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-univers hover:text-univers transition-colors"
-								>
-									<PlusIcon className="h-4 w-4" />
-									Formation
-								</Link>
-							</InfoTooltip>
-							<InfoTooltip title="Contrats" description="Accéder à la gestion des contrats pour en créer ou envoyer.">
-								<Link
-									href="/espace-personnel/administrateur/contrats"
-									className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-univers hover:text-univers transition-colors"
-								>
-									<PlusIcon className="h-4 w-4" />
-									Contrat
-								</Link>
-							</InfoTooltip>
-							<InfoTooltip title="Utilisateurs" description="Accéder à la gestion des utilisateurs inscrits.">
-								<Link
-									href="/espace-personnel/administrateur/utilisateurs"
-									className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-univers hover:text-univers transition-colors"
-								>
-									<PlusIcon className="h-4 w-4" />
-									Utilisateur
-								</Link>
-							</InfoTooltip>
-							<InfoTooltip title="Checklists" description="Accéder aux checklists de suivi en cours.">
-								<Link
-									href="/espace-personnel/administrateur/checklists"
-									className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-univers hover:text-univers transition-colors"
-								>
-									<PlusIcon className="h-4 w-4" />
-									Checklist
-								</Link>
-							</InfoTooltip>
+							<Link
+								href="/espace-personnel/administrateur/formations"
+								className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-univers hover:text-univers transition-colors"
+							>
+								<AcademicCapIcon className="h-4 w-4" />
+								Formations
+							</Link>
+							<Link
+								href="/espace-personnel/administrateur/contrats"
+								className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-univers hover:text-univers transition-colors"
+							>
+								<DocumentTextIcon className="h-4 w-4" />
+								Contrats
+							</Link>
+							<Link
+								href="/espace-personnel/administrateur/ressources"
+								className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-univers hover:text-univers transition-colors"
+							>
+								<FolderIcon className="h-4 w-4" />
+								Ressources
+							</Link>
+							<Link
+								href="/espace-personnel/administrateur/utilisateurs"
+								className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-univers hover:text-univers transition-colors"
+							>
+								<UsersIcon className="h-4 w-4" />
+								Utilisateurs
+							</Link>
+							<Link
+								href="/espace-personnel/administrateur/prospects"
+								className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-univers hover:text-univers transition-colors"
+							>
+								<UserGroupIcon className="h-4 w-4" />
+								Prospects
+							</Link>
+							<Link
+								href="/espace-personnel/administrateur/checklists"
+								className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-univers hover:text-univers transition-colors"
+							>
+								<ClipboardDocumentCheckIcon className="h-4 w-4" />
+								Checklists
+							</Link>
+							<Link
+								href="/espace-personnel/administrateur/messages"
+								className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-univers hover:text-univers transition-colors"
+							>
+								<EnvelopeIcon className="h-4 w-4" />
+								Messages
+								{(unreadMessages + contactUnreadCount) > 0 && (
+									<span className="min-w-[20px] h-5 flex items-center justify-center rounded-full bg-cohesion text-white text-xs font-bold px-1.5">
+										{unreadMessages + contactUnreadCount}
+									</span>
+								)}
+							</Link>
 						</div>
 					</div>
 

@@ -351,7 +351,7 @@ export default function ProspectsPage() {
 					open={!!contactModal}
 					onCancel={() => !contacting && setContactModal(null)}
 					footer={null}
-					width={600}
+					width="min(600px, 95vw)"
 					centered
 					destroyOnClose
 				>
@@ -424,7 +424,7 @@ export default function ProspectsPage() {
 					open={!!convertModal}
 					onCancel={() => !converting && setConvertModal(null)}
 					footer={null}
-					width={480}
+					width="min(480px, 95vw)"
 					centered
 					destroyOnClose
 				>

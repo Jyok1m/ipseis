@@ -24,7 +24,7 @@ export default function APropos() {
 				/>
 				<div className="border border-univers w-12 my-8"></div>
 				<div>
-					<p className="space-y-7 text-base sm:text-xl text-univers">
+					<p className="space-y-7 text-base sm:text-lg text-univers">
 						<Image
 							src="/images/about-image-hélène.jpg"
 							alt="Photo d'Hélène de Montabert"

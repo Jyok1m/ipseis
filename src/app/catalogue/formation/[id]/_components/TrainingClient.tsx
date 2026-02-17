@@ -109,7 +109,7 @@ export default function TrainingClient({ id = "", initialTraining = null }: Trai
 							<h2 className="mt-10 mb-5 text-lg sm:text-xl font-semibold tracking-tight flex items-center gap-x-2">
 								<FontAwesomeIcon icon={faHeadSideBrain} /> Méthodologie
 							</h2>
-							<div className="grid grid-cols-2 gap-3">
+							<div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
 								{trainingData?.pedagogical_methods.map((el: string, index: number) => (
 									<div key={index} className="flex rounded-lg p-0 sm:p-2 mb-2 sm:mb-0">
 										<div className="h-10 min-w-10 flex justify-center text-cohesion">
@@ -124,7 +124,7 @@ export default function TrainingClient({ id = "", initialTraining = null }: Trai
 							<h2 className="mt-10 mb-3 sm:mb-5 text-lg sm:text-xl font-semibold tracking-tight flex items-center gap-x-2">
 								<FontAwesomeIcon icon={faCircleInfo} /> Infos pratiques
 							</h2>
-							<div className="grid grid-cols-2 md:grid-cols-3 gap-0 sm:gap-3">
+							<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
 								<div className="flex flex-col gap-x-3 ring-0 sm:ring-1 ring-cohesion rounded-lg p-0 sm:p-2 col-span-full">
 									<div className="flex items-center">
 										<div className="h-10 min-w-10 flex items-center justify-center text-cohesion">
