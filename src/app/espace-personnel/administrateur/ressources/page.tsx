@@ -426,7 +426,7 @@ export default function RessourcesPage() {
 					open={resModalOpen}
 					onCancel={() => !resSaving && setResModalOpen(false)}
 					footer={null}
-					width={560}
+					width="min(560px, 95vw)"
 					centered
 					destroyOnClose
 				>
@@ -550,7 +550,7 @@ export default function RessourcesPage() {
 					open={!!resDeleteId}
 					onCancel={() => !resDeleting && setResDeleteId(null)}
 					footer={null}
-					width={480}
+					width="min(480px, 95vw)"
 					centered
 				>
 					<div className="py-4">

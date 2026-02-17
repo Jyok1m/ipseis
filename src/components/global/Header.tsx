@@ -21,7 +21,7 @@ const Header = () => {
 	const [showModal, setShowModal] = useState(false);
 
 	return (
-		<header className="bg-univers z-20 w-screen">
+		<header className="bg-univers z-20 w-full">
 			{/* Desktop */}
 
 			<nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between gap-x-4 lg:gap-x-6 px-6 py-3 lg:px-8">
@@ -51,7 +51,7 @@ const Header = () => {
 				<div className="flex items-center gap-x-3 flex-shrink-0">
 					<Link
 						href="/espace-personnel"
-						className="hidden md:block rounded-md bg-support/15 border border-support/30 px-3 py-1 text-base text-support font-normal shadow-sm hover:bg-support/25 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-support transition-colors whitespace-nowrap"
+						className="hidden md:block rounded-md bg-support/15 border border-support/30 px-3 py-1.5 text-base text-support font-normal shadow-sm hover:bg-support/25 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-support transition-colors whitespace-nowrap"
 					>
 						<span className="flex items-center gap-x-2">
 							<UserCircleIcon aria-hidden="true" className="size-5" />
@@ -60,10 +60,10 @@ const Header = () => {
 					</Link>
 					<Link
 						href="/contact"
-						className="rounded-md bg-maitrise px-3 py-1 text-base lg:text-lg text-support font-normal shadow-sm hover:bg-maitrise/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maitrise whitespace-nowrap"
+						className="rounded-md bg-maitrise px-3 py-1.5 text-base text-support font-normal shadow-sm hover:bg-maitrise/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-maitrise whitespace-nowrap"
 					>
 						<span className="flex items-center gap-x-2">
-							<EnvelopeIcon aria-hidden="true" className="size-4 lg:size-6" />
+							<EnvelopeIcon aria-hidden="true" className="size-5" />
 							Contact
 						</span>
 					</Link>
@@ -110,7 +110,7 @@ const Header = () => {
 					<div className="mt-6 flow-root">
 						<div className="-my-6 divide-y divide-gray-500/10">
 							<div className="space-y-2 py-6">
-								{navigation.map((item) =>
+								{navigation.filter((item) => !item.desktopOnly).map((item) =>
 									item.ready ? (
 										<Link
 											key={item.name}
@@ -166,7 +166,7 @@ const Header = () => {
 					centered
 					open={showModal}
 					footer={null}
-					width={600}
+					width="min(600px, 95vw)"
 					onCancel={() => setShowModal(false)}
 				>
 					<p className="text-base sm:text-lg text-univers">Cette page sera bientôt disponible !</p>

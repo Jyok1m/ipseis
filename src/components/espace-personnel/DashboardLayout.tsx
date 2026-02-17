@@ -23,7 +23,7 @@ export default function DashboardLayout({ children, navItems }: DashboardLayoutP
 			<DashboardSidebar navItems={navItems} mobileOpen={mobileOpen} onMobileClose={() => setMobileOpen(false)} />
 			<div className="md:ml-72 flex flex-col min-h-screen">
 				<DashboardHeader onMobileMenuOpen={() => setMobileOpen(true)} />
-				<main className="flex-1 p-6">{children}</main>
+				<main className="flex-1 p-4 sm:p-6">{children}</main>
 			</div>
 		</div>
 	);

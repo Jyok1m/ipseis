@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import { getInboxMessages, getSentMessages, sendInternalMessage, getUsers, getConversation } from "@/lib/authApi";
+import { getConversations, getArchivedConversations, sendInternalMessage, getUsers, getConversation, archiveConversation, unarchiveConversation, getContactMessages, getContactMessage, markContactMessageRead, replyToContactMessage } from "@/lib/authApi";
 import { useSocket } from "@/context/SocketContext";
 import { useAuth } from "@/context/AuthContext";
 import { notification, ConfigProvider, Spin, Modal } from "antd";
@@ -9,14 +9,15 @@ import { LoadingOutlined } from "@ant-design/icons";
 import {
 	CheckCircleIcon,
 	XCircleIcon,
-	InboxIcon,
-	PaperAirplaneIcon,
 	EnvelopeIcon,
 	EnvelopeOpenIcon,
 	ChatBubbleLeftRightIcon,
 	MagnifyingGlassIcon,
 	ArrowUturnLeftIcon,
 	PlusIcon,
+	GlobeAltIcon,
+	ArchiveBoxArrowDownIcon,
+	ArchiveBoxXMarkIcon,
 } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 
@@ -44,6 +45,25 @@ interface Message {
 	createdAt: string;
 }
 
+interface ContactReply {
+	_id: string;
+	content: string;
+	sentBy: { _id: string; firstName: string; lastName: string } | null;
+	sentAt: string;
+}
+
+interface ContactMessage {
+	_id: string;
+	firstName: string;
+	lastName: string;
+	email: string;
+	message: string;
+	interestedFormations: string[];
+	isRead: boolean;
+	replies: ContactReply[];
+	createdAt: string;
+}
+
 interface MessagesPageProps {
 	canComposeNew?: boolean;
 }
@@ -54,9 +74,15 @@ const inputClass =
 export default function MessagesPage({ canComposeNew = false }: MessagesPageProps) {
 	const [api, contextHolder] = notification.useNotification();
 	const { user } = useAuth();
-	const { socket } = useSocket();
+	const { socket, contactUnreadCount, refreshContactUnreadCount } = useSocket();
 
-	const [activeTab, setActiveTab] = useState<"inbox" | "sent">("inbox");
+	// View: for admin "internal" | "contact", for others always internal
+	const [activeView, setActiveView] = useState<"internal" | "contact">("internal");
+
+	// Sub-filter for internal messages: active or archived
+	const [internalFilter, setInternalFilter] = useState<"active" | "archived">("active");
+
+	// Internal messages
 	const [messages, setMessages] = useState<Message[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [pagination, setPagination] = useState<any>(null);
@@ -69,6 +95,10 @@ export default function MessagesPage({ canComposeNew = false }: MessagesPageProp
 	const [activeConversationId, setActiveConversationId] = useState<string | null>(null);
 	const conversationEndRef = useRef<HTMLDivElement>(null);
 
+	// Archive / Unarchive
+	const [archiving, setArchiving] = useState(false);
+	const [viewingArchived, setViewingArchived] = useState(false);
+
 	// Reply in conversation
 	const [replyContent, setReplyContent] = useState("");
 	const [replying, setReplying] = useState(false);
@@ -80,10 +110,41 @@ export default function MessagesPage({ canComposeNew = false }: MessagesPageProp
 	const [composeContent, setComposeContent] = useState("");
 	const [composeSending, setComposeSending] = useState(false);
 
+	// Archive / Unarchive conversation
+	const handleArchive = async () => {
+		if (!activeConversationId) return;
+		setArchiving(true);
+		try {
+			if (viewingArchived) {
+				await unarchiveConversation(activeConversationId);
+				openNotification("success", "Désarchivée", "La conversation a été désarchivée.");
+			} else {
+				await archiveConversation(activeConversationId);
+				openNotification("success", "Archivée", "La conversation a été archivée.");
+			}
+			setConversationOpen(false);
+			loadMessages(1);
+		} catch {
+			openNotification("error", "Erreur", viewingArchived ? "Impossible de désarchiver la conversation." : "Impossible d'archiver la conversation.");
+		} finally {
+			setArchiving(false);
+		}
+	};
+
 	// User search for compose
 	const [userSearch, setUserSearch] = useState("");
 	const [userResults, setUserResults] = useState<any[]>([]);
 	const [userSearchLoading, setUserSearchLoading] = useState(false);
+
+	// Contact messages (admin)
+	const [contactMessages, setContactMessages] = useState<ContactMessage[]>([]);
+	const [contactLoading, setContactLoading] = useState(false);
+	const [contactPagination, setContactPagination] = useState<any>(null);
+	const [contactDetailOpen, setContactDetailOpen] = useState(false);
+	const [selectedContact, setSelectedContact] = useState<ContactMessage | null>(null);
+	const [contactDetailLoading, setContactDetailLoading] = useState(false);
+	const [contactReplyContent, setContactReplyContent] = useState("");
+	const [contactReplying, setContactReplying] = useState(false);
 
 	const openNotification = (type: NotificationType, title: string, message: string) => {
 		api[type]({
@@ -98,11 +159,15 @@ export default function MessagesPage({ canComposeNew = false }: MessagesPageProp
 		});
 	};
 
+	// ========== Internal messages ==========
+
 	const loadMessages = useCallback(
 		async (page: number = 1) => {
 			setLoading(true);
 			try {
-				const response = activeTab === "inbox" ? await getInboxMessages(page) : await getSentMessages(page);
+				const response = internalFilter === "archived"
+					? await getArchivedConversations(page)
+					: await getConversations(page);
 				setMessages(response.data.messages);
 				setPagination(response.data.pagination);
 			} catch {
@@ -112,26 +177,22 @@ export default function MessagesPage({ canComposeNew = false }: MessagesPageProp
 			}
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[activeTab]
+		[internalFilter]
 	);
 
 	useEffect(() => {
-		loadMessages(1);
-	}, [loadMessages]);
+		if (activeView === "internal") loadMessages(1);
+	}, [activeView, internalFilter, loadMessages]);
 
 	// Real-time: listen for new messages via socket
 	useEffect(() => {
 		if (!socket) return;
-
 		const handleNewMessage = () => {
-			loadMessages(pagination?.page || 1);
+			if (activeView === "internal") loadMessages(pagination?.page || 1);
 		};
-
 		socket.on("new-message", handleNewMessage);
-		return () => {
-			socket.off("new-message", handleNewMessage);
-		};
-	}, [socket, loadMessages, pagination?.page]);
+		return () => { socket.off("new-message", handleNewMessage); };
+	}, [socket, loadMessages, pagination?.page, activeView]);
 
 	// Open conversation thread
 	const handleOpenConversation = async (msg: Message) => {
@@ -141,16 +202,14 @@ export default function MessagesPage({ canComposeNew = false }: MessagesPageProp
 		setConversationOpen(true);
 		setConversationLoading(true);
 		setReplyContent("");
+		setViewingArchived(internalFilter === "archived");
 
 		try {
 			const response = await getConversation(convId);
 			setConversationMessages(response.data.messages);
-			// Update the message in the list as read
-			if (activeTab === "inbox") {
-				setMessages((prev) =>
-					prev.map((m) => (m.conversationId === convId || m._id === convId ? { ...m, isRead: true, unreadInThread: 0 } : m))
-				);
-			}
+			setMessages((prev) =>
+				prev.map((m) => (m.conversationId === convId || m._id === convId ? { ...m, isRead: true, unreadInThread: 0 } : m))
+			);
 		} catch {
 			openNotification("error", "Erreur", "Impossible de charger la conversation.");
 			setConversationOpen(false);
@@ -172,7 +231,6 @@ export default function MessagesPage({ canComposeNew = false }: MessagesPageProp
 		if (!activeConversationId || !replyContent.trim() || conversationMessages.length === 0) return;
 		setReplying(true);
 
-		// Find the other participant to reply to
 		const lastMsg = conversationMessages[conversationMessages.length - 1];
 		const recipientId =
 			lastMsg.senderUser._id === user?._id ? lastMsg.recipientUser._id : lastMsg.senderUser._id;
@@ -185,7 +243,6 @@ export default function MessagesPage({ canComposeNew = false }: MessagesPageProp
 				parentMessage: lastMsg._id,
 			});
 			setReplyContent("");
-			// Reload conversation
 			const response = await getConversation(activeConversationId);
 			setConversationMessages(response.data.messages);
 			loadMessages(pagination?.page || 1);
@@ -235,11 +292,88 @@ export default function MessagesPage({ canComposeNew = false }: MessagesPageProp
 			setComposeSubject("");
 			setComposeContent("");
 			setUserSearch("");
-			if (activeTab === "sent") loadMessages(1);
+			loadMessages(1);
 		} catch (error: any) {
 			openNotification("error", "Erreur", error.response?.data?.error || "Erreur lors de l'envoi.");
 		} finally {
 			setComposeSending(false);
+		}
+	};
+
+	// ========== Contact messages (admin) ==========
+
+	const loadContactMessages = useCallback(
+		async (page: number = 1) => {
+			setContactLoading(true);
+			try {
+				const response = await getContactMessages(page);
+				setContactMessages(response.data.messages);
+				setContactPagination(response.data.pagination);
+			} catch {
+				openNotification("error", "Erreur", "Impossible de charger les messages du site.");
+			} finally {
+				setContactLoading(false);
+			}
+		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[]
+	);
+
+	// Load contact messages when switching to contact view
+	useEffect(() => {
+		if (activeView === "contact" && canComposeNew) {
+			loadContactMessages(1);
+		}
+	}, [activeView, canComposeNew, loadContactMessages]);
+
+	// Open contact message detail
+	const handleOpenContactDetail = async (msg: ContactMessage) => {
+		setSelectedContact(msg);
+		setContactDetailOpen(true);
+		setContactDetailLoading(true);
+		setContactReplyContent("");
+
+		try {
+			const response = await getContactMessage(msg._id);
+			setSelectedContact(response.data.message);
+		} catch (error: any) {
+			openNotification("error", "Erreur", error.response?.data?.error || "Impossible de charger le message.");
+			setContactDetailOpen(false);
+			setContactDetailLoading(false);
+			return;
+		}
+
+		// Mark as read + refresh global count
+		if (!msg.isRead) {
+			try {
+				await markContactMessageRead(msg._id);
+				setContactMessages((prev) => prev.map((m) => (m._id === msg._id ? { ...m, isRead: true } : m)));
+				refreshContactUnreadCount();
+			} catch {
+				// Silent fail
+			}
+		}
+
+		setContactDetailLoading(false);
+	};
+
+	// Reply to contact message
+	const submitContactReply = async (e: React.FormEvent) => {
+		e.preventDefault();
+		if (!selectedContact || !contactReplyContent.trim()) return;
+		setContactReplying(true);
+
+		try {
+			const response = await replyToContactMessage(selectedContact._id, contactReplyContent);
+			openNotification("success", "Envoyé", "Réponse envoyée par email avec succès.");
+			setSelectedContact(response.data.contactMessage);
+			setContactReplyContent("");
+			loadContactMessages(contactPagination?.page || 1);
+			refreshContactUnreadCount();
+		} catch (error: any) {
+			openNotification("error", "Erreur", error.response?.data?.error || "Erreur lors de l'envoi de la réponse.");
+		} finally {
+			setContactReplying(false);
 		}
 	};
 
@@ -285,40 +419,166 @@ export default function MessagesPage({ canComposeNew = false }: MessagesPageProp
 								setUserSearch("");
 								setComposeOpen(true);
 							}}
-							className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-univers text-white text-sm font-bold hover:bg-univers/90 transition-colors shadow-sm"
+							className="flex items-center gap-2 rounded-lg bg-univers px-5 py-3 text-white font-bold shadow-sm hover:bg-univers/90 transition-all duration-200 whitespace-nowrap"
 						>
-							<PlusIcon className="h-4 w-4" />
+							<PlusIcon className="h-5 w-5" />
 							Nouveau message
 						</button>
 					)}
 				</div>
-				<p className="text-gray-500 mb-8">Consultez et gérez vos messages internes.</p>
+				<p className="text-gray-500 mb-8">Consultez et gérez vos messages.</p>
 
-				{/* Tabs */}
-				<div className="flex gap-1 mb-6 bg-gray-100 rounded-lg p-1 w-fit">
+				{/* Tabs: admin sees both, others see nothing (just the list) */}
+				{canComposeNew && (
+					<div className="flex gap-1 mb-6 bg-gray-100 rounded-lg p-1 w-fit">
+						<button
+							onClick={() => setActiveView("internal")}
+							className={clsx(
+								"px-4 py-2 rounded-md text-sm font-semibold transition-colors flex items-center gap-2",
+								activeView === "internal" ? "bg-white text-gray-900 shadow-sm" : "text-gray-500 hover:text-gray-700"
+							)}
+						>
+							<ChatBubbleLeftRightIcon className="h-4 w-4" />
+							Messages internes
+						</button>
+						<button
+							onClick={() => setActiveView("contact")}
+							className={clsx(
+								"px-4 py-2 rounded-md text-sm font-semibold transition-colors flex items-center gap-2",
+								activeView === "contact" ? "bg-white text-gray-900 shadow-sm" : "text-gray-500 hover:text-gray-700"
+							)}
+						>
+							<GlobeAltIcon className="h-4 w-4" />
+							Messages du site
+							{contactUnreadCount > 0 && (
+								<span className="min-w-[20px] h-5 flex items-center justify-center rounded-full bg-cohesion text-white text-xs font-bold px-1.5">
+									{contactUnreadCount}
+								</span>
+							)}
+						</button>
+					</div>
+				)}
+
+				{/* ===== Contact messages view ===== */}
+				{canComposeNew && activeView === "contact" ? (
+					<div className="bg-white rounded-xl shadow-sm border border-gray-200">
+						{contactLoading ? (
+							<div className="flex justify-center py-12">
+								<Spin indicator={<LoadingOutlined spin className="text-2xl text-gray-400" />} />
+							</div>
+						) : contactMessages.length === 0 ? (
+							<div className="text-center py-12">
+								<GlobeAltIcon className="h-12 w-12 text-gray-300 mx-auto mb-3" />
+								<p className="text-gray-500">Aucun message du site.</p>
+							</div>
+						) : (
+							<div className="divide-y divide-gray-100">
+								{contactMessages.map((msg) => {
+									const isUnread = !msg.isRead;
+									const hasReplies = msg.replies && msg.replies.length > 0;
+									return (
+										<button
+											key={msg._id}
+											onClick={() => handleOpenContactDetail(msg)}
+											className={clsx(
+												"w-full text-left px-5 py-4 hover:bg-gray-50 transition-colors flex items-start gap-4",
+												isUnread && "bg-univers/[0.03]"
+											)}
+										>
+											<div className="flex-shrink-0 mt-0.5">
+												{isUnread ? (
+													<EnvelopeIcon className="h-5 w-5 text-univers" />
+												) : (
+													<EnvelopeOpenIcon className="h-5 w-5 text-gray-300" />
+												)}
+											</div>
+											<div className="min-w-0 flex-1">
+												<div className="flex items-center justify-between gap-2 mb-0.5">
+													<div className="flex items-center gap-2 min-w-0">
+														<span className={clsx("text-sm truncate", isUnread ? "font-bold text-gray-900" : "font-medium text-gray-700")}>
+															{msg.firstName} {msg.lastName}
+														</span>
+														{hasReplies && (
+															<span className="flex-shrink-0 text-[10px] font-bold bg-univers/10 text-univers px-1.5 py-0.5 rounded">
+																Répondu
+															</span>
+														)}
+													</div>
+													<span className="text-xs text-gray-400 flex-shrink-0">
+														{new Date(msg.createdAt).toLocaleDateString("fr-FR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}
+													</span>
+												</div>
+												<p className="text-xs text-gray-400 truncate">{msg.email}</p>
+												<p className={clsx("text-sm truncate mt-0.5", isUnread ? "font-semibold text-gray-900" : "text-gray-700")}>
+													{msg.message}
+												</p>
+												{msg.interestedFormations && msg.interestedFormations.length > 0 && (
+													<div className="flex gap-1 mt-1 flex-wrap">
+														{msg.interestedFormations.map((f) => (
+															<span key={f} className="text-[10px] bg-maitrise/10 text-maitrise px-1.5 py-0.5 rounded font-medium">
+																{f}
+															</span>
+														))}
+													</div>
+												)}
+											</div>
+											{isUnread && (
+												<span className="flex-shrink-0 mt-2">
+													<span className="w-2.5 h-2.5 rounded-full bg-univers block" />
+												</span>
+											)}
+										</button>
+									);
+								})}
+							</div>
+						)}
+
+						{/* Contact Pagination */}
+						{contactPagination && contactPagination.pages > 1 && (
+							<div className="flex justify-center gap-2 py-4 border-t border-gray-100">
+								{Array.from({ length: contactPagination.pages }, (_, i) => (
+									<button
+										key={i + 1}
+										onClick={() => loadContactMessages(i + 1)}
+										className={clsx(
+											"px-3 py-1 rounded text-sm font-medium",
+											contactPagination.page === i + 1 ? "bg-univers text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+										)}
+									>
+										{i + 1}
+									</button>
+								))}
+							</div>
+						)}
+					</div>
+				) : (
+
+				/* ===== Internal messages view ===== */
+				<div>
+				{/* Sub-filter: Conversations / Archivés */}
+				<div className="flex gap-1 mb-4 bg-gray-100 rounded-lg p-1 w-fit">
 					<button
-						onClick={() => setActiveTab("inbox")}
+						onClick={() => setInternalFilter("active")}
 						className={clsx(
-							"px-4 py-2 rounded-md text-sm font-semibold transition-colors flex items-center gap-2",
-							activeTab === "inbox" ? "bg-white text-gray-900 shadow-sm" : "text-gray-500 hover:text-gray-700"
+							"px-3 py-1.5 rounded-md text-sm font-semibold transition-colors flex items-center gap-1.5",
+							internalFilter === "active" ? "bg-white text-gray-900 shadow-sm" : "text-gray-500 hover:text-gray-700"
 						)}
 					>
-						<InboxIcon className="h-4 w-4" />
-						Reçus
+						<ChatBubbleLeftRightIcon className="h-4 w-4" />
+						Conversations
 					</button>
 					<button
-						onClick={() => setActiveTab("sent")}
+						onClick={() => setInternalFilter("archived")}
 						className={clsx(
-							"px-4 py-2 rounded-md text-sm font-semibold transition-colors flex items-center gap-2",
-							activeTab === "sent" ? "bg-white text-gray-900 shadow-sm" : "text-gray-500 hover:text-gray-700"
+							"px-3 py-1.5 rounded-md text-sm font-semibold transition-colors flex items-center gap-1.5",
+							internalFilter === "archived" ? "bg-white text-gray-900 shadow-sm" : "text-gray-500 hover:text-gray-700"
 						)}
 					>
-						<PaperAirplaneIcon className="h-4 w-4" />
-						Envoyés
+						<ArchiveBoxArrowDownIcon className="h-4 w-4" />
+						Archivés
 					</button>
 				</div>
 
-				{/* Messages list */}
 				<div className="bg-white rounded-xl shadow-sm border border-gray-200">
 					{loading ? (
 						<div className="flex justify-center py-12">
@@ -326,14 +586,23 @@ export default function MessagesPage({ canComposeNew = false }: MessagesPageProp
 						</div>
 					) : messages.length === 0 ? (
 						<div className="text-center py-12">
-							<EnvelopeIcon className="h-12 w-12 text-gray-300 mx-auto mb-3" />
-							<p className="text-gray-500">Aucun message {activeTab === "inbox" ? "reçu" : "envoyé"}.</p>
+							{internalFilter === "archived" ? (
+								<>
+									<ArchiveBoxArrowDownIcon className="h-12 w-12 text-gray-300 mx-auto mb-3" />
+									<p className="text-gray-500">Aucune conversation archivée.</p>
+								</>
+							) : (
+								<>
+									<EnvelopeIcon className="h-12 w-12 text-gray-300 mx-auto mb-3" />
+									<p className="text-gray-500">Aucun message.</p>
+								</>
+							)}
 						</div>
 					) : (
 						<div className="divide-y divide-gray-100">
 							{messages.map((msg) => {
-								const person = activeTab === "inbox" ? msg.senderUser : msg.recipientUser;
-								const isUnread = activeTab === "inbox" && (msg.unreadInThread ? msg.unreadInThread > 0 : !msg.isRead);
+								const person = msg.senderUser?._id === user?._id ? msg.recipientUser : msg.senderUser;
+								const isUnread = msg.unreadInThread > 0;
 								return (
 									<button
 										key={msg._id}
@@ -373,7 +642,7 @@ export default function MessagesPage({ canComposeNew = false }: MessagesPageProp
 										</div>
 										{isUnread && (
 											<span className="flex items-center gap-1 flex-shrink-0 mt-2">
-												{activeTab === "inbox" && msg.unreadInThread && msg.unreadInThread > 0 ? (
+												{msg.unreadInThread && msg.unreadInThread > 0 ? (
 													<span className="min-w-[20px] h-5 flex items-center justify-center rounded-full bg-cohesion text-white text-xs font-bold px-1.5">
 														{msg.unreadInThread}
 													</span>
@@ -406,6 +675,113 @@ export default function MessagesPage({ canComposeNew = false }: MessagesPageProp
 						</div>
 					)}
 				</div>
+				</div>
+				)}
+
+				{/* Contact Detail Modal */}
+				<Modal
+					title={null}
+					open={contactDetailOpen}
+					onCancel={() => setContactDetailOpen(false)}
+					footer={null}
+					width="min(680px, 95vw)"
+					centered
+					destroyOnClose
+					styles={{ body: { padding: 0 } }}
+				>
+					{contactDetailLoading ? (
+						<div className="flex justify-center py-12">
+							<Spin indicator={<LoadingOutlined spin className="text-2xl text-gray-400" />} />
+						</div>
+					) : selectedContact && (
+						<div className="mt-2">
+							{/* Header */}
+							<div className="px-1 mb-4">
+								<div className="flex items-center gap-2 mb-1">
+									<h3 className="text-lg font-bold text-gray-900">
+										{selectedContact.firstName} {selectedContact.lastName}
+									</h3>
+									<span className="text-[10px] font-bold uppercase tracking-wide bg-cohesion/10 text-cohesion px-1.5 py-0.5 rounded">
+										Message du site
+									</span>
+								</div>
+								<div className="flex items-center gap-3 text-sm text-gray-500">
+									<a href={`mailto:${selectedContact.email}`} className="text-univers hover:underline">{selectedContact.email}</a>
+									<span>
+										{new Date(selectedContact.createdAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" })}
+									</span>
+								</div>
+								{selectedContact.interestedFormations && selectedContact.interestedFormations.length > 0 && (
+									<div className="flex gap-1.5 mt-2 flex-wrap">
+										{selectedContact.interestedFormations.map((f) => (
+											<span key={f} className="text-xs bg-maitrise/10 text-maitrise px-2 py-0.5 rounded-full font-medium">
+												{f}
+											</span>
+										))}
+									</div>
+								)}
+							</div>
+
+							{/* Original message */}
+							<div className="mx-1 bg-gray-50 rounded-lg p-4 mb-4 border border-gray-100">
+								<p className="text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">{selectedContact.message}</p>
+							</div>
+
+							{/* Replies history */}
+							{selectedContact.replies && selectedContact.replies.length > 0 && (
+								<div className="mx-1 space-y-3 mb-4">
+									{selectedContact.replies.map((reply) => (
+										<div key={reply._id} className="border-l-3 border-univers pl-4 py-2">
+											<div className="flex items-center gap-2 mb-1">
+												<span className="text-xs font-semibold text-gray-700">
+													{reply.sentBy ? `${reply.sentBy.firstName} ${reply.sentBy.lastName}` : "Admin"}
+												</span>
+												<span className="text-xs text-gray-400">
+													{new Date(reply.sentAt).toLocaleDateString("fr-FR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}
+												</span>
+											</div>
+											<p className="text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">{reply.content}</p>
+										</div>
+									))}
+								</div>
+							)}
+
+							{/* Reply form */}
+							<form onSubmit={submitContactReply} className="border-t border-gray-100 pt-4 px-1">
+								<p className="text-xs text-gray-400 mb-2">
+									La réponse sera envoyée par email à <span className="font-medium">{selectedContact.email}</span>
+								</p>
+								<div className="flex flex-col sm:flex-row gap-3">
+									<textarea
+										value={contactReplyContent}
+										onChange={(e) => setContactReplyContent(e.target.value)}
+										placeholder="Écrivez votre réponse..."
+										rows={3}
+										disabled={contactReplying}
+										className={clsx(inputClass, "resize-none flex-1")}
+									/>
+									<button
+										type="submit"
+										disabled={contactReplying || !contactReplyContent.trim()}
+										className={clsx(
+											contactReplying || !contactReplyContent.trim() ? "cursor-not-allowed opacity-70" : "cursor-pointer hover:bg-univers/90",
+											"px-4 py-2.5 rounded-lg text-sm font-bold text-white bg-univers shadow-sm transition-all duration-200 flex items-center gap-2 self-end"
+										)}
+									>
+										{contactReplying ? (
+											<Spin indicator={<LoadingOutlined spin className="text-base text-white" />} />
+										) : (
+											<>
+												<ArrowUturnLeftIcon className="h-4 w-4" />
+												Répondre par email
+											</>
+										)}
+									</button>
+								</div>
+							</form>
+						</div>
+					)}
+				</Modal>
 
 				{/* Conversation Thread Modal */}
 				<Modal
@@ -413,13 +789,27 @@ export default function MessagesPage({ canComposeNew = false }: MessagesPageProp
 					open={conversationOpen}
 					onCancel={() => setConversationOpen(false)}
 					footer={null}
-					width={680}
+					width="min(680px, 95vw)"
 					centered
 					destroyOnClose
 					styles={{ body: { padding: 0 } }}
 				>
 					<div className="mt-2">
-						<h3 className="text-lg font-bold text-gray-900 mb-4 px-1">{conversationSubject}</h3>
+						<div className="flex items-center gap-2 mb-4 px-1 pr-8">
+							<h3 className="text-lg font-bold text-gray-900">{conversationSubject}</h3>
+							<button
+								onClick={handleArchive}
+								disabled={archiving}
+								title={viewingArchived ? "Désarchiver la conversation" : "Archiver la conversation"}
+								className="flex-shrink-0 p-1.5 rounded-lg text-gray-400 hover:text-univers hover:bg-univers/10 transition-colors disabled:opacity-50"
+							>
+								{viewingArchived ? (
+									<ArchiveBoxXMarkIcon className="h-5 w-5" />
+								) : (
+									<ArchiveBoxArrowDownIcon className="h-5 w-5" />
+								)}
+							</button>
+						</div>
 
 						{conversationLoading ? (
 							<div className="flex justify-center py-12">
@@ -464,7 +854,7 @@ export default function MessagesPage({ canComposeNew = false }: MessagesPageProp
 
 								{/* Reply form */}
 								<form onSubmit={submitReply} className="border-t border-gray-100 pt-4 px-1">
-									<div className="flex gap-3">
+									<div className="flex flex-col sm:flex-row gap-3">
 										<textarea
 											value={replyContent}
 											onChange={(e) => setReplyContent(e.target.value)}
@@ -504,7 +894,7 @@ export default function MessagesPage({ canComposeNew = false }: MessagesPageProp
 						open={composeOpen}
 						onCancel={() => !composeSending && setComposeOpen(false)}
 						footer={null}
-						width={600}
+						width="min(600px, 95vw)"
 						centered
 						destroyOnClose
 					>
@@ -618,7 +1008,7 @@ export default function MessagesPage({ canComposeNew = false }: MessagesPageProp
 										<Spin indicator={<LoadingOutlined spin className="text-base text-white" />} />
 									) : (
 										<>
-											<PaperAirplaneIcon className="h-4 w-4" />
+											<PlusIcon className="h-4 w-4" />
 											Envoyer
 										</>
 									)}

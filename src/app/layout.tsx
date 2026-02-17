@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import ConditionalHeader from "@/components/global/ConditionalHeader";
 import { defaultOpenGraph, defaultTwitter } from "@/components/utils/seo";
 
@@ -65,6 +66,7 @@ export default function RootLayout({
 	return (
 		<html lang="fr" className="font-serif">
 			<Analytics />
+			<SpeedInsights/>
 			<body className="flex flex-col justify-between min-h-screen max-w-screen bg-support overflow-x-hidden">
 				<ConditionalHeader />
 				<div className="bg-support">{children}</div>
