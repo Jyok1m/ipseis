@@ -173,7 +173,7 @@ export default function UtilisateursPage() {
 				<p className="text-gray-500 mb-8">Consultez et gérez les comptes des utilisateurs inscrits.</p>
 
 				<div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-					<div className="flex items-center justify-between mb-4">
+					<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
 						<select
 							value={usersRoleFilter}
 							onChange={(e) => setUsersRoleFilter(e.target.value)}
@@ -295,7 +295,7 @@ export default function UtilisateursPage() {
 					open={!!editUser}
 					onCancel={() => !editSaving && setEditUser(null)}
 					footer={null}
-					width={600}
+					width="min(600px, 95vw)"
 					centered
 					destroyOnClose
 				>
@@ -359,7 +359,7 @@ export default function UtilisateursPage() {
 					open={!!deleteUser}
 					onCancel={() => !deleting && setDeleteUser(null)}
 					footer={null}
-					width={480}
+					width="min(480px, 95vw)"
 					centered
 				>
 					<div className="py-4">
@@ -401,7 +401,7 @@ export default function UtilisateursPage() {
 					open={!!messageUser}
 					onCancel={() => !messageSending && setMessageUser(null)}
 					footer={null}
-					width={600}
+					width="min(600px, 95vw)"
 					centered
 					destroyOnClose
 				>

@@ -446,7 +446,7 @@ export default function FormationsPage() {
 					open={modalOpen}
 					onCancel={() => !saving && setModalOpen(false)}
 					footer={null}
-					width={720}
+					width="min(720px, 95vw)"
 					centered
 					destroyOnClose
 				>
@@ -658,7 +658,7 @@ export default function FormationsPage() {
 					open={!!deleteId}
 					onCancel={() => !deleting && setDeleteId(null)}
 					footer={null}
-					width={480}
+					width="min(480px, 95vw)"
 					centered
 				>
 					<div className="py-4">

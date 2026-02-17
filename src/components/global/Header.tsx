@@ -21,7 +21,7 @@ const Header = () => {
 	const [showModal, setShowModal] = useState(false);
 
 	return (
-		<header className="bg-univers z-20 w-screen">
+		<header className="bg-univers z-20 w-full">
 			{/* Desktop */}
 
 			<nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between gap-x-4 lg:gap-x-6 px-6 py-3 lg:px-8">
@@ -166,7 +166,7 @@ const Header = () => {
 					centered
 					open={showModal}
 					footer={null}
-					width={600}
+					width="min(600px, 95vw)"
 					onCancel={() => setShowModal(false)}
 				>
 					<p className="text-base sm:text-lg text-univers">Cette page sera bientôt disponible !</p>

@@ -15,7 +15,7 @@ export const metadata: Metadata = buildMetadata({
 
 export default function Accueil() {
 	return (
-		<div className="w-screen h-screen relative flex flex-col items-center justify-between bg-univers overflow-x-hidden">
+		<div className="w-full h-screen relative flex flex-col items-center justify-between bg-univers overflow-x-hidden">
 			<div className="flex flex-col items-center justify-center gap-y-2 sm:gap-y-5 m-10 sm:w-5/6 lg:w-3/5 mt-14 sm:mt-24">
 				{/* Gros titre */}
 

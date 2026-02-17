@@ -203,7 +203,7 @@ export default function ContactForm() {
 	};
 
 	return (
-		<div className="relative isolate bg-maitrise p-5 w-4/5 lg:max-w-3xl rounded-2xl">
+		<div className="relative isolate bg-maitrise p-4 sm:p-5 w-[92%] sm:w-4/5 lg:max-w-3xl rounded-2xl">
 			<ConfigProvider
 				theme={{
 					token: {
@@ -231,7 +231,7 @@ export default function ContactForm() {
 					</div>
 				</div>
 
-				<div className="flex flex-col gap-16 sm:gap-y-20 lg:flex-row">
+				<div className="flex flex-col gap-8 sm:gap-y-20 lg:flex-row">
 					<div className="lg:flex-auto">
 						<div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:gap-y-8 sm:grid-cols-2">
 							<InputWrapper label="Prénom" required>

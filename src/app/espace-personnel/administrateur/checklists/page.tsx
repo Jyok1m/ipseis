@@ -403,7 +403,7 @@ export default function ChecklistsPage() {
 					open={modalOpen}
 					onCancel={() => !saving && setModalOpen(false)}
 					footer={null}
-					width={640}
+					width="min(640px, 95vw)"
 					centered
 					destroyOnClose
 				>
@@ -554,7 +554,7 @@ export default function ChecklistsPage() {
 					open={!!deleteId}
 					onCancel={() => !deleting && setDeleteId(null)}
 					footer={null}
-					width={480}
+					width="min(480px, 95vw)"
 					centered
 				>
 					<div className="py-4">

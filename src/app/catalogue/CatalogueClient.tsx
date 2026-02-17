@@ -165,8 +165,8 @@ export default function CatalogueClient({ initialThemes = [] }: CatalogueClientP
 					token: { fontFamily: "Halibut" },
 				}}
 			>
-				<Modal title={`Thématique : ${selectedTheme}`} centered open={catalogueModalOpen} footer={null} width={600} onCancel={handleModalClose}>
-					<div className="grid grid-cols-2 grid-rows-2 gap-5 items-center justify-center max-w-[500px] mx-auto py-5">
+				<Modal title={`Thématique : ${selectedTheme}`} centered open={catalogueModalOpen} footer={null} width="min(600px, 95vw)" onCancel={handleModalClose}>
+					<div className="grid grid-cols-1 sm:grid-cols-2 grid-rows-2 gap-5 items-center justify-center max-w-[500px] mx-auto py-5">
 						{catalogue.map((training: any) => {
 							const isLoadingThis = routingLoading === training._id;
 							return (

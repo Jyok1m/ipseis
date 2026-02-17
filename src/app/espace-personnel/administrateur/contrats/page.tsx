@@ -335,7 +335,7 @@ export default function ContratsPage() {
 				{contextHolder}
 			</ConfigProvider>
 
-			<div className="flex items-center justify-between mb-8">
+			<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
 				<div>
 					<h1 className="text-2xl font-bold text-gray-900 mb-2 flex items-center gap-2">
 						<DocumentTextIcon className="h-7 w-7 text-gray-400" />

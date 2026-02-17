@@ -413,7 +413,7 @@ export default function MessagesPage({ canComposeNew = false }: MessagesPageProp
 					open={conversationOpen}
 					onCancel={() => setConversationOpen(false)}
 					footer={null}
-					width={680}
+					width="min(680px, 95vw)"
 					centered
 					destroyOnClose
 					styles={{ body: { padding: 0 } }}
@@ -464,7 +464,7 @@ export default function MessagesPage({ canComposeNew = false }: MessagesPageProp
 
 								{/* Reply form */}
 								<form onSubmit={submitReply} className="border-t border-gray-100 pt-4 px-1">
-									<div className="flex gap-3">
+									<div className="flex flex-col sm:flex-row gap-3">
 										<textarea
 											value={replyContent}
 											onChange={(e) => setReplyContent(e.target.value)}
@@ -504,7 +504,7 @@ export default function MessagesPage({ canComposeNew = false }: MessagesPageProp
 						open={composeOpen}
 						onCancel={() => !composeSending && setComposeOpen(false)}
 						footer={null}
-						width={600}
+						width="min(600px, 95vw)"
 						centered
 						destroyOnClose
 					>

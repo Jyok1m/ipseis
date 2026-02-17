@@ -83,7 +83,7 @@ export default function DashboardSidebar({ navItems, mobileOpen, onMobileClose }
 			{mobileOpen && (
 				<div className="fixed inset-0 z-40 md:hidden">
 					<div className="fixed inset-0 bg-black/50" onClick={onMobileClose} />
-					<div className="fixed inset-y-0 left-0 w-72 bg-univers flex flex-col z-50">
+					<div className="fixed inset-y-0 left-0 w-72 bg-univers flex flex-col z-50 overflow-y-auto">
 						<button
 							onClick={onMobileClose}
 							className="absolute top-4 right-4 text-support/80 hover:text-support"

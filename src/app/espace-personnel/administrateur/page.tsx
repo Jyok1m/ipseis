@@ -117,7 +117,7 @@ export default function AdminDashboard() {
 			{/* KPI Cards - Cliquables */}
 			{stats && (
 				<>
-					<div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 mb-8">
+					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 mb-8">
 						<InfoTooltip title="Prospects" description="Personnes ayant téléchargé le catalogue ou envoyé un message via le site. Cliquez pour gérer.">
 							<Link href="/espace-personnel/administrateur/prospects" className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 hover:border-univers hover:shadow-md transition-all">
 								<div className="flex items-center gap-3 mb-2">

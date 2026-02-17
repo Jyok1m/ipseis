@@ -45,7 +45,7 @@ export const HealthValueSection = () => {
 						</div>
 
 						{/* (3,1) — bas gauche */}
-						<div className="sm:col-start-1 sm:row-start-3 sm:translate-x-24 md:translate-x-32 lg:translate-x-36">
+						<div className="sm:col-start-1 sm:row-start-3 sm:translate-x-16 md:translate-x-32 lg:translate-x-36">
 							<FeatureBox
 								title="Professionnalisme & Qualité"
 								description="Délivrer le meilleur en engageant, avec exigence et rigueur"
@@ -55,7 +55,7 @@ export const HealthValueSection = () => {
 						</div>
 
 						{/* (3,3) — bas droite */}
-						<div className="sm:col-start-3 sm:row-start-3 sm:-translate-x-24 md:-translate-x-32 lg:-translate-x-36">
+						<div className="sm:col-start-3 sm:row-start-3 sm:-translate-x-16 md:-translate-x-32 lg:-translate-x-36">
 							<FeatureBox title="Respect & Intégrité" description="Faire de la confiance une évidence" bgColor="maitrise" centered />
 						</div>
 					</div>
