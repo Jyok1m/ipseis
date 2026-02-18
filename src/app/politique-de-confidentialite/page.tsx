@@ -182,9 +182,6 @@ export default function PolitiqueDeConfidentialitePage() {
 								<strong>OVHcloud</strong> (hébergement du serveur applicatif et de la base de données) : 2 rue Kellermann, 59100 Roubaix, France.
 							</li>
 							<li>
-								<strong>MongoDB Inc</strong> (base de données cloud &ndash; MongoDB Atlas) : New York, États-Unis.
-							</li>
-							<li>
 								<strong>Google (Gmail SMTP)</strong> : pour l&apos;envoi d&apos;emails transactionnels (réinitialisation de mot de passe, notifications).
 							</li>
 						</ul>
@@ -342,7 +339,7 @@ export default function PolitiqueDeConfidentialitePage() {
 					<h2 className="text-xl font-bold text-cohesion mb-4">9. Transferts hors UE</h2>
 					<div className="text-base leading-relaxed space-y-3">
 						<p>
-							Certains de nos prestataires (Vercel, MongoDB Atlas, Google) sont basés aux États-Unis. Ces transferts sont encadrés par :
+							Certains de nos prestataires (Vercel, Google) sont basés aux États-Unis. Ces transferts sont encadrés par :
 						</p>
 						<ul className="list-disc list-inside space-y-2 text-univers/90">
 							<li>Le Data Privacy Framework (DPF) UE-États-Unis pour les entreprises certifiées.</li>
