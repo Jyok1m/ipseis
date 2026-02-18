@@ -102,7 +102,7 @@ export default function MyResourcesList({ limit }: { limit?: number }) {
 	if (loading) {
 		return (
 			<div className="flex justify-center py-16">
-				<Spin indicator={<LoadingOutlined spin className="text-3xl text-gray-400" />} />
+				<Spin indicator={<LoadingOutlined spin />} size="large" className="text-cohesion" />
 			</div>
 		);
 	}
@@ -143,7 +143,7 @@ export default function MyResourcesList({ limit }: { limit?: number }) {
 									title="Télécharger"
 								>
 									{downloading === r._id ? (
-										<Spin indicator={<LoadingOutlined spin className="text-sm text-univers" />} />
+										<Spin indicator={<LoadingOutlined spin />} size="small" className="text-cohesion" />
 									) : (
 										<ArrowDownTrayIcon className="h-4 w-4" />
 									)}
@@ -204,7 +204,7 @@ export default function MyResourcesList({ limit }: { limit?: number }) {
 											className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-univers bg-univers/10 hover:bg-univers/20 transition-colors"
 										>
 											{downloading === r._id ? (
-												<Spin indicator={<LoadingOutlined spin className="text-sm text-univers" />} />
+												<Spin indicator={<LoadingOutlined spin />} size="small" className="text-cohesion" />
 											) : (
 												<>
 													<ArrowDownTrayIcon className="h-4 w-4" />

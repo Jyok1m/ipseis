@@ -69,7 +69,6 @@ export default function LoginForm() {
 
 		try {
 			const user = await login(email, password);
-			openNotification("success", "Connexion réussie", `Bienvenue, ${user.firstName} !`);
 			router.push(`/espace-personnel/${user.role}`);
 		} catch (error: any) {
 			const message = error.response?.data?.error || "Erreur lors de la connexion.";
@@ -141,7 +140,7 @@ export default function LoginForm() {
 							"w-full rounded-xl bg-univers px-6 py-4 text-support font-bold shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-univers transition-all duration-200"
 						)}
 					>
-						{!isLoading ? "Se connecter" : <Spin indicator={<LoadingOutlined spin className="text-xl text-support" />} />}
+						{!isLoading ? "Se connecter" : <Spin indicator={<LoadingOutlined spin />} size="small" className="text-support" />}
 					</button>
 				</form>
 

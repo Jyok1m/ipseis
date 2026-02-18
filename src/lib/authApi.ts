@@ -40,7 +40,12 @@ export const resetPassword = (token: string, password: string, confirmPassword: 
 export const createActivationCode = (targetEmail: string, role: string) =>
 	authApi.post("/admin/activation-codes", { targetEmail, role });
 
-export const getActivationCodes = (page: number = 1) => authApi.get(`/admin/activation-codes?page=${page}`);
+export const getActivationCodes = (page: number = 1, archived?: boolean) =>
+	authApi.get(`/admin/activation-codes?page=${page}${archived ? "&archived=true" : ""}`);
+
+export const cancelActivationCode = (id: string) => authApi.patch(`/admin/activation-codes/${id}/cancel`);
+
+export const archiveActivationCode = (id: string) => authApi.patch(`/admin/activation-codes/${id}/archive`);
 
 export const getUsers = (page: number = 1, role?: string, search?: string, excludeRole?: string) =>
 	authApi.get(`/admin/users?page=${page}${role ? `&role=${role}` : ""}${search ? `&search=${encodeURIComponent(search)}` : ""}${excludeRole ? `&excludeRole=${excludeRole}` : ""}`);
