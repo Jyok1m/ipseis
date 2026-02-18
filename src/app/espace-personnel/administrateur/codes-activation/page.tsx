@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { createActivationCode, getActivationCodes } from "@/lib/authApi";
-import { notification, ConfigProvider, Spin } from "antd";
+import { useState, useEffect } from "react";
+import { createActivationCode, getActivationCodes, cancelActivationCode, archiveActivationCode } from "@/lib/authApi";
+import { notification, ConfigProvider, Spin, Modal } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import { CheckCircleIcon, XCircleIcon, KeyIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
@@ -22,6 +22,11 @@ export default function CodesActivationPage() {
 	const [codesLoaded, setCodesLoaded] = useState(false);
 	const [codesLoading, setCodesLoading] = useState(false);
 	const [codesPagination, setCodesPagination] = useState<any>(null);
+	const [showArchived, setShowArchived] = useState(false);
+
+	useEffect(() => {
+		loadCodes(1);
+	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 	const openNotification = (type: NotificationType, title: string, message: string) => {
 		api[type]({
@@ -47,7 +52,7 @@ export default function CodesActivationPage() {
 			const response = await createActivationCode(targetEmail, role);
 			openNotification("success", "Code créé", response.data.message);
 			setTargetEmail("");
-			if (codesLoaded) loadCodes(1);
+			loadCodes(1);
 		} catch (error: any) {
 			openNotification("error", "Erreur", error.response?.data?.error || "Erreur lors de la création.");
 		} finally {
@@ -55,10 +60,11 @@ export default function CodesActivationPage() {
 		}
 	};
 
-	const loadCodes = async (page: number) => {
+	const loadCodes = async (page: number, archived?: boolean) => {
+		const archivedValue = archived !== undefined ? archived : showArchived;
 		setCodesLoading(true);
 		try {
-			const response = await getActivationCodes(page);
+			const response = await getActivationCodes(page, archivedValue);
 			setCodes(response.data.codes);
 			setCodesPagination(response.data.pagination);
 			setCodesLoaded(true);
@@ -68,6 +74,45 @@ export default function CodesActivationPage() {
 			setCodesLoading(false);
 		}
 	};
+
+	const handleCancel = (code: any) => {
+		Modal.confirm({
+			title: "Annuler ce code d'activation ?",
+			content: `Le code ${code.code} pour ${code.targetEmail} ne pourra plus être utilisé pour s'inscrire.`,
+			okText: "Annuler le code",
+			cancelText: "Retour",
+			okButtonProps: { danger: true },
+			onOk: async () => {
+				try {
+					await cancelActivationCode(code._id);
+					openNotification("success", "Code annulé", "Le code a été annulé avec succès.");
+					loadCodes(codesPagination?.page || 1);
+				} catch (error: any) {
+					openNotification("error", "Erreur", error.response?.data?.error || "Erreur lors de l'annulation.");
+				}
+			},
+		});
+	};
+
+	const handleArchive = async (code: any) => {
+		try {
+			await archiveActivationCode(code._id);
+			openNotification("success", "Code archivé", "Le code a été archivé.");
+			loadCodes(codesPagination?.page || 1);
+		} catch (error: any) {
+			openNotification("error", "Erreur", error.response?.data?.error || "Erreur lors de l'archivage.");
+		}
+	};
+
+	const getCodeStatus = (code: any) => {
+		if (code.isUsed) return { label: "Utilisé", className: "bg-green-50 text-green-700" };
+		if (code.cancelled) return { label: "Annulé", className: "bg-red-50 text-red-700" };
+		if (new Date(code.expiresAt) < new Date()) return { label: "Expiré", className: "bg-gray-100 text-gray-500" };
+		return { label: "En attente", className: "bg-amber-50 text-amber-700" };
+	};
+
+	const canCancel = (code: any) => !code.isUsed && !code.cancelled;
+	const canArchive = (code: any) => code.isUsed || code.cancelled || new Date(code.expiresAt) < new Date();
 
 	return (
 		<div>
@@ -136,18 +181,34 @@ export default function CodesActivationPage() {
 							<KeyIcon className="h-5 w-5 text-maitrise" />
 							Historique des codes
 						</h2>
-						<button
-							onClick={() => loadCodes(1)}
-							disabled={codesLoading}
-							className="text-sm text-univers hover:underline font-semibold"
-						>
-							{codesLoaded ? "Rafraichir" : "Charger"}
-						</button>
+						<div className="flex items-center gap-4">
+							<label className="flex items-center gap-2 text-sm text-gray-600 whitespace-nowrap cursor-pointer">
+								<input
+									type="checkbox"
+									checked={showArchived}
+									onChange={(e) => {
+										setShowArchived(e.target.checked);
+										if (codesLoaded) {
+											loadCodes(1, e.target.checked);
+										}
+									}}
+									className="rounded border-gray-300 text-univers focus:ring-univers"
+								/>
+								Afficher les archivés
+							</label>
+							<button
+								onClick={() => loadCodes(1)}
+								disabled={codesLoading}
+								className="text-sm text-univers hover:underline font-semibold"
+							>
+								Rafraichir
+							</button>
+						</div>
 					</div>
 
 					{codesLoading ? (
 						<div className="flex justify-center py-8">
-							<Spin indicator={<LoadingOutlined spin className="text-2xl text-gray-400" />} />
+							<Spin indicator={<LoadingOutlined spin className="text-2xl text-cohesion" />} />
 						</div>
 					) : codesLoaded && codes.length > 0 ? (
 						<>
@@ -160,27 +221,49 @@ export default function CodesActivationPage() {
 											<th className="py-3 px-2 font-semibold text-gray-600 text-xs uppercase tracking-wide">Rôle</th>
 											<th className="py-3 px-2 font-semibold text-gray-600 text-xs uppercase tracking-wide">Statut</th>
 											<th className="py-3 px-2 font-semibold text-gray-600 text-xs uppercase tracking-wide">Expire</th>
+											<th className="py-3 px-2 font-semibold text-gray-600 text-xs uppercase tracking-wide">Actions</th>
 										</tr>
 									</thead>
 									<tbody>
-										{codes.map((code: any) => (
-											<tr key={code._id} className="border-b border-gray-100">
-												<td className="py-3 px-2 font-mono text-sm text-gray-900">{code.code}</td>
-												<td className="py-3 px-2 text-gray-700">{code.targetEmail}</td>
-												<td className="py-3 px-2 text-gray-700 capitalize">{code.role}</td>
-												<td className="py-3 px-2">
-													<span
-														className={clsx(
-															"px-2 py-1 rounded-full text-xs font-semibold",
-															code.isUsed ? "bg-green-50 text-green-700" : "bg-amber-50 text-amber-700"
-														)}
-													>
-														{code.isUsed ? "Utilisé" : "En attente"}
-													</span>
-												</td>
-												<td className="py-3 px-2 text-gray-500">{new Date(code.expiresAt).toLocaleDateString("fr-FR")}</td>
-											</tr>
-										))}
+										{codes.map((code: any) => {
+											const status = getCodeStatus(code);
+											return (
+												<tr key={code._id} className="border-b border-gray-100">
+													<td className="py-3 px-2 font-mono text-sm text-gray-900">{code.code}</td>
+													<td className="py-3 px-2 text-gray-700">{code.targetEmail}</td>
+													<td className="py-3 px-2 text-gray-700 capitalize">{code.role}</td>
+													<td className="py-3 px-2">
+														<span className={clsx("px-2 py-1 rounded-full text-xs font-semibold", status.className)}>
+															{status.label}
+														</span>
+													</td>
+													<td className="py-3 px-2 text-gray-500">{new Date(code.expiresAt).toLocaleDateString("fr-FR")}</td>
+													<td className="py-3 px-2">
+														<div className="flex items-center gap-2">
+															{canCancel(code) && (
+																<button
+																	onClick={() => handleCancel(code)}
+																	className="text-xs font-medium text-red-600 hover:text-red-800 hover:underline"
+																>
+																	Annuler
+																</button>
+															)}
+															{canArchive(code) && !code.archived && (
+																<button
+																	onClick={() => handleArchive(code)}
+																	className="text-xs font-medium text-gray-500 hover:text-gray-700 hover:underline"
+																>
+																	Archiver
+																</button>
+															)}
+															{code.archived && (
+																<span className="text-xs text-gray-400 italic">Archivé</span>
+															)}
+														</div>
+													</td>
+												</tr>
+											);
+										})}
 									</tbody>
 								</table>
 							</div>
