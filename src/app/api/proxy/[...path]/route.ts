@@ -59,11 +59,12 @@ async function proxyRequest(request: NextRequest, method: string) {
 
 	// On login success: set the token as a first-party cookie
 	if (path === "/auth/login" && backendRes.ok && data.token) {
+		const maxAge = data.rememberMe ? 30 * 24 * 60 * 60 : 7 * 24 * 60 * 60;
 		response.cookies.set("token", data.token, {
 			httpOnly: true,
 			secure: process.env.NODE_ENV === "production",
 			sameSite: "lax",
-			maxAge: 7 * 24 * 60 * 60,
+			maxAge,
 			path: "/",
 		});
 	}

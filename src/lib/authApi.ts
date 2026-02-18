@@ -19,7 +19,7 @@ export const register = (data: {
 	activationCode: string;
 }) => authApi.post("/auth/register", data);
 
-export const login = (email: string, password: string) => authApi.post("/auth/login", { email, password });
+export const login = (email: string, password: string, rememberMe?: boolean) => authApi.post("/auth/login", { email, password, rememberMe });
 
 export const logout = () => authApi.post("/auth/logout");
 

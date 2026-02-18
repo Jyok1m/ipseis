@@ -42,6 +42,7 @@ export default function LoginForm() {
 
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [rememberMe, setRememberMe] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 
 	const openNotification = (type: NotificationType, title: string, message: string) => {
@@ -68,7 +69,7 @@ export default function LoginForm() {
 		}
 
 		try {
-			const user = await login(email, password);
+			const user = await login(email, password, rememberMe);
 			router.push(`/espace-personnel/${user.role}`);
 		} catch (error: any) {
 			const message = error.response?.data?.error || "Erreur lors de la connexion.";
@@ -126,7 +127,17 @@ export default function LoginForm() {
 						/>
 					</InputWrapper>
 
-					<div className="text-right">
+					<div className="flex items-center justify-between">
+						<label className="flex items-center gap-2 cursor-pointer select-none">
+							<input
+								type="checkbox"
+								checked={rememberMe}
+								onChange={(e) => setRememberMe(e.target.checked)}
+								disabled={isLoading}
+								className="h-4 w-4 rounded border-univers/30 text-univers focus:ring-univers/20 cursor-pointer accent-univers"
+							/>
+							<span className="text-sm text-univers/70 font-medium">Rester connecté</span>
+						</label>
 						<Link href="/espace-personnel/mot-de-passe-oublie" className="text-sm text-cohesion hover:underline font-medium">
 							Mot de passe oublié ?
 						</Link>

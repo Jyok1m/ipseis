@@ -3,6 +3,7 @@ import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import ConditionalHeader from "@/components/global/ConditionalHeader";
+import CookieBanner from "@/components/global/CookieBanner";
 import { defaultOpenGraph, defaultTwitter } from "@/components/utils/seo";
 
 export const metadata: Metadata = {
@@ -70,6 +71,7 @@ export default function RootLayout({
 			<body className="flex flex-col justify-between min-h-screen max-w-screen bg-support overflow-x-hidden">
 				<ConditionalHeader />
 				<div className="bg-support">{children}</div>
+				<CookieBanner />
 			</body>
 		</html>
 	);
