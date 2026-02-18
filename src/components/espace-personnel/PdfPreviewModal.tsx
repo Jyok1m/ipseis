@@ -58,7 +58,7 @@ export default function PdfPreviewModal({ open, onClose, title, pdfBlobUrl, load
 							className="flex items-center gap-1.5 px-4 py-2 rounded-lg border border-gray-300 text-gray-700 text-sm font-semibold hover:bg-gray-50 cursor-pointer transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
 						>
 							{printing ? (
-								<Spin indicator={<LoadingOutlined spin className="text-sm text-gray-500" />} />
+								<Spin indicator={<LoadingOutlined spin />} size="small" className="text-cohesion" />
 							) : (
 								<PrinterIcon className="h-4 w-4" />
 							)}
@@ -79,7 +79,7 @@ export default function PdfPreviewModal({ open, onClose, title, pdfBlobUrl, load
 		>
 			{loading ? (
 				<div className="flex items-center justify-center h-[80vh]">
-					<Spin indicator={<LoadingOutlined spin className="text-3xl text-gray-400" />} />
+					<Spin indicator={<LoadingOutlined spin />} size="large" className="text-cohesion" />
 				</div>
 			) : pdfBlobUrl ? (
 				<div className="relative">

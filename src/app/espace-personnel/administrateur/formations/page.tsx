@@ -375,7 +375,7 @@ export default function FormationsPage() {
 				{/* List */}
 				{loading ? (
 					<div className="flex justify-center py-16">
-						<Spin indicator={<LoadingOutlined spin className="text-3xl text-gray-400" />} />
+						<Spin indicator={<LoadingOutlined spin />} size="large" className="text-cohesion" />
 					</div>
 				) : filteredTrainings.length === 0 ? (
 					<div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">
@@ -641,7 +641,7 @@ export default function FormationsPage() {
 								)}
 							>
 								{saving ? (
-									<Spin indicator={<LoadingOutlined spin className="text-base text-white" />} />
+									<Spin indicator={<LoadingOutlined spin />} size="small" className="text-white" />
 								) : editingId ? (
 									"Enregistrer"
 								) : (
@@ -687,7 +687,7 @@ export default function FormationsPage() {
 									"px-5 py-2.5 rounded-lg text-sm font-bold text-white bg-red-600 shadow-sm transition-all duration-200"
 								)}
 							>
-								{deleting ? <Spin indicator={<LoadingOutlined spin className="text-base text-white" />} /> : "Supprimer"}
+								{deleting ? <Spin indicator={<LoadingOutlined spin />} size="small" className="text-white" /> : "Supprimer"}
 							</button>
 						</div>
 					</div>

@@ -28,7 +28,7 @@ export default function ProtectedRoute({ children, allowedRoles }: ProtectedRout
 	if (loading) {
 		return (
 			<div className="flex items-center justify-center min-h-screen bg-support">
-				<Spin indicator={<LoadingOutlined spin className="text-4xl text-univers" />} />
+				<Spin indicator={<LoadingOutlined spin />} size="large" className="text-cohesion" />
 			</div>
 		);
 	}
