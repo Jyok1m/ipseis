@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Button from "@/components/global/Button";
 import Footer from "@/components/global/Footer";
+import JsonLd from "@/components/utils/JsonLd";
 import type { Metadata } from "next";
 import { buildMetadata } from "@/components/utils/seo";
 import tiretHome from "@/_images/tiret-home.png";
@@ -13,9 +14,23 @@ export const metadata: Metadata = buildMetadata({
 	path: "/",
 });
 
+const webSiteJsonLd = {
+	"@context": "https://schema.org",
+	"@type": "WebSite",
+	name: "IPSEIS",
+	url: "https://www.ipseis.fr",
+	description:
+		"Organisme de formation innovant dédié aux professionnels du secteur sanitaire, social et médico-social.",
+	publisher: {
+		"@type": "Organization",
+		name: "IPSEIS",
+	},
+};
+
 export default function Accueil() {
 	return (
 		<div className="w-full h-dvh relative flex flex-col bg-univers overflow-hidden scrollbar-hide">
+			<JsonLd data={webSiteJsonLd} />
 			<div className="flex-1 min-h-0 flex flex-col items-center justify-center gap-y-1 sm:gap-y-5 px-5 py-4 sm:px-10 sm:w-5/6 lg:w-3/5 self-center">
 				{/* Gros titre */}
 

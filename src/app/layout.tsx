@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import ConditionalHeader from "@/components/global/ConditionalHeader";
 import CookieBanner from "@/components/global/CookieBanner";
+import JsonLd from "@/components/utils/JsonLd";
 import { defaultOpenGraph, defaultTwitter } from "@/components/utils/seo";
 
 export const metadata: Metadata = {
@@ -59,6 +60,30 @@ export const metadata: Metadata = {
 	manifest: "/manifest.json",
 };
 
+const organizationJsonLd = {
+	"@context": "https://schema.org",
+	"@type": "EducationalOrganization",
+	name: "IPSEIS",
+	url: "https://www.ipseis.fr",
+	logo: "https://www.ipseis.fr/images/banner-home.png",
+	description:
+		"Organisme de formation innovant dédié aux professionnels du secteur sanitaire, social et médico-social.",
+	address: {
+		"@type": "PostalAddress",
+		streetAddress: "21 Rue de la Nation",
+		addressLocality: "Saint-Malo",
+		postalCode: "35400",
+		addressCountry: "FR",
+	},
+	email: "helenedm@ipseis.fr",
+	sameAs: [],
+	hasCredential: {
+		"@type": "EducationalOccupationalCredential",
+		credentialCategory: "Qualiopi",
+		name: "Certification Qualiopi - Actions de Formation",
+	},
+};
+
 export default function RootLayout({
 	children,
 }: Readonly<{
@@ -66,6 +91,9 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="fr" className="font-serif">
+			<head>
+				<JsonLd data={organizationJsonLd} />
+			</head>
 			<Analytics />
 			<SpeedInsights/>
 			<body className="flex flex-col justify-between min-h-screen max-w-screen bg-support overflow-x-hidden">

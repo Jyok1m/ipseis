@@ -2,8 +2,9 @@ import React from "react";
 import Image from "next/image";
 import TitlePage from "@/components/global/TitlePage";
 import Footer from "@/components/global/Footer";
+import JsonLd from "@/components/utils/JsonLd";
 import type { Metadata } from "next";
-import { buildMetadata } from "@/components/utils/seo";
+import { buildMetadata, buildBreadcrumbJsonLd } from "@/components/utils/seo";
 
 export const metadata: Metadata = buildMetadata({
 	title: "À propos d'IPSEIS - Pédagogie immersive & active",
@@ -12,9 +13,12 @@ export const metadata: Metadata = buildMetadata({
 	path: "/a-propos",
 });
 
+const breadcrumbJsonLd = buildBreadcrumbJsonLd([{ name: "À propos", path: "/a-propos" }]);
+
 export default function APropos() {
 	return (
 		<div className="bg-support min-h-full">
+			<JsonLd data={breadcrumbJsonLd} />
 			<div className="mx-auto max-w-7xl px-6 lg:px-8 pb-10">
 				<TitlePage
 					title="Bienvenue dans l’univers unique d’apprentissage d’IPSEIS"

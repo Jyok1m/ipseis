@@ -16,9 +16,13 @@ const Footer = ({ background = "bg-support" }) => {
 						Joachim Jasmin
 					</Link>
 				</span>
-				<span className="hidden sm:flex sm:justify-center sm:items-center sm:gap-x-2">
+				<span className="hidden sm:flex sm:justify-center sm:items-center sm:gap-x-4">
 					<Link href="/mentions-legales" className="hover:underline underline-offset-4">
 						Mentions légales
+					</Link>
+					<span className="opacity-40">|</span>
+					<Link href="/politique-de-confidentialite" className="hover:underline underline-offset-4">
+						Confidentialité
 					</Link>
 				</span>
 				<span>
@@ -27,9 +31,13 @@ const Footer = ({ background = "bg-support" }) => {
 						Titouan Gignouard
 					</Link>
 				</span>
-				<span className="sm:hidden flex justify-center items-center gap-x-2">
+				<span className="sm:hidden flex justify-center items-center gap-x-4">
 					<Link href="/mentions-legales" className="hover:underline underline-offset-4">
 						Mentions légales
+					</Link>
+					<span className="opacity-40">|</span>
+					<Link href="/politique-de-confidentialite" className="hover:underline underline-offset-4">
+						Confidentialité
 					</Link>
 				</span>
 			</footer>

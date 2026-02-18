@@ -1,17 +1,17 @@
 import Link from "next/link";
 
-export const metadata = {
-	title: "Mentions légales & RGPD | IPSEIS",
+import { buildMetadata } from "@/components/utils/seo";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = buildMetadata({
+	title: "Mentions légales & RGPD",
 	description:
 		"Mentions légales, politique de confidentialité et informations RGPD d'IPSEIS : responsable de publication, hébergeur, données personnelles, cookies, droits RGPD.",
-	robots: {
-		index: true,
-		follow: true,
-	},
-};
+	path: "/mentions-legales",
+});
 
 export default function MentionsLegalesPage() {
-	const lastUpdate = "11 septembre 2025";
+	const lastUpdate = "18 février 2026";
 
 	return (
 		<main className="bg-support text-univers min-h-screen">
@@ -132,12 +132,28 @@ export default function MentionsLegalesPage() {
 
 				<section id="hebergeur" className="scroll-mt-24 bg-white/30 rounded-2xl p-6">
 					<h2 className="text-xl font-bold text-cohesion mb-4">2. Hébergeur</h2>
-					<div className="text-base leading-relaxed">
-						<p>
-							Nom : <em className="text-univers/70">Vercel Inc</em>. <br />
-							Adresse : <em className="text-univers/70">440 N Barranca Avenue #4133, Covina, CA 91723, United States</em>. <br />
-							Email : <em className="text-univers/70">privacy@vercel.com</em>.
-						</p>
+					<div className="text-base leading-relaxed space-y-4">
+						<div>
+							<h3 className="text-lg font-semibold text-maitrise mb-2">Site web (frontend)</h3>
+							<p>
+								Nom : <em className="text-univers/70">Vercel Inc</em>. <br />
+								Adresse : <em className="text-univers/70">440 N Barranca Avenue #4133, Covina, CA 91723, United States</em>. <br />
+								Email : <em className="text-univers/70">privacy@vercel.com</em>.
+							</p>
+						</div>
+						<div>
+							<h3 className="text-lg font-semibold text-maitrise mb-2">Serveur applicatif et base de données (backend)</h3>
+							<p>
+								Hébergeur : <em className="text-univers/70">OVHcloud</em>. <br />
+								Adresse : <em className="text-univers/70">2 rue Kellermann, 59100 Roubaix, France</em>. <br />
+								Géré par : <em className="text-univers/70">Joachim Alexandre Jasmin</em>. <br />
+								Email : <em className="text-univers/70">
+									<a href="mailto:joachim.jasmin-dev@proton.me" className="text-cohesion hover:underline hover:underline-offset-4">
+										joachim.jasmin-dev@proton.me
+									</a>
+								</em>.
+							</p>
+						</div>
 					</div>
 				</section>
 
@@ -243,10 +259,14 @@ export default function MentionsLegalesPage() {
 							<li>Marketing / tiers : soumis au consentement préalable.</li>
 						</ul>
 						<p>
-							<Link href="#droits" className="text-cohesion hover:underline hover:underline-offset-4">
-								Voir vos droits
+							<Link href="/politique-de-confidentialite#cookies" className="text-cohesion hover:underline hover:underline-offset-4">
+								Consultez notre politique de confidentialité
 							</Link>{" "}
-							pour gérer vos préférences ou nous contacter.
+							pour le détail des cookies utilisés, ou{" "}
+							<Link href="#droits" className="text-cohesion hover:underline hover:underline-offset-4">
+								voir vos droits
+							</Link>{" "}
+							pour gérer vos préférences.
 						</p>
 					</div>
 				</section>
@@ -302,6 +322,12 @@ export default function MentionsLegalesPage() {
 						<p>Droit français. En cas de litige et à défaut d'accord amiable, compétence des tribunaux français compétents.</p>
 					</div>
 				</section>
+				{/* Cross-link */}
+				<div className="text-center pt-4">
+					<Link href="/politique-de-confidentialite" className="text-cohesion hover:underline underline-offset-4 font-medium">
+						Voir aussi : Politique de confidentialité
+					</Link>
+				</div>
 			</article>
 		</main>
 	);

@@ -20,7 +20,7 @@ export default function CookieBanner() {
 	if (!visible) return null;
 
 	return (
-		<div className="fixed bottom-0 left-0 right-0 z-50 border-t border-univers/10 bg-white shadow-[0_-4px_12px_rgba(0,0,0,0.08)]">
+		<div className="fixed bottom-0 left-0 right-0 z-50 border-t border-univers/10 bg-support shadow-[0_-4px_12px_rgba(0,0,0,0.08)]">
 			<div className="mx-auto max-w-5xl px-4 py-4 sm:px-6 sm:py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
 				<p className="text-sm text-univers/80 text-center sm:text-left">
 					Ce site utilise des cookies essentiels pour le fonctionnement du service.{" "}

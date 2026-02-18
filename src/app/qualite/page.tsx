@@ -2,8 +2,9 @@ import React from "react";
 import Image from "next/image";
 import TitlePage from "@/components/global/TitlePage";
 import Footer from "@/components/global/Footer";
+import JsonLd from "@/components/utils/JsonLd";
 import type { Metadata } from "next";
-import { buildMetadata } from "@/components/utils/seo";
+import { buildMetadata, buildBreadcrumbJsonLd } from "@/components/utils/seo";
 
 export const metadata: Metadata = buildMetadata({
 	title: "Qualité - IPSEIS certifié Qualiopi",
@@ -12,9 +13,12 @@ export const metadata: Metadata = buildMetadata({
 	path: "/qualite",
 });
 
+const breadcrumbJsonLd = buildBreadcrumbJsonLd([{ name: "Qualité", path: "/qualite" }]);
+
 export default function Qualite() {
 	return (
 		<div className="bg-support min-h-full overflow-x-hidden">
+			<JsonLd data={breadcrumbJsonLd} />
 			<div className="mx-auto max-w-7xl px-6 lg:px-8 pb-10">
 				<TitlePage title="Qualité" centered={true} paddingHorizontal={false} paddingBottom={false} />
 
