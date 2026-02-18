@@ -205,7 +205,7 @@ export default function MyContractsList() {
 
 			{loading ? (
 				<div className="flex justify-center py-12">
-					<Spin indicator={<LoadingOutlined spin className="text-2xl text-gray-400" />} />
+					<Spin indicator={<LoadingOutlined spin />} size="large" className="text-cohesion" />
 				</div>
 			) : contracts.length > 0 ? (
 				<>
