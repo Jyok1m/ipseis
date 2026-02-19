@@ -11,8 +11,9 @@ import { HealthValueSection } from "@/components/sections/HealthValues";
 import { HealthTrainerSection } from "@/components/sections/HealthTrainers";
 import { HealthPerimeterSection } from "@/components/sections/HealthPerimeter";
 import CatalogueCtaSection from "@/components/sections/CatalogueCtaSection";
+import JsonLd from "@/components/utils/JsonLd";
 import type { Metadata } from "next";
-import { buildMetadata } from "@/components/utils/seo";
+import { buildMetadata, buildBreadcrumbJsonLd } from "@/components/utils/seo";
 
 export const metadata: Metadata = buildMetadata({
 	title: "IPSEIS Santé - Formations pour établissements sanitaires & médico-sociaux",
@@ -21,10 +22,12 @@ export const metadata: Metadata = buildMetadata({
 	path: "/secteur-sante",
 });
 
+const breadcrumbJsonLd = buildBreadcrumbJsonLd([{ name: "Secteur Santé", path: "/secteur-sante" }]);
+
 export default function SecteurSante() {
 	return (
 		<div className="bg-support min-h-full">
-			{/* Titre */}
+			<JsonLd data={breadcrumbJsonLd} />
 
 			<TitlePage
 				title="Ipseis Santé"

@@ -72,3 +72,19 @@ export function truncate(str: string, max = 155) {
 	if (str.length <= max) return str;
 	return str.slice(0, max - 1).trimEnd() + "…";
 }
+
+export function buildBreadcrumbJsonLd(items: { name: string; path: string }[]) {
+	return {
+		"@context": "https://schema.org",
+		"@type": "BreadcrumbList",
+		itemListElement: [
+			{ "@type": "ListItem", position: 1, name: "Accueil", item: baseUrl },
+			...items.map((item, i) => ({
+				"@type": "ListItem",
+				position: i + 2,
+				name: item.name,
+				item: `${baseUrl}${item.path}`,
+			})),
+		],
+	};
+}

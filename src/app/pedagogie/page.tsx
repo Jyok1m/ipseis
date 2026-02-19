@@ -11,8 +11,9 @@ import { PedagogyFollowUpSection } from "@/components/sections/PedagogyFollowUp"
 import { QualiopiSection } from "@/components/sections/Qualiopi";
 import { PedagogyQualityOutcomeSection } from "@/components/sections/PedagogyQualityOutcomes";
 import CatalogueCtaSection from "@/components/sections/CatalogueCtaSection";
+import JsonLd from "@/components/utils/JsonLd";
 import type { Metadata } from "next";
-import { buildMetadata } from "@/components/utils/seo";
+import { buildMetadata, buildBreadcrumbJsonLd } from "@/components/utils/seo";
 
 export const metadata: Metadata = buildMetadata({
 	title: "Notre pédagogie - Apprentissage actif & immersif",
@@ -21,11 +22,12 @@ export const metadata: Metadata = buildMetadata({
 	path: "/pedagogie",
 });
 
+const breadcrumbJsonLd = buildBreadcrumbJsonLd([{ name: "Pédagogie", path: "/pedagogie" }]);
+
 export default function Pedagogie() {
-	// Test
 	return (
 		<div className="bg-support min-h-full">
-			{/* Titre */}
+			<JsonLd data={breadcrumbJsonLd} />
 
 			<TitlePage title="Notre pédagogie" descriptionNode={<span>Une démarche pédagogique pour former autrement et transformer durablement</span>} />
 

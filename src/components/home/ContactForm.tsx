@@ -20,11 +20,11 @@ const InputWrapper = ({
 	required?: boolean;
 }) => (
 	<div className={className}>
-		<label htmlFor={label} className="text-lg sm:text-xl leading-7 text-support font-bold mb-1 block">
+		<label htmlFor={label} className="text-sm sm:text-base leading-6 text-support font-bold block">
 			{label}
 			{required && <span className="text-cohesion ml-1">*</span>}
 		</label>
-		<div className="mt-3">{children}</div>
+		<div className="mt-1.5">{children}</div>
 	</div>
 );
 
@@ -38,7 +38,7 @@ const TextInput = ({ onChange, value, id, name, type, autoComplete, placeholder,
 		type={type}
 		autoComplete={autoComplete}
 		placeholder={placeholder}
-		className="block w-full rounded-lg px-4 py-3 sm:py-4 text-univers bg-white border-2 border-support/20 focus:border-cohesion focus:ring-2 focus:ring-cohesion/20 shadow-sm placeholder:text-univers/50 text-base sm:text-lg font-medium transition-all duration-200"
+		className="block w-full rounded-lg px-3.5 py-2 sm:py-2.5 text-univers bg-white border border-support/20 focus:border-cohesion focus:ring-2 focus:ring-cohesion/20 shadow-sm placeholder:text-univers/50 text-sm sm:text-base font-medium transition-all duration-200"
 	/>
 );
 
@@ -51,7 +51,7 @@ const TextAreaInput = ({ onChange, value, id, name, rows, placeholder, disabled 
 		name={name}
 		rows={rows}
 		placeholder={placeholder}
-		className="block w-full rounded-lg px-4 py-3 text-univers bg-white border-2 border-support/20 focus:border-cohesion focus:ring-2 focus:ring-cohesion/20 shadow-sm placeholder:text-univers/50 text-base sm:text-lg font-medium transition-all duration-200 resize-vertical"
+		className="block w-full rounded-lg px-3.5 py-2 text-univers bg-white border border-support/20 focus:border-cohesion focus:ring-2 focus:ring-cohesion/20 shadow-sm placeholder:text-univers/50 text-sm sm:text-base font-medium transition-all duration-200 resize-vertical"
 	/>
 );
 
@@ -85,7 +85,7 @@ const MultiSelectDropdown = ({
 				onChange={handleSelectChange}
 				disabled={disabled}
 				value=""
-				className="block w-full rounded-lg px-4 py-3 sm:py-4 text-univers bg-white border-2 border-support/20 focus:border-cohesion focus:ring-2 focus:ring-cohesion/20 shadow-sm text-base sm:text-lg font-medium transition-all duration-200"
+				className="block w-full rounded-lg px-3.5 py-2 sm:py-2.5 text-univers bg-white border border-support/20 focus:border-cohesion focus:ring-2 focus:ring-cohesion/20 shadow-sm text-sm sm:text-base font-medium transition-all duration-200"
 			>
 				<option value="">Sélectionnez une ou plusieurs formations</option>
 				{themes && themes.length > 0
@@ -107,19 +107,19 @@ const MultiSelectDropdown = ({
 
 			{selectedValues.length > 0 && (
 				<div className="space-y-2">
-					<p className="text-base text-support/70 font-medium">Formations sélectionnées :</p>
-					<div className="flex flex-wrap gap-2">
+					<p className="text-sm text-support/70 font-medium">Formations sélectionnées :</p>
+					<div className="flex flex-wrap gap-1.5">
 						{selectedValues.map((value) => (
 							<span
 								key={value}
-								className="inline-flex items-center gap-2 px-3 py-2 bg-cohesion/10 text-support border border-cohesion/30 rounded-full text-base font-medium"
+								className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-cohesion/10 text-support border border-cohesion/30 rounded-full text-sm font-medium"
 							>
 								{value}
 								<button
 									type="button"
 									onClick={() => removeSelection(value)}
 									disabled={disabled}
-									className="text-cohesion hover:text-cohesion/70 font-bold text-xl leading-none disabled:opacity-50"
+									className="text-cohesion hover:text-cohesion/70 font-bold text-base leading-none disabled:opacity-50"
 								>
 									×
 								</button>
@@ -203,7 +203,7 @@ export default function ContactForm() {
 	};
 
 	return (
-		<div className="relative isolate bg-maitrise p-5 w-4/5 lg:max-w-3xl rounded-2xl">
+		<div className="relative isolate bg-maitrise p-4 sm:p-5 w-[92%] sm:w-4/5 lg:max-w-2xl rounded-2xl">
 			<ConfigProvider
 				theme={{
 					token: {
@@ -217,23 +217,23 @@ export default function ContactForm() {
 				{contextHolder}
 			</ConfigProvider>
 
-			<div className="mx-auto max-w-xl">
+			<div className="mx-auto">
 				{/* Info Box */}
-				<div className="mb-8 p-5 sm:p-6 bg-support/15 border-2 border-support/30 rounded-xl">
-					<div className="flex items-start gap-4">
-						<ChatBubbleLeftRightIcon className="h-7 w-7 sm:h-8 sm:w-8 text-support mt-1 flex-shrink-0" />
+				<div className="mb-5 p-3.5 bg-support/15 border border-support/30 rounded-xl">
+					<div className="flex items-start gap-3">
+						<ChatBubbleLeftRightIcon className="h-5 w-5 text-support mt-0.5 flex-shrink-0" />
 						<div>
-							<h3 className="text-support font-bold mb-3 text-lg sm:text-xl">Contactez-nous directement</h3>
-							<p className="text-support/90 text-base sm:text-lg leading-relaxed font-medium">
+							<h3 className="text-support font-bold mb-1 text-sm sm:text-base">Contactez-nous directement</h3>
+							<p className="text-support/90 text-xs sm:text-sm leading-relaxed font-medium">
 								Une question sur nos formations ? Besoin d'un devis personnalisé ? Notre équipe vous répond dans les plus brefs délais.
 							</p>
 						</div>
 					</div>
 				</div>
 
-				<div className="flex flex-col gap-16 sm:gap-y-20 lg:flex-row">
+				<div className="flex flex-col lg:flex-row">
 					<div className="lg:flex-auto">
-						<div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:gap-y-8 sm:grid-cols-2">
+						<div className="grid grid-cols-1 gap-x-6 gap-y-4 sm:gap-y-5 sm:grid-cols-2">
 							<InputWrapper label="Prénom" required>
 								<TextInput
 									onChange={(e: any) => setFirstName(e.target.value)}
@@ -292,8 +292,8 @@ export default function ContactForm() {
 						</div>
 
 						{/* RGPD Notice */}
-						<div className="mt-8 p-4 sm:p-5 bg-support/10 border-2 border-support/15 rounded-lg">
-							<p className="text-support/80 text-sm sm:text-base leading-relaxed font-medium">
+						<div className="mt-5 p-3 bg-support/10 border border-support/15 rounded-lg">
+							<p className="text-support/80 text-xs sm:text-sm leading-relaxed font-medium">
 								En soumettant ce formulaire, vous acceptez que vos données personnelles soient utilisées pour traiter votre demande et vous
 								recontacter. Vos données sont traitées conformément à notre{" "}
 								<a href="/mentions-legales" className="text-cohesion hover:underline font-semibold">
@@ -303,23 +303,23 @@ export default function ContactForm() {
 							</p>
 						</div>
 
-						<div className="mt-10">
+						<div className="mt-6">
 							<button
 								onClick={() => handleSubmit()}
 								disabled={isLoading}
 								className={clsx(
 									isLoading ? "cursor-not-allowed opacity-70" : "cursor-pointer hover:bg-univers/90 hover:shadow-lg transform hover:scale-105",
-									"w-full rounded-xl bg-univers px-6 py-4 sm:py-5 sm:text-lg text-support font-bold shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-univers transition-all duration-200"
+									"w-full rounded-xl bg-univers px-5 py-3 sm:py-3.5 text-sm sm:text-base text-support font-bold shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-univers transition-all duration-200"
 								)}
 							>
-								<span className="flex justify-center items-center gap-3 text-support">
+								<span className="flex justify-center items-center gap-2.5 text-support">
 									{!isLoading ? (
 										<>
-											<ChatBubbleLeftRightIcon className="h-6 w-6 sm:h-7 sm:w-7" />
+											<ChatBubbleLeftRightIcon className="h-5 w-5" />
 											<span className="font-bold">Envoyer le message</span>
 										</>
 									) : (
-										<Spin indicator={<LoadingOutlined spin className="text-xl" />} />
+										<Spin indicator={<LoadingOutlined spin className="text-lg" />} />
 									)}
 								</span>
 							</button>

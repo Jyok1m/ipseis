@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import Footer from "@/components/global/Footer";
-import { buildMetadata } from "@/components/utils/seo";
+import JsonLd from "@/components/utils/JsonLd";
+import { buildMetadata, buildBreadcrumbJsonLd } from "@/components/utils/seo";
 import { getTrainingById, getAllTrainings } from "@/lib/api";
 import TrainingClient from "./_components/TrainingClient";
 import TrainingSkeleton from "./_components/TrainingSkeleton";
@@ -64,7 +65,35 @@ async function FormationServer({ id }: { id: string }) {
 		notFound();
 	}
 
-	return <TrainingClient initialTraining={training} />;
+	const breadcrumbJsonLd = buildBreadcrumbJsonLd([
+		{ name: "Catalogue", path: "/catalogue" },
+		{ name: training.title, path: `/catalogue/formation/${training._id}` },
+	]);
+
+	const courseJsonLd = {
+		"@context": "https://schema.org",
+		"@type": "Course",
+		name: training.title,
+		description: training.pedagogical_objectives?.slice(0, 3).join(". ") || training.title,
+		provider: {
+			"@type": "Organization",
+			name: "IPSEIS",
+			url: "https://www.ipseis.fr",
+		},
+		hasCourseInstance: {
+			"@type": "CourseInstance",
+			courseMode: "onsite",
+			instructor: training.trainer ? { "@type": "Person", name: training.trainer } : undefined,
+		},
+	};
+
+	return (
+		<>
+			<JsonLd data={breadcrumbJsonLd} />
+			<JsonLd data={courseJsonLd} />
+			<TrainingClient initialTraining={training} />
+		</>
+	);
 }
 
 export default function FormationPage({ params }: { params: { id: string } }) {

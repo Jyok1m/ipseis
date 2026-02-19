@@ -2,8 +2,9 @@ import React from "react";
 import Footer from "@/components/global/Footer";
 import TitlePage from "@/components/global/TitlePage";
 import ContactForm from "@/components/home/ContactForm";
+import JsonLd from "@/components/utils/JsonLd";
 import type { Metadata } from "next";
-import { buildMetadata } from "@/components/utils/seo";
+import { buildMetadata, buildBreadcrumbJsonLd } from "@/components/utils/seo";
 
 export const metadata: Metadata = buildMetadata({
 	title: "Contact IPSEIS - Demande d'information & devis",
@@ -11,9 +12,12 @@ export const metadata: Metadata = buildMetadata({
 	path: "/contact",
 });
 
+const breadcrumbJsonLd = buildBreadcrumbJsonLd([{ name: "Contact", path: "/contact" }]);
+
 export default function Contact() {
 	return (
 		<div className="bg-support min-h-full flex flex-col items-center justify-between">
+			<JsonLd data={breadcrumbJsonLd} />
 			<TitlePage
 				title="Formulaire de contact"
 				descriptionNode={

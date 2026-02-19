@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const Footer = ({ background = "bg-support" }) => {
 	return (
-		<div className={`mx-auto w-screen text-sm sm:text-base ${background === "bg-univers" ? "text-support" : "text-univers"} mt-10 ${background}`}>
+		<div className={`mx-auto w-full text-sm sm:text-base ${background === "bg-univers" ? "text-support" : "text-univers"} mt-4 sm:mt-10 ${background}`}>
 			<footer
 				aria-labelledby="footer-heading"
 				className="relative border-t border-gray-900/10 flex flex-col gap-y-2 sm:flex-row items-center justify-evenly py-5"
@@ -16,9 +16,13 @@ const Footer = ({ background = "bg-support" }) => {
 						Joachim Jasmin
 					</Link>
 				</span>
-				<span className="hidden sm:flex sm:justify-center sm:items-center sm:gap-x-2">
+				<span className="hidden sm:flex sm:justify-center sm:items-center sm:gap-x-4">
 					<Link href="/mentions-legales" className="hover:underline underline-offset-4">
 						Mentions légales
+					</Link>
+					<span className="opacity-40">|</span>
+					<Link href="/politique-de-confidentialite" className="hover:underline underline-offset-4">
+						Confidentialité
 					</Link>
 				</span>
 				<span>
@@ -27,9 +31,13 @@ const Footer = ({ background = "bg-support" }) => {
 						Titouan Gignouard
 					</Link>
 				</span>
-				<span className="sm:hidden flex justify-center items-center gap-x-2">
+				<span className="sm:hidden flex justify-center items-center gap-x-4">
 					<Link href="/mentions-legales" className="hover:underline underline-offset-4">
 						Mentions légales
+					</Link>
+					<span className="opacity-40">|</span>
+					<Link href="/politique-de-confidentialite" className="hover:underline underline-offset-4">
+						Confidentialité
 					</Link>
 				</span>
 			</footer>

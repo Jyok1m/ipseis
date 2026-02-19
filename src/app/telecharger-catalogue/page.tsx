@@ -2,19 +2,23 @@ import React from "react";
 import Footer from "@/components/global/Footer";
 import TitlePage from "@/components/global/TitlePage";
 import CatalogueDownloadForm from "./CatalogueDownloadForm";
+import JsonLd from "@/components/utils/JsonLd";
 import type { Metadata } from "next";
-import { buildMetadata } from "@/components/utils/seo";
+import { buildMetadata, buildBreadcrumbJsonLd } from "@/components/utils/seo";
 
 export const metadata: Metadata = buildMetadata({
-	title: "Télécharger le catalogue IPSEIS - Formations Santé 2025",
+	title: "Télécharger le catalogue IPSEIS - Formations Santé",
 	description:
-		"Téléchargez gratuitement notre catalogue de formations 2025 dans le secteur de la santé et du médico-social. Formations certifiantes et qualifiantes.",
+		"Téléchargez gratuitement notre catalogue de formations dans le secteur de la santé et du médico-social. Formations certifiantes et qualifiantes.",
 	path: "/telecharger-catalogue",
 });
+
+const breadcrumbJsonLd = buildBreadcrumbJsonLd([{ name: "Télécharger le catalogue", path: "/telecharger-catalogue" }]);
 
 export default function TelechargerCatalogue() {
 	return (
 		<div className="bg-support min-h-full flex flex-col items-center justify-between">
+			<JsonLd data={breadcrumbJsonLd} />
 			<TitlePage
 				title="Télécharger notre catalogue"
 				descriptionNode={
